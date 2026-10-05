@@ -55,6 +55,13 @@ for (const id of listSystems()) {
     assert.equal((css.match(/{/g) || []).length, (css.match(/}/g) || []).length, 'balanced braces');
   });
 
+  test(`${id}: fonts are self-hosted, one @font-face per declared file`, () => {
+    const css = tokensCss(sys), fonts = sys.tokens.type.fonts || [];
+    assert.equal((css.match(/@font-face/g) || []).length, fonts.length);
+    for (const f of fonts) assert.ok(css.includes(`url("${f.file}")`), f.file);
+    assert.doesNotMatch(css, /googleapis|gstatic/);
+  });
+
   test(`${id}: every output parses and keeps unique names`, () => {
     const d = JSON.parse(dtcg(sys));
     assert.ok(d.primitive.color && d.semantic[themes(sys)[0]]);

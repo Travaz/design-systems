@@ -1,7 +1,7 @@
 // npm run check [-- <id> ...]  → builds, then verifies tokens, contrast, grid, CSS usage, components and consumers.
 import fs from 'node:fs';
 import path from 'node:path';
-import { pickSystems, NAME_RE, themes, primitives, semantics, isPrimitiveRef, resolveColor, flatFamilies, definedVars, rel } from './lib/system.mjs';
+import { filesUnder, pickSystems, NAME_RE, themes, primitives, semantics, isPrimitiveRef, resolveColor, flatFamilies, definedVars, rel } from './lib/system.mjs';
 import { parseColor, contrast } from './lib/color.mjs';
 import { build, components } from './build.mjs';
 import { proseSources, renderClaims, lintReferences, lintProps } from './lib/docs.mjs';
@@ -65,9 +65,14 @@ export function check(id) {
   for (const t of T.spacing?.tokens || []) { const v = parseFloat(t.value); if (/px$/.test(t.value) && v % 4) E('tokens.json spacing', `${t.name} = ${t.value} non è sulla griglia da 4`); }
   for (const t of T.size?.tokens || []) { const v = parseFloat(t.value); if (/px$/.test(t.value) && v % 4) W('tokens.json size', `${t.name} = ${t.value} non è sulla griglia da 4`); }
 
+  /* 3b. fonts: every declared file exists; nothing loads from a remote font service */
+  for (const f of T.type.fonts || []) if (!fs.existsSync(sys.file(f.file))) E('tokens.json type.fonts', `${f.family}: file mancante ${f.file}`);
+  if ((T.type.fonts || []).length && sys.meta.files.fonts && !fs.readdirSync(sys.file(sys.meta.files.fonts)).some((f) => /^OFL|LICEN[CS]E/i.test(f))) W('fonts', 'nessun file di licenza accanto ai caratteri');
+
   /* 4. component CSS: only defined tokens, never primitives, no literal colours */
   const cssPath = sys.file(sys.meta.files.componentCss);
   lintCss(fs.readFileSync(cssPath, 'utf8'), rel(cssPath), { vars, prim, strict: true }, E, W);
+  if (/fonts\.googleapis\.com|fonts\.gstatic\.com|use\.typekit/.test(fs.readFileSync(cssPath, 'utf8'))) E(rel(cssPath), 'carica caratteri da un servizio esterno: includili in fonts/');
 
   /* 5. components: docs and previews present, bundle header matches folders */
   const comps = components(sys);
@@ -100,9 +105,11 @@ export function check(id) {
     const dir = path.resolve(sys.dir, c.dir);
     if (!fs.existsSync(dir)) { W(`consumer ${c.name}`, `cartella non trovata: ${dir}`); continue; }
     for (const [dest, src] of Object.entries(c.copy || {})) {
-      const d = path.join(dir, dest), s = path.join(pkg, src);
-      if (!fs.existsSync(d)) W(`consumer ${c.name}`, `${dest} manca: esegui npm run release -- ${sys.id}`);
-      else if (!fs.readFileSync(d).equals(fs.readFileSync(s))) W(`consumer ${c.name}`, `${dest} non è allineato a ${sys.meta.version}: esegui npm run release -- ${sys.id}`);
+      for (const f of filesUnder(path.join(pkg, src))) {
+        const d = path.join(dir, dest, f), s = path.join(pkg, src, f), name = path.join(dest, f);
+        if (!fs.existsSync(d)) W(`consumer ${c.name}`, `${name} manca: esegui npm run release -- ${sys.id}`);
+        else if (!fs.readFileSync(d).equals(fs.readFileSync(s))) W(`consumer ${c.name}`, `${name} non è allineato a ${sys.meta.version}: esegui npm run release -- ${sys.id}`);
+      }
     }
     for (const f of c.lint || []) {
       const p = path.join(dir, f);

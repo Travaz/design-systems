@@ -2,13 +2,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { pickSystems, loadSystem, DIST_DIR, SHARED_DOCS, writeFile, copyDir, readIf, changelogEntries, tilde, rel } from './lib/system.mjs';
+import { ROOT, pickSystems, loadSystem, DIST_DIR, SHARED_DOCS, writeFile, copyDir, readIf, changelogEntries, tilde, rel } from './lib/system.mjs';
 import * as E from './lib/emit.mjs';
 import { renderClaims, renderedSystem } from './lib/docs.mjs';
 
-// Same React build the published Design System page loads.
-const REACT = '<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>';
-const REACT_DOM = '<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>';
+// The gallery is offline: React 18 UMD comes from node_modules (npm install) and is copied next to it.
+const REACT_UMD = ['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js'];
+function vendorReact(dest) {
+  const found = REACT_UMD.map((f) => path.join(ROOT, 'node_modules', f));
+  if (!found.every((f) => fs.existsSync(f))) return null; // no dev dependencies installed: no gallery scripts
+  fs.mkdirSync(path.join(dest, 'vendor'), { recursive: true });
+  return found.map((f) => { fs.copyFileSync(f, path.join(dest, 'vendor', path.basename(f))); return `<script src="vendor/${path.basename(f)}"></script>`; });
+}
 
 export function components(sys) {
   const dir = sys.file('components');
@@ -45,6 +50,7 @@ export function build(id, { quiet = false } = {}) {
   if (m.files.motion) files[`${id}-motion.js`] = fs.readFileSync(sys.file(m.files.motion), 'utf8');
   for (const [n, c] of Object.entries(files)) writeFile(path.join(pkg, n), c);
   if (m.skill?.assets?.logo) copyDir(sys.file(m.skill.assets.logo), path.join(pkg, 'logo'));
+  if (m.files.fonts) copyDir(sys.file(m.files.fonts), path.join(pkg, 'fonts'));
   writeFile(path.join(pkg, 'package.json'), JSON.stringify({ name: `@travaz/${id}`, version: m.version, description: m.description, files: ['*'], style: cssName }, null, 2) + '\n');
 
   // 2. skill: the folder Claude reads
@@ -59,6 +65,7 @@ export function build(id, { quiet = false } = {}) {
     for (const d of m.skill.sharedDocs || []) writeFile(path.join(sk, 'references', d), fs.readFileSync(path.join(SHARED_DOCS, d), 'utf8'));
     for (const [n, c] of Object.entries(files)) writeFile(path.join(sk, 'assets', n), c);
     for (const [k, src] of Object.entries(m.skill.assets || {})) copyDir(sys.file(src), path.join(sk, 'assets', k));
+    if (m.files.fonts) copyDir(sys.file(m.files.fonts), path.join(sk, 'assets', 'fonts'));
     execFileSync('zip', ['-rqX', path.join(out, 'skill', `${m.skill.name}.zip`), m.skill.name, '-x', '*.DS_Store'], { cwd: path.join(out, 'skill') });
   }
 
@@ -77,6 +84,11 @@ export function build(id, { quiet = false } = {}) {
   }
   for (const [g, v] of Object.entries(m.artifact?.assetGroups || {})) if (v.readme) artFiles[`assets/${g}/README.md`] = read(v.readme);
   for (const [n, c] of Object.entries(artFiles)) writeFile(path.join(art, n), c);
+  if (m.files.fonts) {
+    const fontFiles = fs.readdirSync(sys.file(m.files.fonts)).filter((f) => /\.woff2?$/.test(f));
+    fs.mkdirSync(path.join(art, 'fonts'), { recursive: true });
+    for (const f of fontFiles) fs.copyFileSync(path.join(sys.file(m.files.fonts), f), path.join(art, 'fonts', f));
+  }
   writeFile(path.join(art, 'design-system.json'), E.artifactIndex(sys, new Date().toISOString().replace(/\.\d+Z$/, 'Z')));
 
   // 4. gallery: one page per component preview, wired to the package, for visual tests and manual review
@@ -86,7 +98,7 @@ export function build(id, { quiet = false } = {}) {
     const head = [
       `<link rel="stylesheet" href="../package/tokens.css">`,
       `<link rel="stylesheet" href="../package/${cssName}">`,
-      ...(files[`${id}-react.js`] ? [REACT, REACT_DOM, `<script src="../package/${id}-react.js"></script>`] : []),
+      ...(files[`${id}-react.js`] ? [...(vendorReact(gallery) || []), `<script src="../package/${id}-react.js"></script>`] : []),
     ].join('\n');
     for (const c of fs.readdirSync(compDir).sort()) {
       const p = path.join(compDir, c, 'preview.html');

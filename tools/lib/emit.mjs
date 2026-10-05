@@ -17,8 +17,11 @@ export function tokensCss(sys) {
   const scheme = (id) => (id === 'dark' ? 'dark' : 'light');
   const out = [];
   out.push(`/* ${stamp(sys)}`);
-  if (T.type.googleFonts) out.push(`   Font: <link rel="stylesheet" href="${T.type.googleFonts}">`);
+  if (T.type.fonts?.length) out.push('   Font: inclusi nella cartella fonts/ accanto a questo file (nessuna richiesta a servizi esterni).');
   out.push(`   Tema: "${first}" di default; ${ths.slice(1).map((t) => `"${t}"`).join(', ') || 'nessun altro tema'}${ths.includes('dark') ? ' segue il sistema operativo' : ''}, oppure <html data-theme="…"> lo forza. */`);
+  for (const f of T.type.fonts || []) {
+    out.push(`@font-face { font-family: "${f.family}"; src: url("${f.file}") format("woff2"); font-weight: ${f.weight}; font-style: ${f.style || 'normal'}; font-display: swap;${f.unicodeRange ? ` unicode-range: ${f.unicodeRange};` : ''} }`);
+  }
   out.push(':root {', '  /* livello 1 — primitivi (mai usati direttamente nei componenti) */');
   for (const [n, p] of Object.entries(primitives(sys))) out.push(`  --${n}: ${p.value};`);
   out.push('', `  /* livello 2 — semantici, tema ${first} */`);
@@ -102,7 +105,7 @@ export function tokensMd(sys) {
   for (const [n, s] of Object.entries(semantics(sys))) L.push(`| \`${n}\` | ${ths.map((t) => show(s[t] ?? s[ths[0]])).join(' | ')} | ${s.usage} |`);
   L.push('', '## Primitivi (non usarli nei componenti)', '', '| Token | Valore | Nota |', '|---|---|---|');
   for (const [n, p] of Object.entries(prim)) L.push(`| \`${n}\` | ${p.value} | ${p.usage} |`);
-  L.push('', '## Tipografia', '', ...(T.type.googleFonts ? [`Google Fonts: \`<link rel="stylesheet" href="${T.type.googleFonts}">\``, ''] : []), '| Famiglia | Stack |', '|---|---|');
+  L.push('', '## Tipografia', '', ...(T.type.fonts?.length ? [`I caratteri sono inclusi (\`assets/fonts/\`, licenza OFL) e dichiarati in \`tokens.css\` con \`@font-face\`: copia la cartella \`fonts/\` accanto a \`tokens.css\`. Nessun link a servizi esterni.`, ''] : []), '| Famiglia | Stack |', '|---|---|');
   for (const [k, v] of Object.entries(T.type.families)) L.push(`| \`--font-${k}\` | ${v} |`);
   L.push('', '| Stile | Famiglia | Size/Line | Peso | Tracking | Uso |', '|---|---|---|---|---|---|');
   for (const s of T.type.styles) L.push(`| \`${s.name}\` | ${s.family} | ${s.fluid ? `${s.fluid.size}/${s.fluid.lineHeight} → ` : ''}${s.size}/${s.lineHeight} | ${s.weight} | ${s.tracking} | ${s.usage} |`);
@@ -141,7 +144,9 @@ export function artifactTokens(sys) {
     if (!g) groups.push((g = { name: s.group, family: s.family, styles: [] }));
     g.styles.push({ name: s.name, ...(s.family !== g.family ? { family: s.family } : {}), fontSize: px(s.size), lineHeight: px(s.lineHeight), fontWeight: s.weight, letterSpacing: s.tracking, sample: s.sample, usage: s.usage });
   }
-  const out = { name: sys.meta.name, version: 1, color, type: { fonts: [], families: T.type.families, groups } };
+  // the page declares its own @font-face per font, without unicode-range: give it the latin files only
+  const fonts = (T.type.fonts || []).filter((f) => !f.subset || f.subset === 'latin').map(({ family, file, weight, style }) => ({ family, file, weight, style }));
+  const out = { name: sys.meta.name, version: 1, color, type: { fonts, families: T.type.families, groups } };
   for (const k of ['spacing', 'radius']) if (T[k]) out[k] = T[k];
   if (T.elevation) out.shadow = T.elevation;
   for (const k of ['size', 'aspect', 'breakpoint', 'zIndex']) if (T[k]) out[k] = T[k]; // motion is not a family the page reads

@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { pickSystems, rel, tilde, DIST_DIR } from './lib/system.mjs';
+import { pickSystems, rel, tilde, DIST_DIR, filesUnder } from './lib/system.mjs';
 import { check } from './check.mjs';
 
 const SKILLS_DIR = process.env.DS_SKILLS_DIR || path.join(os.homedir(), '.claude', 'skills');
@@ -28,8 +28,11 @@ for (const id of pickSystems(process.argv.slice(2))) {
     const dir = path.resolve(sys.dir, c.dir);
     if (!fs.existsSync(dir)) { console.log(`  ! ${c.name}: cartella non trovata (${dir})`); continue; }
     for (const [dest, src] of Object.entries(c.copy || {})) {
-      fs.mkdirSync(path.dirname(path.join(dir, dest)), { recursive: true });
-      fs.copyFileSync(path.join(out, 'package', src), path.join(dir, dest));
+      const from = path.join(out, 'package', src);
+      for (const f of filesUnder(from)) {
+        fs.mkdirSync(path.dirname(path.join(dir, dest, f)), { recursive: true });
+        fs.copyFileSync(path.join(from, f), path.join(dir, dest, f));
+      }
     }
     console.log(`  aggiornato          ${c.name} (${Object.keys(c.copy || {}).length} file)`);
   }

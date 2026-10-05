@@ -11,6 +11,9 @@ const WIDTHS = [375, 1280];
 const FRAGMENT_RULES = ['region', 'landmark-one-main', 'page-has-heading-one'];
 
 async function open(page, id, comp, theme, width) {
+  // hermetic: anything outside the local files is blocked and fails the test
+  const external = [];
+  await page.route(/^(https?|wss?):/, (route) => { external.push(route.request().url()); return route.abort(); });
   await page.setViewportSize({ width, height: 800 });
   await page.emulateMedia({ colorScheme: theme === 'dark' ? 'dark' : 'light', reducedMotion: 'reduce' });
   await page.goto(pathToFileURL(path.join(DIST_DIR, id, 'gallery', `${comp}.html`)).href, { waitUntil: 'networkidle' });
@@ -18,6 +21,10 @@ async function open(page, id, comp, theme, width) {
   await page.evaluate(() => document.fonts.ready);
   // a preview that failed to render (React or the bundle not loaded) must not pass as an empty page
   await page.waitForFunction(() => document.body.innerText.trim().length > 0 || document.querySelector('body svg, body img'), null, { timeout: 5000 });
+  expect(external, `richieste esterne:\n${external.join('\n')}`).toEqual([]);
+  // the system's own fonts are really in use, not a fallback
+  const families = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '')));
+  expect(families.length, 'nessun carattere del sistema caricato').toBeGreaterThan(0);
 }
 
 for (const id of listSystems()) {

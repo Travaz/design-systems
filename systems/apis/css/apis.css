@@ -1,7 +1,6 @@
 /* Apis — component styles. Needs tokens.css first.
    Tier 3 (component tokens) is declared here and points ONLY at tier 2 (semantic) tokens,
    never at primitives: button-primary-background -> accent -> pollen-400. */
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400..600&display=swap");
 
 :root {
   --button-primary-background: var(--accent);

@@ -1,7 +1,7 @@
 {
   "id": "apis",
   "name": "Apis",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Design system ispirato all'ape: giallo polline, nero carapace, bianco cera. Prima applicazione: la landing page personale di travaz.dev.",
   "language": "it",
   "namespace": "Apis",
@@ -11,7 +11,8 @@
     "bundle": "components/bundle.js",
     "types": "components/index.d.ts",
     "brandBook": "docs/brand-book.md",
-    "motion": "js/motion.js"
+    "motion": "js/motion.js",
+    "fonts": "fonts"
   },
   "skill": {
     "name": "apis-design-system",
@@ -58,7 +59,8 @@
         "styles/tokens.css": "tokens.css",
         "styles/apis.css": "apis.css",
         "assets/apis-mark.svg": "logo/apis-mark.svg",
-        "apis-motion.js": "apis-motion.js"
+        "apis-motion.js": "apis-motion.js",
+        "styles/fonts": "fonts"
       },
       "lint": [
         "styles/site.css"

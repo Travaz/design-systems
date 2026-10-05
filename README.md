@@ -28,6 +28,7 @@ Gli strumenti non hanno dipendenze. Solo i test visivi usano Playwright e axe: `
 systems/<id>/
   system.json        nome, versione, prefisso delle classi, skill, link pubblicato, siti che lo usano
   tokens.json        IL sorgente dei token: primitivi, semantici per tema, coppie di contrasto, tipo, spazi…
+  fonts/             i caratteri in WOFF2 con le licenze: niente servizi esterni
   css/<id>.css       classi dei componenti; usa solo token semantici
   components/        un README (scopo, classi, regole) e un preview.html per componente; bundle.js opzionale
   docs/brand-book.md le regole d'uso, scritte per chi costruisce
@@ -42,7 +43,8 @@ systems/<id>/
 
 ```
 dist/<id>/
-  package/     tokens.css · tokens.json (W3C DTCG) · tailwind.css · <id>.css · <id>-react.js · logo/ · package.json
+  package/     tokens.css · tokens.json (W3C DTCG) · tailwind.css · <id>.css · <id>-react.js · <id>-motion.js · fonts/ · logo/ · package.json
+  gallery/     una pagina per componente, per i test visivi e per guardarli a mano
   skill/       <id>-design-system/ e il .zip da caricare su claude.ai
   artifact/    i file della pagina "Design System" pubblicata
 ```
@@ -101,6 +103,7 @@ Se entrambi passano, la modifica è pronta per il commit.
 
 **`npm run test:visual`**
 - il build genera `dist/<id>/gallery/`, una pagina per ogni anteprima di componente (si può aprire anche a mano: `dist/apis/gallery/index.html`);
+- i test sono **ermetici**: caratteri inclusi nel sistema, React dalla copia locale in `node_modules`, e qualsiasi richiesta verso internet viene bloccata e fa fallire il test con l'indirizzo che l'ha causata;
 - ogni pagina viene fotografata in ogni tema, a 375px e 1280px, e confrontata con gli screenshot di riferimento in `tests/visual/__screenshots__/<piattaforma>/`, con una tolleranza di 100 pixel e le animazioni ferme;
 - ogni pagina passa un audit axe (WCAG 2.2 AA), e un test di controllo verifica che axe trovi davvero i problemi noti.
 

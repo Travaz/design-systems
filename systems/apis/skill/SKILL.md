@@ -20,7 +20,8 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 | `references/components.md` | Quando usi o crei un componente: scopo, classi, props, regole di testo, do/don't. |
 | `references/principles.md` | Quando una situazione non è coperta: i principi da designsystems.com, con le regole numeriche. |
 | `references/governance.md` | Quando aggiungi o cambi un token o un componente: definition of ready, checklist, versioni. |
-| `assets/tokens.css` | Variabili CSS (primitivi + semantici, chiaro/scuro). Da copiare nel progetto. |
+| `assets/tokens.css` | Variabili CSS (primitivi + semantici, chiaro/scuro) e `@font-face`. Da copiare nel progetto insieme a `assets/fonts/`. |
+| `assets/fonts/` | I tre caratteri in WOFF2 (latino e latino esteso) con le licenze OFL. |
 | `assets/apis.css` | Classi `ap-*` dei componenti + token di livello componente. Richiede `tokens.css`. |
 | `assets/tailwind.css` | Mappatura per Tailwind v4 (`bg-surface`, `text-ink`, `p-4`, `text-body`…). |
 | `assets/apis-react.js` + `.d.ts` | Componenti React (`window.Apis`) e tipi. |
@@ -33,7 +34,7 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 
 1. **Capisci il contesto.** Sito pubblico o app interna? I due trattamenti sono descritti in `brand-book.md` → "Sito e app interne". Guarda lo stack del progetto (Tailwind? React? template server-side?).
 2. **Controlla se Apis è già installato** nel progetto (cerca `--accent`, `ap-btn`, `tokens.css`). Se c'è, usa quello che c'è e non duplicarlo.
-3. **Installa i token se mancano.** Copia `assets/tokens.css` e `assets/apis.css` nella cartella degli stili; aggiungi il link a Google Fonts (è in testa a `tokens.css`; `apis.css` lo importa già). Con Tailwind v4 aggiungi anche `assets/tailwind.css` dopo `tokens.css`. Con React puoi usare i componenti di `assets/apis-react.js` o riscriverli come moduli seguendo le stesse classi.
+3. **Installa i token se mancano.** Copia `assets/tokens.css` e `assets/apis.css` nella cartella degli stili; copia anche la cartella `assets/fonts/` accanto a `tokens.css` (i caratteri sono inclusi: non aggiungere link a Google Fonts). Con Tailwind v4 aggiungi anche `assets/tailwind.css` dopo `tokens.css`. Con React puoi usare i componenti di `assets/apis-react.js` o riscriverli come moduli seguendo le stesse classi.
 4. **Costruisci solo con token semantici** (`surface`, `ink`, `accent`, `line`, `space-*`, `radius-*`…). Mai valori esadecimali o pixel scritti a mano, mai primitivi (`pollen-400`, `comb-200`) in un componente. Se un token manca, segui `governance.md`.
 5. **Parti dai componenti esistenti** prima di inventarne uno. Se lo scopo è nuovo, scrivi la frase di scopo e la scheda (vedi `governance.md`).
 6. **Scrivi i testi secondo il tono di Apis** (sezione "Contenuti e tono" del brand book): italiano, "tu", maiuscola solo iniziale, verbo + oggetto nei bottoni, errori che dicono come rimediare.

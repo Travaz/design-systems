@@ -104,3 +104,10 @@ export function typeSize(sys, s) {
   if (!s.fluid) return { size: rem(s.size), lineHeight: rem(s.lineHeight) };
   return { size: fluid(sys, s.fluid.size, s.size), lineHeight: fluid(sys, s.fluid.lineHeight, s.lineHeight) };
 }
+
+/** Every file under a path (the path itself when it is a file), relative to it. */
+export function filesUnder(p) {
+  if (!fs.existsSync(p)) return [];
+  if (!fs.statSync(p).isDirectory()) return [''];
+  return fs.readdirSync(p, { recursive: true }).filter((f) => fs.statSync(path.join(p, f)).isFile() && !path.basename(f).startsWith('.'));
+}

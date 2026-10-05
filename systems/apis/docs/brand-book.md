@@ -35,7 +35,7 @@ Il sistema è giallo, nero e bianco. Gli altri colori naturali (prato, borragine
 
 ## Tipografia
 
-Tre famiglie da Google Fonts, ciascuna con un ruolo:
+Tre famiglie open source (licenza OFL), **incluse nel sistema** in `fonts/` e dichiarate in `tokens.css`: nessuna richiesta a Google o ad altri servizi, quindi nessun indirizzo IP dei visitatori a terzi e caratteri disponibili da subito. Ognuna ha un ruolo:
 
 - **Bricolage Grotesque** (`display`): solo `display-xl`, `display`, `headline`, `title`. Organica, con piccole irregolarità, come qualcosa fatto a mano.
 - **Instrument Sans** (`sans`): tutto il resto, dall'interfaccia al testo lungo.
