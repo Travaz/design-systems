@@ -135,7 +135,7 @@ Se entrambi passano, la modifica è pronta per il commit.
 npm run test:visual:update
 ```
 
-Gli screenshot di macOS (`darwin/`) e quelli di Linux (`linux/`, usati dalla CI) sono separati, perché i due sistemi disegnano i caratteri in modo leggermente diverso. Per aggiornare quelli Linux puoi lanciare la CI a mano (vedi sotto), oppure in locale con Docker:
+Gli screenshot di macOS (`darwin/`) e quelli di Linux (`linux/`, usati dalla CI) sono separati, perché i due sistemi disegnano i caratteri in modo leggermente diverso. Per aggiornare quelli Linux, il modo più semplice è **cancellare** nello stesso commit le immagini `linux/` che hai cambiato volutamente: al push la CI le rigenera dal nuovo codice e le salva. In alternativa puoi lanciare la CI a mano (vedi sotto), oppure aggiornarle in locale con Docker:
 
 ```bash
 npm run test:visual:linux -- --update-snapshots=changed

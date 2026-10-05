@@ -156,6 +156,7 @@ textarea.ap-input { height: auto; min-height: 96px; padding-block: var(--space-2
 .ap-table tbody tr:last-child td { border-bottom: 0; }
 .ap-table tbody tr:hover td { background: var(--surface-hover); }
 .ap-table .is-num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ap-table .is-nowrap { white-space: nowrap; } /* identifiers, dates, codes: never broken at a hyphen or space */
 .ap-table--compact td { padding: var(--space-2) var(--space-3); }
 .ap-table--compact th { padding: var(--space-2) var(--space-3); }
 

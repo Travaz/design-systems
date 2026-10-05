@@ -112,16 +112,17 @@
       active && active.content !== undefined ? h('div', { id: base + '-panel', role: 'tabpanel', className: 'ap-tabpanel', 'aria-labelledby': base + '-tab-' + cur, tabIndex: 0 }, active.content) : null);
   }
 
+  function cellClass(c) { return cx(c.numeric && 'is-num', c.nowrap && 'is-nowrap') || undefined; }
   function DataTable(p) {
     var cols = p.columns || [], rows = p.rows || [];
     return h('div', { className: cx('ap-table-wrap', p.className), tabIndex: p.scrollable ? 0 : undefined, role: p.scrollable ? 'region' : undefined, 'aria-label': p.scrollable ? p.caption : undefined },
       h('table', { className: cx('ap-table', p.density === 'compact' && 'ap-table--compact') },
         p.caption ? h('caption', null, p.caption) : null,
-        h('thead', null, h('tr', null, cols.map(function (c) { return h('th', { key: c.key, scope: 'col', className: c.numeric ? 'is-num' : undefined }, c.label); }))),
+        h('thead', null, h('tr', null, cols.map(function (c) { return h('th', { key: c.key, scope: 'col', className: cellClass(c) }, c.label); }))),
         h('tbody', null, rows.map(function (r, i) {
           return h('tr', { key: r.id || i }, cols.map(function (c) {
             var v = r[c.key];
-            return h('td', { key: c.key, className: c.numeric ? 'is-num' : undefined }, c.render ? c.render(v, r) : v);
+            return h('td', { key: c.key, className: cellClass(c) }, c.render ? c.render(v, r) : v);
           }));
         }))));
   }

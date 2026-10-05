@@ -17,7 +17,7 @@ export declare function Card(props: CardProps): React.ReactElement;
 export interface TabItem { id: string; label: React.ReactNode; content?: React.ReactNode }
 export interface TabsProps { items: TabItem[]; label: string; value?: string; defaultValue?: string; onChange?: (id: string) => void; id?: string; className?: string }
 export declare function Tabs(props: TabsProps): React.ReactElement;
-export interface DataTableColumn<R = any> { key: string; label: React.ReactNode; numeric?: boolean; render?: (value: any, row: R) => React.ReactNode }
+export interface DataTableColumn<R = any> { key: string; label: React.ReactNode; numeric?: boolean; nowrap?: boolean; render?: (value: any, row: R) => React.ReactNode }
 export interface DataTableProps<R = any> { columns: DataTableColumn<R>[]; rows: R[]; caption?: string; density?: 'comfortable' | 'compact'; scrollable?: boolean; className?: string }
 export declare function DataTable(props: DataTableProps): React.ReactElement;
 export interface EmptyStateProps { title: React.ReactNode; description?: React.ReactNode; action?: React.ReactNode; icon?: IconName; titleAs?: 'h2' | 'h3' | 'h4'; className?: string }

@@ -18,7 +18,7 @@ body{margin:0;padding:16px;}
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
 h(A.DataTable,{caption:'Fatture di ottobre 2026',columns:[
-  {key:'num',label:'Numero'},{key:'client',label:'Cliente'},{key:'due',label:'Scadenza'},
+  {key:'num',label:'Numero',nowrap:true},{key:'client',label:'Cliente'},{key:'due',label:'Scadenza',nowrap:true},
   {key:'status',label:'Stato',render:function(v){return h(A.Badge,{tone:v[0],icon:true},v[1]);}},
   {key:'amount',label:'Importo',numeric:true}],
  rows:[
