@@ -124,3 +124,15 @@ test('palette --into writes primitives that pass check and can be wired to seman
   const again = run('palette.mjs', '#2F5BD3', '--name', 'accent', '--into', 'fixture');
   assert.match(again.out, /Sostituiti 2 primitivi esistenti \(accent-300, accent-600\)/);
 });
+
+test('build still produces gallery and artifact where zip is not installed (the Playwright image)', () => {
+  fresh('fixture');
+  const bin = path.join(tmp, 'bin-nozip');
+  fs.mkdirSync(bin, { recursive: true });
+  for (const tool of ['git']) { const p = spawnSync('which', [tool], { encoding: 'utf8' }).stdout.trim(); if (p) fs.symlinkSync(p, path.join(bin, tool)); }
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'tools', 'build.mjs'), 'fixture'], { env: { ...env, PATH: bin }, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stderr, /zip non disponibile/);
+  assert.ok(fs.existsSync(path.join(tmp, 'dist', 'fixture', 'artifact', 'project', 'tokens.json')));
+  assert.ok(fs.existsSync(path.join(tmp, 'dist', 'fixture', 'specimen.html')));
+});

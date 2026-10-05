@@ -16,6 +16,17 @@ function vendorReact(dest) {
   return found.map((f) => { fs.copyFileSync(f, path.join(dest, 'vendor', path.basename(f))); return `<script src="vendor/${path.basename(f)}"></script>`; });
 }
 
+/** zip is optional: the Playwright image has none, and the gallery does not need the skill zip. */
+let warnedZip = false;
+function zipDir(cwd, to, what, quiet) {
+  try { execFileSync('zip', ['-rqX', to, what, '-x', '*.DS_Store'], { cwd, stdio: 'ignore' }); }
+  catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+    if (!warnedZip && !quiet) console.warn('! zip non disponibile: salto lo zip della skill');
+    warnedZip = true;
+  }
+}
+
 export function components(sys) {
   const dir = sys.file('components');
   if (!fs.existsSync(dir)) return [];
@@ -67,7 +78,7 @@ export function build(id, { quiet = false } = {}) {
     for (const [n, c] of Object.entries(files)) writeFile(path.join(sk, 'assets', n), c);
     for (const [k, src] of Object.entries(m.skill.assets || {})) copyDir(sys.file(src), path.join(sk, 'assets', k));
     if (m.files.fonts) copyDir(sys.file(m.files.fonts), path.join(sk, 'assets', 'fonts'));
-    execFileSync('zip', ['-rqX', path.join(out, 'skill', `${m.skill.name}.zip`), m.skill.name, '-x', '*.DS_Store'], { cwd: path.join(out, 'skill') });
+    zipDir(path.join(out, 'skill'), path.join(out, 'skill', `${m.skill.name}.zip`), m.skill.name, quiet);
   }
 
   // 3. artifact: the files of the published Design System page

@@ -7,7 +7,8 @@ export default defineConfig({
   globalSetup: './tests/visual/setup.mjs',
   snapshotPathTemplate: '{testDir}/__screenshots__/{platform}/{arg}{ext}',
   fullyParallel: true,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  // on CI the github reporter turns failures into annotations, readable on the run page without signing in
+  reporter: process.env.CI ? [['github'], ['list'], ['html', { open: 'never' }]] : [['list'], ['html', { open: 'never' }]],
   use: { browserName: 'chromium', deviceScaleFactor: 1, reducedMotion: 'reduce' },
   // an absolute budget: a ratio of a full page would hide a small component changing colour
   expect: { toHaveScreenshot: { maxDiffPixels: 100, animations: 'disabled', caret: 'hide' } },

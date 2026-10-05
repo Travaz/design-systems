@@ -32,8 +32,8 @@ jobs:
     name: Build e controlli
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - run: npm test
@@ -46,7 +46,7 @@ jobs:
     permissions:
       contents: write   # to commit new Linux baselines
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: npm ci --no-audit --no-fund
       - name: Crea gli screenshot di riferimento mancanti
         run: npx playwright test --grep-invert "accessibilità|axe" --reporter=dot --update-snapshots=${{ inputs.update_screenshots && 'changed' || 'missing' }} || true
@@ -82,10 +82,10 @@ jobs:
     permissions:
       contents: write   # to push tags and create releases
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0   # tags go on the commit that introduced each version
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Tag delle versioni nuove
