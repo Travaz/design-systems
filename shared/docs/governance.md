@@ -59,7 +59,7 @@ Semver sul pacchetto della skill e del design system:
 - **Minore**: token, componente, variante o prop nuova.
 - **Patch**: correzione di un valore, di un contrasto, di un testo.
 
-Ogni rilascio ha una riga nel changelog in fondo al file `SKILL.md`: data, versione, cosa è cambiato.
+Ogni rilascio ha una voce in cima a `CHANGELOG.md` (data · versione · cosa è cambiato), che finisce anche in fondo a `SKILL.md`, e un tag git `<id>@<versione>` con una GitHub Release, creati dalla CI.
 
 ## Il flusso di rilascio
 

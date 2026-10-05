@@ -1,8 +1,9 @@
 # CI/CD for the design-systems collection.
 #   1. Build e controlli      npm test: tool tests + check of every system (no dependencies, ~10 s)
 #   2. Screenshot e axe       Playwright in its official Linux image, against Linux baselines
-#   3. Pacchetti              on main only, once both pass: builds every system and keeps the
-#                             packages and skill zips as a downloadable artifact of the run
+#   3. Tag e Release          on main only, once both pass: tags each new version <id>@<x.y.z> on
+#                             the commit that introduced it and publishes a GitHub Release with
+#                             the package, the skill zip and the specimen built from that commit
 #
 # Linux baselines (tests/visual/__screenshots__/linux) are created by CI itself: any missing
 # screenshot is generated and committed back by the bot, then the full suite runs against it.
@@ -73,23 +74,26 @@ jobs:
             test-results
           retention-days: 14
 
-  package:
-    name: Pacchetti
+  release:
+    name: Tag e GitHub Release
     needs: [unit, visual]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # to push tags and create releases
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # tags go on the commit that introduced each version
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm run build
-      - uses: actions/upload-artifact@v4
-        with:
-          name: design-systems-${{ github.sha }}
-          path: |
-            dist/index.html
-            dist/*/specimen.html
-            dist/*/package
-            dist/*/skill/*.zip
-          retention-days: 90
+      - name: Tag delle versioni nuove
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node tools/tag.mjs --push
+      - name: Una GitHub Release per ogni tag che non ne ha
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node tools/github-release.mjs

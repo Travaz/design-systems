@@ -14,7 +14,8 @@
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
     "test:visual:linux": "docker run --rm -v \"$PWD\":/work -w /work mcr.microsoft.com/playwright:v1.63.0-noble npx playwright test",
-    "palette": "node tools/palette.mjs"
+    "palette": "node tools/palette.mjs",
+    "tag": "node tools/tag.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

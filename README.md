@@ -141,6 +141,17 @@ Gli screenshot di macOS (`darwin/`) e quelli di Linux (`linux/`, usati dalla CI)
 npm run test:visual:linux -- --update-snapshots=changed
 ```
 
+## Versioni, tag e rilasci
+
+Ogni sistema ha la sua versione (semver, in `system.json`) e il suo changelog. Ogni versione rilasciata ha un tag git annotato **`<id>@<versione>`** (per esempio `apis@1.3.0`), messo sul commit in cui `system.json` ha preso quel numero; il messaggio del tag è la voce del changelog.
+
+1. Modifica, `npm test`, `npm run test:visual`.
+2. Aggiorna `version` in `system.json` e aggiungi la voce in cima a `CHANGELOG.md`.
+3. `npm run release -- <id>`, poi commit e push.
+4. La CI crea il tag e la GitHub Release. In locale lo stesso si fa con `npm run tag` (`--push` per inviarli): le versioni già taggate restano come sono.
+
+I tag permettono di confrontare due versioni (`git diff apis@1.2.0 apis@1.3.0 -- systems/apis`) e di installare un pacchetto preciso dalla pagina Releases di GitHub.
+
 ## CI/CD
 
 A ogni push e a ogni pull request GitHub Actions esegue `.github/workflows/ci.yml`:
@@ -149,7 +160,7 @@ A ogni push e a ogni pull request GitHub Actions esegue `.github/workflows/ci.ym
 |---|---|---|
 | Build e controlli | sempre | `npm test` |
 | Screenshot e accessibilità | se il primo passa | i test visivi nell'immagine Linux ufficiale di Playwright, contro gli screenshot `linux/` |
-| Pacchetti | solo su `main`, se passano entrambi | build di tutti i sistemi; pacchetti CSS e zip delle skill restano scaricabili per 90 giorni dalla pagina dell'esecuzione |
+| Tag e Release | solo su `main`, se passano entrambi | crea i tag mancanti `<id>@<versione>` e una GitHub Release per ciascuno, con pacchetto, zip della skill e specimen costruiti da quel commit |
 
 - **Screenshot Linux mancanti** (la prima volta o per un componente nuovo): la CI li genera, li committa da sola con il messaggio "Update Linux screenshot baselines" e poi esegue la suite. Dopo quel commit fai `git pull`.
 - **Dopo una modifica visiva voluta**: GitHub → Actions → CI → *Run workflow*, spunta "Rigenera gli screenshot Linux che sono cambiati". La CI aggiorna e committa solo quelli diversi, e nel commit puoi rivederli uno per uno.
