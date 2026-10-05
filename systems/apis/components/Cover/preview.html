@@ -1,0 +1,67 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Apis</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--surface); color:var(--ink); font-family:var(--font-sans); overflow:hidden; }
+  .cover { position:relative; width:960px; height:288px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; width:480px; height:288px; }
+  .slab { fill:var(--accent); }
+  .band { fill:var(--carapace); }
+  .tint { fill:var(--accent-soft); }
+  .cut { fill:var(--surface); }
+  .flower { fill:var(--info); }
+  .words { position:absolute; left:var(--space-8); bottom:var(--space-6); max-width:440px; }
+  .name { margin:0; font-family:var(--font-display); font-size:120px; line-height:.9; font-weight:700; letter-spacing:-.03em; color:var(--ink); }
+  .tag { margin:var(--space-2) 0 0 6px; font-size:14px; line-height:20px; color:var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      accent slab 480x256 bled off the top and right (the bee yellow, ~40% of the cover) · three carapace bands across it, 48/32/16 tall (the abdomen stripes, narrowing to the tip) · one info cell (the borage flower) — 4 colours with accent-soft and surface
+  arrangement one big slab with a strip of unequal bands, bottom-left corner radius-md, one satellite cell under it on the ground
+  pattern     honeycomb cells (literal motif: "l'ordine dall'alveare"), pointy-top hexes r=20 on an r=24 (space-6) lattice, clustered top-right and thinning toward the name; tint cells in accent-soft, holes cut in surface
+  scales      slab and band edges on space-8/space-4 multiples; lattice space-6; cell gap space-1; corner radius-md (8px)
+-->
+<rect class="slab" x="16" y="-16" width="480" height="256" rx="8"/>
+<rect class="band" x="16" y="48" width="480" height="48"/>
+<rect class="band" x="16" y="128" width="480" height="32"/>
+<rect class="band" x="16" y="192" width="480" height="16"/>
+<polygon class="cut" points="430.43,-16.00 447.75,-6.00 447.75,14.00 430.43,24.00 413.11,14.00 413.11,-6.00"/>
+<polygon class="tint" points="388.86,-16.00 406.18,-6.00 406.18,14.00 388.86,24.00 371.54,14.00 371.54,-6.00"/>
+<polygon class="tint" points="347.29,-16.00 364.61,-6.00 364.61,14.00 347.29,24.00 329.97,14.00 329.97,-6.00"/>
+<polygon class="tint" points="305.72,-16.00 323.04,-6.00 323.04,14.00 305.72,24.00 288.40,14.00 288.40,-6.00"/>
+<polygon class="cut" points="264.15,-16.00 281.47,-6.00 281.47,14.00 264.15,24.00 246.83,14.00 246.83,-6.00"/>
+<polygon class="cut" points="451.22,20.00 468.54,30.00 468.54,50.00 451.22,60.00 433.89,50.00 433.89,30.00"/>
+<polygon class="tint" points="409.65,20.00 426.97,30.00 426.97,50.00 409.65,60.00 392.33,50.00 392.33,30.00"/>
+<polygon class="tint" points="368.08,20.00 385.40,30.00 385.40,50.00 368.08,60.00 350.76,50.00 350.76,30.00"/>
+<polygon class="cut" points="284.94,20.00 302.26,30.00 302.26,50.00 284.94,60.00 267.62,50.00 267.62,30.00"/>
+<polygon class="tint" points="243.37,20.00 260.69,30.00 260.69,50.00 243.37,60.00 226.05,50.00 226.05,30.00"/>
+<polygon class="tint" points="430.43,56.00 447.75,66.00 447.75,86.00 430.43,96.00 413.11,86.00 413.11,66.00"/>
+<polygon class="tint" points="388.86,56.00 406.18,66.00 406.18,86.00 388.86,96.00 371.54,86.00 371.54,66.00"/>
+<polygon class="cut" points="347.29,56.00 364.61,66.00 364.61,86.00 347.29,96.00 329.97,86.00 329.97,66.00"/>
+<polygon class="tint" points="305.72,56.00 323.04,66.00 323.04,86.00 305.72,96.00 288.40,86.00 288.40,66.00"/>
+<polygon class="tint" points="451.22,92.00 468.54,102.00 468.54,122.00 451.22,132.00 433.89,122.00 433.89,102.00"/>
+<polygon class="tint" points="409.65,92.00 426.97,102.00 426.97,122.00 409.65,132.00 392.33,122.00 392.33,102.00"/>
+<polygon class="cut" points="368.08,92.00 385.40,102.00 385.40,122.00 368.08,132.00 350.76,122.00 350.76,102.00"/>
+<polygon class="cut" points="430.43,128.00 447.75,138.00 447.75,158.00 430.43,168.00 413.11,158.00 413.11,138.00"/>
+<polygon class="tint" points="388.86,128.00 406.18,138.00 406.18,158.00 388.86,168.00 371.54,158.00 371.54,138.00"/>
+<polygon class="cut" points="451.22,164.00 468.54,174.00 468.54,194.00 451.22,204.00 433.89,194.00 433.89,174.00"/>
+<polygon class="tint" points="409.65,164.00 426.97,174.00 426.97,194.00 409.65,204.00 392.33,194.00 392.33,174.00"/>
+<polygon class="flower" points="64.00,244.00 81.32,254.00 81.32,274.00 64.00,284.00 46.68,274.00 46.68,254.00"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">Apis</h1>
+<p class="tag">Il rigore dell'alveare, i colori del prato.</p>
+</div>
+</div>
+</body>
+</html>

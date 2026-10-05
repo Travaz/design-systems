@@ -1,0 +1,31 @@
+<!-- @dsCard group="Dati" height=300 -->
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>DataTable</title>
+<style>
+body{margin:0;padding:16px;}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:12px}
+.stack{display:grid;gap:12px;max-width:640px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:720px;align-items:start}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:720px}
+.muted{margin:0;color:var(--ink-muted)}
+.icons{gap:16px;color:var(--ink)}
+</style>
+</head>
+<body class="ap-base">
+<div id="root"></div>
+<script>
+  var A = window.Apis, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
+h(A.DataTable,{caption:'Fatture di ottobre 2026',columns:[
+  {key:'num',label:'Numero'},{key:'client',label:'Cliente'},{key:'due',label:'Scadenza'},
+  {key:'status',label:'Stato',render:function(v){return h(A.Badge,{tone:v[0],icon:true},v[1]);}},
+  {key:'amount',label:'Importo',numeric:true}],
+ rows:[
+  {id:1,num:'2026-116',client:'Rossi SA',due:'15 ott 2026',status:['success','Pagata'],amount:"CHF 4'200.00"},
+  {id:2,num:'2026-117',client:'Apicoltura Bernasconi',due:'20 ott 2026',status:['warning','In scadenza'],amount:"CHF 1'860.50"},
+  {id:3,num:'2026-118',client:'Comune di Lugano',due:'28 set 2026',status:['danger','In ritardo'],amount:"CHF 12'480.00"}]})
+  ));
+</script>
+</body>
+</html>

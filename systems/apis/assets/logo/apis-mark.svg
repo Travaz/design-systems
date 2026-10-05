@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Apis">
+  <defs><clipPath id="cell"><polygon points="32.00,2.00 57.98,17.00 57.98,47.00 32.00,62.00 6.02,47.00 6.02,17.00"/></clipPath></defs>
+  <polygon points="32.00,2.00 57.98,17.00 57.98,47.00 32.00,62.00 6.02,47.00 6.02,17.00" fill="#F7BE16"/>
+  <g clip-path="url(#cell)" fill="#1A1612"><rect x="0" y="22" width="64" height="8"/><rect x="0" y="38" width="64" height="8"/></g>
+</svg>

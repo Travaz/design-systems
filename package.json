@@ -1,0 +1,12 @@
+{
+  "name": "design-systems",
+  "private": true,
+  "description": "Raccolta di design system personali: un sorgente per sistema, output generati per siti, skill e pagine pubblicate.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "check": "node tools/check.mjs",
+    "release": "node tools/release.mjs",
+    "new": "node tools/new.mjs"
+  }
+}

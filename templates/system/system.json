@@ -1,0 +1,20 @@
+{
+  "id": "{{id}}",
+  "name": "{{Name}}",
+  "version": "0.1.0",
+  "description": "Descrivi in una frase per cosa nasce {{Name}} e da cosa prende ispirazione.",
+  "language": "it",
+  "namespace": "{{Namespace}}",
+  "classPrefix": "{{prefix}}",
+  "files": {
+    "componentCss": "css/{{id}}.css",
+    "brandBook": "docs/brand-book.md"
+  },
+  "skill": {
+    "name": "{{id}}-design-system",
+    "template": "skill/SKILL.md",
+    "sharedDocs": ["principles.md", "governance.md"],
+    "assets": {}
+  },
+  "consumers": []
+}

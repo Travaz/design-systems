@@ -1,0 +1,67 @@
+{
+  "id": "apis",
+  "name": "Apis",
+  "version": "1.1.0",
+  "description": "Design system ispirato all'ape: giallo polline, nero carapace, bianco cera. Prima applicazione: la landing page personale di travaz.dev.",
+  "language": "it",
+  "namespace": "Apis",
+  "classPrefix": "ap-",
+  "files": {
+    "componentCss": "css/apis.css",
+    "bundle": "components/bundle.js",
+    "types": "components/index.d.ts",
+    "brandBook": "docs/brand-book.md"
+  },
+  "skill": {
+    "name": "apis-design-system",
+    "template": "skill/SKILL.md",
+    "sharedDocs": [
+      "principles.md",
+      "governance.md"
+    ],
+    "assets": {
+      "logo": "assets/logo",
+      "templates": "assets/templates"
+    }
+  },
+  "artifact": {
+    "url": "https://claude.ai/artifact/GTxwht582rgMtJjESPsvCi",
+    "createdOnFiles": {
+      "v": 1,
+      "at": "2026-10-01T19:37:35Z"
+    },
+    "assetGroups": {
+      "Logos": {
+        "readme": "assets/logo/README.md",
+        "tile": "m",
+        "files": {
+          "apis-mark.svg": {
+            "blob": "4076af4ac2b079920b15684a14525225",
+            "size": 522,
+            "type": "image/svg+xml"
+          },
+          "apis-mark-mono.svg": {
+            "blob": "84f43a5a909e15eb27e6877709713330",
+            "size": 577,
+            "type": "image/svg+xml"
+          }
+        }
+      }
+    }
+  },
+  "consumers": [
+    {
+      "name": "travaz.dev homepage",
+      "dir": "../../../travaz.dev/site",
+      "copy": {
+        "styles/tokens.css": "tokens.css",
+        "styles/apis.css": "apis.css",
+        "assets/apis-mark.svg": "logo/apis-mark.svg"
+      },
+      "lint": [
+        "styles/site.css"
+      ]
+    }
+  ],
+  "author": "Daniel Travaglia"
+}

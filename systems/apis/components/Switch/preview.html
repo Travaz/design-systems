@@ -1,0 +1,27 @@
+<!-- @dsCard group="Moduli" height=104 -->
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>Switch</title>
+<style>
+body{margin:0;padding:16px;}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:12px}
+.stack{display:grid;gap:12px;max-width:640px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:720px;align-items:start}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:720px}
+.muted{margin:0;color:var(--ink-muted)}
+.icons{gap:16px;color:var(--ink)}
+</style>
+</head>
+<body class="ap-base">
+<div id="root"></div>
+<script>
+  var A = window.Apis, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
+h('div',{className:'stack'},
+  h(A.Switch,{label:'Notifiche per i nuovi ticket',defaultChecked:true}),
+  h(A.Switch,{label:'Modalità manutenzione'}),
+  h(A.Switch,{label:'Sincronizzazione con SAP',disabled:true}))
+  ));
+</script>
+</body>
+</html>

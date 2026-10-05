@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>travaz.dev</title>
+<link rel="icon" href="apis-mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="apis.css">
+<style>
+  /* Website treatment: big type, generous space, yellow in large fields. Only semantic tokens. */
+  .wrap { max-width: var(--size-content); margin-inline: auto; padding-inline: var(--space-4); }
+  @media (min-width: 768px) { .wrap { padding-inline: var(--space-6); } }
+  @media (min-width: 1280px) { .wrap { padding-inline: var(--space-8); } }
+  .site-header { position: sticky; top: 0; z-index: var(--z-sticky); background: var(--surface); border-bottom: 1px solid var(--line); }
+  .site-header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: var(--space-4); }
+  .brand { display: flex; align-items: center; gap: var(--space-2); font: 700 1.25rem/1.75rem var(--font-display); color: var(--ink); text-decoration: none; }
+  .brand img { width: 32px; height: 32px; }
+  .nav { display: flex; gap: var(--space-1); }
+  .hero { padding-block: var(--space-16) var(--space-12); }
+  @media (min-width: 768px) { .hero { padding-block: var(--space-24) var(--space-16); } }
+  .hero .ap-display { max-width: 14ch; margin-block: var(--space-3) var(--space-6); }
+  .hero p { font-size: 1.125rem; line-height: 1.75rem; color: var(--ink-muted); max-width: 52ch; margin: 0 0 var(--space-8); }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .section { padding-block: var(--space-12); }
+  @media (min-width: 768px) { .section { padding-block: var(--space-16); } }
+  .section-head { display: grid; gap: var(--space-2); margin-bottom: var(--space-8); }
+  .grid-3 { display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .band { background: var(--accent); color: var(--on-accent); }
+  .band .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-6); padding-block: var(--space-12); }
+  .band .ap-title { max-width: 20ch; }
+  .band .ap-btn--secondary { --button-secondary-background: var(--surface-inverse); --button-secondary-border: var(--surface-inverse); --button-secondary-text: var(--ink-inverse); }
+  .site-footer { background: var(--surface-inverse); color: var(--ink-inverse); padding-block: var(--space-12); font-size: 0.875rem; line-height: 1.25rem; }
+  .site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); }
+</style>
+</head>
+<body class="ap-base">
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="apis-mark.svg" alt="" width="32" height="32">travaz.dev</a>
+      <nav class="nav" aria-label="Principale">
+        <a class="ap-btn ap-btn--tertiary" href="#lavori">Lavori</a>
+        <a class="ap-btn ap-btn--tertiary" href="#metodo">Metodo</a>
+        <a class="ap-btn ap-btn--secondary" href="#contatti">Contatti</a>
+      </nav>
+    </div>
+  </header>
+  <div class="ap-stripe" aria-hidden="true"></div>
+
+  <main>
+    <section class="hero wrap">
+      <p class="ap-overline">Studio digitale · Lugano</p>
+      <h1 class="ap-display">Software fatto con la pazienza di un apicoltore</h1>
+      <p>Progettiamo e costruiamo siti, gestionali e integrazioni per aziende che vogliono strumenti precisi, senza fronzoli.</p>
+      <div class="actions">
+        <a class="ap-btn ap-btn--primary ap-btn--lg" href="#contatti">Parliamo del tuo progetto</a>
+        <a class="ap-btn ap-btn--secondary ap-btn--lg" href="#lavori">Vedi i lavori</a>
+      </div>
+    </section>
+
+    <section class="section wrap" id="lavori">
+      <div class="section-head">
+        <p class="ap-overline">Casi studio</p>
+        <h2 class="ap-title">Lavori recenti</h2>
+      </div>
+      <div class="grid-3">
+        <a class="ap-card ap-card--interactive" href="#">
+          <p class="ap-card__eyebrow">Gestionale</p>
+          <h3 class="ap-card__title">Tracciabilità per 40 apicoltori ticinesi</h3>
+          <p class="ap-card__body">Dal favo al vasetto: lotti, analisi ed etichette in un'unica app.</p>
+        </a>
+        <a class="ap-card ap-card--interactive" href="#">
+          <p class="ap-card__eyebrow">Integrazione</p>
+          <h3 class="ap-card__title">SAP e Content Server parlano tra loro</h3>
+          <p class="ap-card__body">Fatture archiviate e firmate in automatico, 2'000 al mese.</p>
+        </a>
+        <a class="ap-card ap-card--interactive" href="#">
+          <p class="ap-card__eyebrow">Sito</p>
+          <h3 class="ap-card__title">Un portale clienti in tre lingue</h3>
+          <p class="ap-card__body">Italiano, tedesco e francese, con contenuti gestiti dal team marketing.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="band" id="contatti">
+      <div class="wrap">
+        <h2 class="ap-title">Hai un processo che merita uno strumento migliore?</h2>
+        <a class="ap-btn ap-btn--secondary ap-btn--lg" href="#">Scrivici</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 travaz.dev</span>
+      <span>Costruito con Apis</span>
+    </div>
+  </footer>
+</body>
+</html>
