@@ -1,0 +1,93 @@
+# CI/CD for the design-systems collection.
+#   1. Build e controlli      npm test: tool tests + check of every system (no dependencies, ~10 s)
+#   2. Screenshot e axe       Playwright in its official Linux image, against Linux baselines
+#   3. Pacchetti              on main only, once both pass: builds every system and keeps the
+#                             packages and skill zips as a downloadable artifact of the run
+#
+# Linux baselines (tests/visual/__screenshots__/linux) are created by CI itself: any missing
+# screenshot is generated and committed back by the bot, then the full suite runs against it.
+# After an intended visual change, run this workflow by hand with "update_screenshots" ticked.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      update_screenshots:
+        description: Rigenera gli screenshot Linux che sono cambiati (dopo una modifica visiva voluta)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    name: Build e controlli
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+
+  visual:
+    name: Screenshot e accessibilità
+    needs: unit
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.63.0-noble   # keep in step with @playwright/test
+    permissions:
+      contents: write   # to commit new Linux baselines
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci --no-audit --no-fund
+      - name: Crea gli screenshot di riferimento mancanti
+        run: npx playwright test --grep-invert "accessibilità|axe" --reporter=dot --update-snapshots=${{ inputs.update_screenshots && 'changed' || 'missing' }} || true
+      - name: Salva i nuovi screenshot nel repository
+        if: github.event_name != 'pull_request'
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ -n "$(git status --porcelain tests/visual/__screenshots__)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add tests/visual/__screenshots__
+            git commit -m "Update Linux screenshot baselines"
+            git push
+            echo "::notice::Nuovi screenshot Linux salvati nel repository: esegui git pull."
+          fi
+      - name: Screenshot e accessibilità
+        run: npx playwright test
+      - name: Report in caso di errore
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 14
+
+  package:
+    name: Pacchetti
+    needs: [unit, visual]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: design-systems-${{ github.sha }}
+          path: |
+            dist/*/package
+            dist/*/skill/*.zip
+          retention-days: 90
