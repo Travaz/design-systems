@@ -1,5 +1,5 @@
 // Turns one system's sources into every output format. Pure functions: no file access.
-import { themes, primitives, semantics, isPrimitiveRef, flatFamilies } from './system.mjs';
+import { themes, primitives, semantics, isPrimitiveRef, flatFamilies, typeSize } from './system.mjs';
 
 const px = (n) => `${n}px`;
 const rem = (n) => `${+(n / 16).toFixed(4)}rem`;
@@ -26,7 +26,7 @@ export function tokensCss(sys) {
   for (const t of T.elevation?.tokens || []) out.push(`  --${t.name}: ${elevationValue(t, first, first)};`);
   out.push('', '  /* tipografia */');
   for (const [k, v] of Object.entries(T.type.families)) out.push(`  --font-${k}: ${v};`);
-  for (const s of T.type.styles) out.push(`  --type-${s.name}: ${s.weight} ${rem(s.size)}/${rem(s.lineHeight)} var(--font-${s.family}); --tracking-${s.name}: ${s.tracking};`);
+  for (const s of T.type.styles) { const z = typeSize(sys, s); out.push(`  --type-${s.name}: ${s.weight} ${z.size}/${z.lineHeight} var(--font-${s.family}); --tracking-${s.name}: ${s.tracking};`); }
   out.push('', '  /* spazi, raggi, dimensioni, livelli, movimento */');
   for (const [k, fam] of flatFamilies(sys)) if (k !== 'breakpoint') for (const t of fam.tokens) out.push(`  --${t.name}: ${t.value};`);
   out.push(`  color-scheme: ${scheme(first)};`, '}');
@@ -58,13 +58,14 @@ export function dtcg(sys) {
   }
   out.dimension = {};
   for (const k of ['spacing', 'radius', 'size', 'breakpoint']) if (T[k]) out.dimension[k] = Object.fromEntries(T[k].tokens.map((t) => [t.name, { $type: 'dimension', $value: t.value, $description: t.usage }]));
+  if (T.aspect) out.aspect = Object.fromEntries(T.aspect.tokens.map((t) => [t.name, { $type: 'string', $value: t.value, $description: t.usage }]));
   if (T.zIndex) out.zIndex = Object.fromEntries(T.zIndex.tokens.map((t) => [t.name, { $type: 'number', $value: +t.value, $description: t.usage }]));
   if (T.motion) out.motion = Object.fromEntries(T.motion.tokens.map((t) => {
     const bez = t.value.match(/cubic-bezier\(([^)]+)\)/);
     return [t.name, bez ? { $type: 'cubicBezier', $value: bez[1].split(',').map(Number), $description: t.usage } : { $type: 'duration', $value: t.value, $description: t.usage }];
   }));
   out.fontFamily = Object.fromEntries(Object.entries(T.type.families).map(([k, v]) => [k, { $type: 'fontFamily', $value: v }]));
-  out.typography = Object.fromEntries(T.type.styles.map((s) => [s.name, { $type: 'typography', $value: { fontFamily: `{fontFamily.${s.family}}`, fontSize: px(s.size), lineHeight: px(s.lineHeight), fontWeight: s.weight, letterSpacing: s.tracking }, $description: s.usage }]));
+  out.typography = Object.fromEntries(T.type.styles.map((s) => [s.name, { $type: 'typography', $value: { fontFamily: `{fontFamily.${s.family}}`, fontSize: px(s.size), lineHeight: px(s.lineHeight), fontWeight: s.weight, letterSpacing: s.tracking }, $description: s.usage, ...(s.fluid ? { $extensions: { fluid: { minViewport: px((T.type.fluidRange || {}).min || 360), maxViewport: px((T.type.fluidRange || {}).max || 1280), fontSize: px(s.fluid.size), lineHeight: px(s.fluid.lineHeight) } } } : {}) }]));
   if (T.elevation) {
     out.shadow = {};
     for (const th of ths) out.shadow[th] = Object.fromEntries(T.elevation.tokens.map((t) => [t.name, { $type: 'shadow', $value: elevationValue(t, th, ths[0]), $description: t.usage }]));
@@ -86,7 +87,7 @@ export function tailwind(sys) {
   for (const t of T.radius?.tokens || []) L.push(`  --radius-${t.name.replace(/^radius-/, '')}: ${t.value};`);
   for (const t of T.elevation?.tokens || []) L.push(`  --shadow-${t.name.replace(/^elevation-/, '')}: var(--${t.name});`);
   for (const t of T.breakpoint?.tokens || []) L.push(`  --breakpoint-${t.name.replace(/^bp-/, '')}: ${t.value};`);
-  for (const s of T.type.styles) L.push(`  --text-${s.name}: ${rem(s.size)}; --text-${s.name}--line-height: ${rem(s.lineHeight)}; --text-${s.name}--letter-spacing: ${s.tracking}; --text-${s.name}--font-weight: ${s.weight};`);
+  for (const s of T.type.styles) { const z = typeSize(sys, s); L.push(`  --text-${s.name}: ${z.size}; --text-${s.name}--line-height: ${z.lineHeight}; --text-${s.name}--letter-spacing: ${s.tracking}; --text-${s.name}--font-weight: ${s.weight};`); }
   for (const t of T.motion?.tokens || []) if (t.name.startsWith('ease-')) L.push(`  --${t.name}: ${t.value};`);
   L.push('}');
   return L.join('\n') + '\n';
@@ -104,9 +105,9 @@ export function tokensMd(sys) {
   L.push('', '## Tipografia', '', ...(T.type.googleFonts ? [`Google Fonts: \`<link rel="stylesheet" href="${T.type.googleFonts}">\``, ''] : []), '| Famiglia | Stack |', '|---|---|');
   for (const [k, v] of Object.entries(T.type.families)) L.push(`| \`--font-${k}\` | ${v} |`);
   L.push('', '| Stile | Famiglia | Size/Line | Peso | Tracking | Uso |', '|---|---|---|---|---|---|');
-  for (const s of T.type.styles) L.push(`| \`${s.name}\` | ${s.family} | ${s.size}/${s.lineHeight} | ${s.weight} | ${s.tracking} | ${s.usage} |`);
-  L.push('', 'In CSS: `font: var(--type-body); letter-spacing: var(--tracking-body);` oppure, con Tailwind, `text-body font-sans`.', '');
-  const titles = { spacing: 'Spazi', radius: 'Raggi', size: 'Dimensioni', breakpoint: 'Breakpoint', zIndex: 'Z-index', motion: 'Movimento' };
+  for (const s of T.type.styles) L.push(`| \`${s.name}\` | ${s.family} | ${s.fluid ? `${s.fluid.size}/${s.fluid.lineHeight} → ` : ''}${s.size}/${s.lineHeight} | ${s.weight} | ${s.tracking} | ${s.usage} |`);
+  const fr = T.type.fluidRange; L.push('', 'In CSS: `font: var(--type-body); letter-spacing: var(--tracking-body);` oppure, con Tailwind, `text-body font-sans`.', ...(fr ? [`Gli stili con la freccia sono fluidi: crescono linearmente da ${fr.min}px a ${fr.max}px di larghezza dello schermo (\`clamp()\`), con entrambi gli estremi sulla griglia da 4.`] : []), '');
+  const titles = { spacing: 'Spazi', radius: 'Raggi', size: 'Dimensioni', aspect: 'Proporzioni', breakpoint: 'Breakpoint', zIndex: 'Z-index', motion: 'Movimento' };
   for (const [k, fam] of flatFamilies(sys)) {
     L.push(`## ${titles[k]}`, '', ...(fam.note ? [fam.note, ''] : []), '| Token | Valore | Uso |', '|---|---|---|', ...fam.tokens.map((t) => `| \`${t.name}\` | ${t.value} | ${t.usage} |`), '');
   }
@@ -143,7 +144,7 @@ export function artifactTokens(sys) {
   const out = { name: sys.meta.name, version: 1, color, type: { fonts: [], families: T.type.families, groups } };
   for (const k of ['spacing', 'radius']) if (T[k]) out[k] = T[k];
   if (T.elevation) out.shadow = T.elevation;
-  for (const k of ['size', 'breakpoint', 'zIndex']) if (T[k]) out[k] = T[k]; // motion is not a family the page reads
+  for (const k of ['size', 'aspect', 'breakpoint', 'zIndex']) if (T[k]) out[k] = T[k]; // motion is not a family the page reads
   return JSON.stringify(out, null, 1) + '\n';
 }
 

@@ -29,6 +29,7 @@ Il sistema è giallo, nero e bianco. Gli altri colori naturali (prato, borragine
 - I link sono `link` (blu borragine), sottolineati a riposo. Il giallo non è mai un link.
 - Gli stati usano coppie fisse: `success` su `success-soft`, `warning` su `warning-soft`, `danger` su `danger-soft`, `info` su `info-soft`. Ogni stato ha sempre anche un'icona e una parola, mai solo il colore. `success` (verde prato) e `danger` (rosso propoli) differiscono anche in luminosità.
 - Il nero e il giallo affiancati a strisce sono il segnale di attenzione del sistema (come in natura): li usa solo `EnvironmentBanner` e il separatore `ap-stripe`. Non usarli come decorazione.
+- `surface-inverse` è una fascia scura in **entrambi** i temi (nero ape in chiaro, un gradino sopra la pagina in scuro), con testo `ink-inverse`. Footer, ticker e tooltip non diventano mai bianchi nel tema scuro.
 - Grafici: serie categoriche in ordine fisso `viz-1` … `viz-6`. La prima serie è sempre il giallo. Oltre sei serie, raggruppa in "Altro".
 - I token primitivi (`pollen-*`, `comb-*`, `meadow-*`, `borage-*`, `nectar-*`, `propolis-*`, `heather-*`) esistono solo per definire i semantici. Se ti serve un primitivo in un componente, manca un token semantico: aggiungilo.
 
@@ -36,17 +37,17 @@ Il sistema è giallo, nero e bianco. Gli altri colori naturali (prato, borragine
 
 Tre famiglie da Google Fonts, ciascuna con un ruolo:
 
-- **Bricolage Grotesque** (`display`): solo `display`, `headline`, `title`. Organica, con piccole irregolarità, come qualcosa fatto a mano.
+- **Bricolage Grotesque** (`display`): solo `display-xl`, `display`, `headline`, `title`. Organica, con piccole irregolarità, come qualcosa fatto a mano.
 - **Instrument Sans** (`sans`): tutto il resto, dall'interfaccia al testo lungo.
 - **JetBrains Mono** (`mono`): `code` e `data`. I numeri in tabelle e KPI usano `data` con cifre tabulari.
 
 Regole:
 
 - Il testo predefinito è `body` (16/24). Nelle app dense si scende a `body-sm` (14/20), mai sotto 12px.
-- Un solo `display` per pagina, solo sul sito. Le app interne partono da `heading` come titolo di pagina.
+- `display-xl` è la frase unica di una landing (un nome, un prodotto): una volta per sito, mai nelle app. `display` al massimo una volta per pagina. Le app partono da `heading` come titolo di pagina.
 - Tutte le interlinee sono multipli di 4. Le righe di testo lungo non superano `size-prose` (70 caratteri).
 - I titoli hanno `text-wrap: balance`. Gli `overline` sono in maiuscolo con spaziatura 0.08em e non superano tre parole.
-- Su mobile (sotto `bp-md`) `display` scende a 40/44, `headline` a 32/40, `title` a 28/36.
+- I quattro stili display sono **fluidi**: crescono in modo continuo da 360px a 1280px di larghezza (`display-xl` 48/52 → 88/88, `display` 40/44 → 56/60, `headline` 32/40 → 40/48, `title` 28/36 → 32/40). Entrambi gli estremi stanno sulla griglia da 4. Usa le classi `ap-display-xl`, `ap-display`, `ap-headline`, `ap-title` o `font: var(--type-…)`, mai dimensioni scritte a mano o media query per i titoli.
 
 ## Spazio, griglia e layout
 
@@ -60,15 +61,58 @@ Regole:
 ## Forme ed elevazione
 
 - Gli angoli sono contenuti, come le celle di un favo: `radius-sm` per bottoni, input, badge e tab; `radius-md` per card, alert e menu; `radius-lg` solo per dialoghi e pannelli grandi del sito; `radius-full` per switch, pillole e avatar. Tabelle e fasce a tutta larghezza restano a `radius-none`.
-- L'esagono è il motivo del marchio: logo, stati vuoti, icone di categoria. Non trasformare ogni contenitore in un esagono.
+- L'esagono è il motivo del marchio e ha usi contati: vedi "Dosaggio del marchio".
 - Tre livelli di ombra calda: `elevation-1` card a riposo, `elevation-2` menu e card al passaggio del mouse, `elevation-3` solo dialoghi. Dentro le app dense preferisci un bordo `line` a un'ombra.
 
-## Stati, focus e movimento
+## Stati e focus
 
 - Il focus è sempre visibile: anello pieno da 2px in `focus`, distanziato 2px dal controllo. La distanza fa sì che l'anello tocchi sempre una superficie e mai il riempimento (nemmeno il giallo): supera 10:1 su tutte le superfici, in entrambi i temi. Non togliere mai `outline-offset`.
 - Hover: `surface-hover` per elementi neutri, `accent-hover` per il primario. Premuto: `accent-pressed` e 1px verso il basso.
 - Disabilitato: riempimento `disabled`, testo `ink-muted`, cursore `not-allowed`, e un motivo spiegato vicino al controllo quando non è ovvio.
-- Durate: 120ms per hover e pressione, 200ms per toggle e tab, 320ms per dialoghi. Curva `cubic-bezier(0.2, 0, 0, 1)`: parte veloce e si posa dolcemente, come un'ape che atterra. Con `prefers-reduced-motion` le durate vanno a zero.
+
+## Movimento
+
+Il movimento di Apis è quello di un'ape che atterra: parte deciso e si posa con calma. Serve a orientare (cosa è nuovo, cosa è cambiato) e a dare ritmo, mai a decorare.
+
+| Pattern | Dove | Durata e curva |
+|---|---|---|
+| Hover, pressione, focus | Ogni controllo | `duration-fast` (120ms), `ease-standard` |
+| Toggle, tab, piccole aperture | Switch, tab, accordion | `duration-base` (200ms), `ease-standard` |
+| Menu, dialoghi, drawer | Livelli sovrapposti | `duration-slow` (320ms), entrata `ease-standard`, uscita `ease-exit` |
+| Reveal allo scroll (`data-ap-reveal`) | Blocchi di contenuto | `duration-reveal` (700ms), `ease-standard`, fratelli a passi di `duration-stagger` (90ms), massimo 5 passi |
+| Rise all'ingresso (`ap-rise`) | Solo l'hero | `duration-reveal`, `ease-emphasis` |
+| Cell-in, cell-open | Solo favo e ritratto dell'hero | `duration-reveal` / 1000ms, `ease-emphasis` |
+| Cambio tema | Il bottone del tema | 600ms, cerchio dal bottone, `ease-emphasis` |
+
+- **Un solo momento orchestrato per pagina**: l'ingresso dell'hero. Tutto il resto è reveal discreto o feedback.
+- Il contenuto è leggibile senza JavaScript: `apis-motion.js` aggiunge `.ap-motion` a `<html>` e solo allora gli elementi partono nascosti.
+- Con `prefers-reduced-motion` lo script non attiva nulla e le durate dei token vanno a zero.
+- Niente parallax sullo scroll, niente testo animato parola per parola, niente loop vicino al testo che non si fermino al passaggio del mouse.
+
+## Dosaggio del marchio
+
+Giallo, nero ed esagono sono riconoscibili proprio perché sono pochi. Usati ovunque diventano un cantiere.
+
+- **Esagono**: solo nel marchio, nel ritratto principale (`ap-cell`, una volta per sito), nel favo decorativo dell'hero (una volta per pagina) e nell'icona di `EmptyState`. Non usarlo per elenchi puntati, indicatori della timeline, chip, separatori o cornici di card.
+- **Giallo**: o **un grande campo** per pagina (la fascia contatti, la copertina), o **singoli dettagli** (il bottone primario, la barra della tab selezionata, una sottolineatura). Non entrambi nella stessa vista ristretta, e mai sparso su molti piccoli elementi decorativi.
+- **Nero e giallo affiancati in grande**: solo nel marchio e nella striscia di attenzione. Non accostare un grande blocco nero a un grande blocco giallo.
+- Per elenchi e separatori usa forme neutre: un punto `radius-full` in `ink-muted`, una linea `line`.
+
+## Immagini
+
+- **Fotografie vere**, a colori naturali e luce calda: persone, luoghi di lavoro, prodotti. Niente foto stock generiche e niente illustrazioni.
+- **Proporzioni** dai token: `aspect-portrait` (4:5) per le persone, `aspect-cover` (16:10) per progetti e articoli, `aspect-square` per loghi e avatar, `aspect-cell` solo per il ritratto principale. Sempre `object-fit: cover`.
+- **Ritratto**: occhi sul terzo superiore (`object-position: 50% 30%`), sfondo semplice, nessun filtro.
+- **Screenshot**: dentro un riquadro `radius-md` con bordo `line`, mai inclinati o con ombre finte da dispositivo.
+- **Peso**: al massimo 2400px sul lato lungo, in WebP o AVIF, `loading="lazy"` fuori dal primo schermo, `width` e `height` sempre dichiarati.
+- **Testo alternativo**: descrive cosa serve sapere ("Ritratto di Daniel Travaglia"), `alt=""` per le immagini decorative.
+
+## Marchio
+
+- Il marchio è una cella del favo (esagono a punta in alto) in `accent` con due bande in `carapace`, su una griglia di 64: esagono di raggio 30 centrato, bande alte 8 a y 22 e 38.
+- Spazio libero attorno pari a metà della sua larghezza; dimensione minima 16px.
+- Accanto al marchio il nome si scrive in Bricolage Grotesque 700.
+- **Stato: provvisorio.** È un segno geometrico di partenza, non un marchio disegnato a mano. Va ridisegnato prima di usarlo fuori dal sito personale.
 
 ## Iconografia
 
@@ -110,7 +154,7 @@ Undici componenti React in `window.Apis`, più le classi `ap-*` per chi non usa 
 - Feedback: `Alert`, `Badge`, `EmptyState`, `EnvironmentBanner`
 - Contenitori e navigazione: `Card`, `Tabs`
 - Dati: `DataTable`
-- Base: `Icon`
+- Base: `Icon`, `Motion` (pattern di movimento e script `apis-motion.js`)
 
 ### Sito e app interne
 

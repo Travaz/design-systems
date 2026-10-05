@@ -72,7 +72,7 @@ export function resolveColor(sys, name, theme) {
 
 /** Every flat (non-colour, non-type) family: [familyKey, {note, tokens:[{name,value,usage}]}]. */
 export function flatFamilies(sys) {
-  return ['spacing', 'radius', 'size', 'breakpoint', 'zIndex', 'motion']
+  return ['spacing', 'radius', 'size', 'aspect', 'breakpoint', 'zIndex', 'motion']
     .filter((k) => sys.tokens[k]).map((k) => [k, sys.tokens[k]]);
 }
 
@@ -88,4 +88,18 @@ export function definedVars(sys) {
 
 export function changelogEntries(sys) {
   return sys.changelog.split('\n').filter((l) => l.startsWith('- ')).join('\n');
+}
+
+/** Fluid value between the system's fluid range: clamp(min, intercept + slope·vw, max), in rem. */
+export function fluid(sys, minPx, maxPx) {
+  const r = sys.tokens.type.fluidRange || { min: 360, max: 1280 };
+  const slope = (maxPx - minPx) / (r.max - r.min), intercept = minPx - slope * r.min;
+  const rem = (n) => `${+(n / 16).toFixed(4)}rem`;
+  return `clamp(${rem(minPx)}, ${rem(intercept)} + ${+(slope * 100).toFixed(4)}vw, ${rem(maxPx)})`;
+}
+/** CSS size and line-height for a type style, fluid when it declares one. */
+export function typeSize(sys, s) {
+  const rem = (n) => `${+(n / 16).toFixed(4)}rem`;
+  if (!s.fluid) return { size: rem(s.size), lineHeight: rem(s.lineHeight) };
+  return { size: fluid(sys, s.fluid.size, s.size), lineHeight: fluid(sys, s.fluid.lineHeight, s.lineHeight) };
 }

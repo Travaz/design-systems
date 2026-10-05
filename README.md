@@ -50,6 +50,8 @@ Un sito usa un sistema in due modi: lo elenca in `consumers` dentro `system.json
 - **Token**: nomi validi e unici, ogni semantico definito in tutti i temi, note d'uso presenti, primitivi non usati.
 - **Griglia**: interlinee multiple di 4, spazi sulla griglia da 4.
 - **CSS dei componenti**: solo token esistenti, nessun primitivo, nessun colore scritto a mano (eccezioni marcate con `lint-allow-literal`).
+- **Sintassi CSS**: parentesi graffe bilanciate (una graffa in più fa ignorare al browser la regola successiva, senza errori visibili).
+- **Tipografia fluida**: entrambi gli estremi degli stili fluidi sulla griglia da 4.
 - **Componenti**: README con frase di scopo, anteprima presente, bundle coerente con le cartelle.
 - **Siti che lo usano**: copie allineate alla versione, nessun token inesistente nel loro CSS (variabili locali dichiarate con `/* ds-lint allow: --x --y */`).
 - **Rilascio**: la prima voce del changelog corrisponde alla versione.

@@ -34,6 +34,7 @@ export function build(id, { quiet = false } = {}) {
   };
   if (m.files.bundle) files[`${id}-react.js`] = fs.readFileSync(sys.file(m.files.bundle), 'utf8');
   if (m.files.types) files[`${id}-react.d.ts`] = fs.readFileSync(sys.file(m.files.types), 'utf8');
+  if (m.files.motion) files[`${id}-motion.js`] = fs.readFileSync(sys.file(m.files.motion), 'utf8');
   for (const [n, c] of Object.entries(files)) writeFile(path.join(pkg, n), c);
   if (m.skill?.assets?.logo) copyDir(sys.file(m.skill.assets.logo), path.join(pkg, 'logo'));
   writeFile(path.join(pkg, 'package.json'), JSON.stringify({ name: `@travaz/${id}`, version: m.version, description: m.description, files: ['*'], style: cssName }, null, 2) + '\n');

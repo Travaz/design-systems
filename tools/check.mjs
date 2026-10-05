@@ -54,6 +54,11 @@ export function check(id) {
   /* 3. grid: line-heights on the 4pt baseline, spacing on the 4pt/8pt grid */
   for (const s of T.type.styles) {
     if (s.lineHeight % 4) E('tokens.json type', `${s.name}: interlinea ${s.lineHeight}px non è multipla di 4`);
+    if (s.fluid) {
+      if (s.fluid.lineHeight % 4) E('tokens.json type', `${s.name}: interlinea fluida minima ${s.fluid.lineHeight}px non è multipla di 4`);
+      if (s.fluid.size >= s.size) E('tokens.json type', `${s.name}: la dimensione fluida minima (${s.fluid.size}) deve essere minore di quella massima (${s.size})`);
+      if (s.fluid.lineHeight < s.fluid.size) W('tokens.json type', `${s.name}: interlinea minore della dimensione a ${s.fluid.size}px`);
+    }
     if (!vars.has('font-' + s.family) && !T.type.families[s.family]) E('tokens.json type', `${s.name}: famiglia "${s.family}" non definita`);
   }
   for (const t of T.spacing?.tokens || []) { const v = parseFloat(t.value); if (/px$/.test(t.value) && v % 4) E('tokens.json spacing', `${t.name} = ${t.value} non è sulla griglia da 4`); }
@@ -99,6 +104,15 @@ export function check(id) {
 
 /** strict = the system's own component CSS. Consumers may use literals and primitives sparingly, but never unknown tokens. */
 function lintCss(css, where, { vars, prim, strict }, E, W) {
+  // brace balance: a stray } makes browsers drop the next rule silently
+  let depth = 0;
+  css.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' ')).replace(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'/g, '""').split('\n').forEach((line, i) => {
+    for (const ch of line) {
+      if (ch === '{') depth++;
+      else if (ch === '}' && --depth < 0) { E(`${where}:${i + 1}`, 'parentesi graffa chiusa in più: il browser ignorerà la regola successiva'); depth = 0; }
+    }
+  });
+  if (depth > 0) E(where, `${depth} parentesi graffe non chiuse`);
   const declared = new Set([...css.matchAll(/(--[A-Za-z0-9_-]+)\s*:/g)].map((m) => m[1].slice(2)));
   const allowed = new Set((css.match(/ds-lint allow:([^*]*)\*\//) || ['', ''])[1].trim().split(/\s+/).filter(Boolean).map((v) => v.replace(/^--/, '')));
   css.split('\n').forEach((line, i) => {

@@ -32,17 +32,14 @@
 :where(.ap-base a:not([class])) { color: var(--link); text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
 :where(.ap-base a:not([class])):hover { text-decoration-thickness: 2px; }
 .ap-base ::selection { background: var(--accent); color: var(--on-accent); }
-.ap-display, .ap-headline, .ap-title { font-family: var(--font-display); text-wrap: balance; margin: 0; }
-.ap-display { font-size: 3.5rem; line-height: 3.75rem; font-weight: 700; letter-spacing: -0.025em; }
-.ap-headline { font-size: 2.5rem; line-height: 3rem; font-weight: 700; letter-spacing: -0.02em; }
-.ap-title { font-size: 2rem; line-height: 2.5rem; font-weight: 600; letter-spacing: -0.015em; }
+.ap-display-xl, .ap-display, .ap-headline, .ap-title { text-wrap: balance; margin: 0; }
+/* fluid: sizes grow from 360px to 1280px wide, see tokens --type-* */
+.ap-display-xl { font: var(--type-display-xl); letter-spacing: var(--tracking-display-xl); }
+.ap-display { font: var(--type-display); letter-spacing: var(--tracking-display); }
+.ap-headline { font: var(--type-headline); letter-spacing: var(--tracking-headline); }
+.ap-title { font: var(--type-title); letter-spacing: var(--tracking-title); }
 .ap-overline { font-size: 0.75rem; line-height: 1rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-text); }
 .ap-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-@media (max-width: 767px) {
-  .ap-display { font-size: 2.5rem; line-height: 2.75rem; }
-  .ap-headline { font-size: 2rem; line-height: 2.5rem; }
-  .ap-title { font-size: 1.75rem; line-height: 2.25rem; }
-}
 
 /* ---------- Button ---------- */
 .ap-btn {
@@ -174,6 +171,29 @@ textarea.ap-input { height: auto; min-height: 96px; padding-block: var(--space-2
 .ap-envbar { display: flex; align-items: center; gap: var(--space-3); height: 32px; padding: 0 var(--space-4); background: repeating-linear-gradient(-45deg, var(--stripe-light) 0 12px, var(--stripe-dark) 12px 24px); }
 .ap-envbar__label { display: inline-flex; align-items: center; gap: var(--space-2); height: 24px; padding: 0 var(--space-3); border-radius: var(--radius-sm); background: var(--stripe-dark); color: var(--accent); font: 700 0.75rem/1rem var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; }
 .ap-stripe { height: 8px; background: repeating-linear-gradient(-45deg, var(--stripe-light) 0 8px, var(--stripe-dark) 8px 16px); }
+
+/* ds-lint allow: --ap-i --ap-vx --ap-vy (set at runtime by apis-motion.js or inline style) */
+/* ---------- Motion patterns ----------
+   Content is visible without JS. apis-motion.js adds .ap-motion to <html> (unless the viewer asked for reduced motion),
+   then .is-in to each [data-ap-reveal] as it enters the viewport. */
+.ap-motion [data-ap-reveal] { opacity: 0; transform: translateY(24px); transition: opacity var(--duration-reveal) var(--ease-standard), transform var(--duration-reveal) var(--ease-standard); transition-delay: calc(var(--ap-i, 0) * var(--duration-stagger)); }
+.ap-motion [data-ap-reveal].is-in { opacity: 1; transform: none; }
+/* rise: entrance on load, staggered with style="--ap-i: n" (max 5 steps) */
+.ap-motion .ap-rise { animation: ap-rise var(--duration-reveal) var(--ease-emphasis) both; animation-delay: calc(var(--ap-i, 0) * var(--duration-stagger)); }
+/* cell-in: the comb pattern assembling, for the hero comb only */
+.ap-motion .ap-cell-in { transform-box: fill-box; transform-origin: center; animation: ap-cell-in var(--duration-reveal) var(--ease-emphasis) both; animation-delay: calc(400ms + var(--ap-i, 0) * 35ms); }
+/* cell-open: a portrait opening as a comb cell */
+.ap-motion .ap-cell-open { animation: ap-cell-open 1000ms var(--ease-emphasis) 150ms both; }
+@keyframes ap-rise { from { opacity: 0; transform: translateY(0.6em); } to { opacity: 1; transform: none; } }
+@keyframes ap-cell-in { from { opacity: 0; transform: scale(0.2) rotate(-30deg); } to { opacity: 1; transform: none; } }
+@keyframes ap-cell-open { from { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%); } to { clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); } }
+/* theme switch: a circular reveal from the toggle, via the View Transitions API */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.ap-motion::view-transition-new(root) { animation: ap-theme-reveal 600ms var(--ease-emphasis); }
+@keyframes ap-theme-reveal { from { clip-path: circle(0 at var(--ap-vx, 100%) var(--ap-vy, 0)); } to { clip-path: circle(150% at var(--ap-vx, 100%) var(--ap-vy, 0)); } }
+/* the comb cell frame, for the main portrait only (see brand book, "Dosaggio") */
+.ap-cell { aspect-ratio: var(--aspect-cell); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); overflow: hidden; }
+.ap-cell img { width: 100%; height: 100%; object-fit: cover; }
 
 @media (prefers-reduced-motion: reduce) {
   .ap-btn, .ap-card--interactive, .ap-switch__track, .ap-switch__thumb, .ap-input { transition: none; }

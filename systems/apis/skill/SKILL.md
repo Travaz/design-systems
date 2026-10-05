@@ -24,6 +24,7 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 | `assets/apis.css` | Classi `ap-*` dei componenti + token di livello componente. Richiede `tokens.css`. |
 | `assets/tailwind.css` | Mappatura per Tailwind v4 (`bg-surface`, `text-ink`, `p-4`, `text-body`…). |
 | `assets/apis-react.js` + `.d.ts` | Componenti React (`window.Apis`) e tipi. |
+| `assets/apis-motion.js` | Pattern di movimento: reveal allo scroll, sequenze, cambio tema. Va in `<head>` senza `defer`. |
 | `assets/tokens.json` | Token in formato W3C DTCG (Style Dictionary, Figma variables, Tokens Studio). |
 | `assets/logo/` | `apis-mark.svg` (colore) e `apis-mark-mono.svg` (un inchiostro). |
 | `assets/templates/` | `website.html` (trattamento sito) e `app-shell.html` (trattamento app interna). Si aspettano accanto `tokens.css`, `apis.css` e `apis-mark.svg`. |
@@ -50,6 +51,9 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 - Entrambi i temi, sempre: niente colori che esistono solo in chiaro o solo in scuro; `body` ha `background: var(--surface)`.
 - Icone Lucide (24px, tratto 2px, arrotondate), un colore con `currentColor`; icona senza testo = `aria-label`.
 - Niente emoji nell'interfaccia, niente punti esclamativi, niente gradienti viola-blu, niente card con bordo colorato a sinistra.
+- **Dosaggio**: l'esagono solo per marchio, ritratto principale, favo dell'hero e stati vuoti (mai per elenchi, timeline, chip). Il giallo o in un grande campo per pagina o in singoli dettagli, non sparso.
+- Titoli con gli stili fluidi (`ap-display-xl`, `ap-display`, `ap-headline`, `ap-title` o `var(--type-…)`): niente dimensioni scritte a mano né media query per i titoli.
+- Movimento solo con i pattern di `apis-motion.js` (`data-ap-reveal`, `ap-rise`, `ap-cell-in`, `Apis.motion.toggleTheme`): un solo momento orchestrato per pagina.
 
 ## Checklist prima di consegnare
 

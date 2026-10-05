@@ -1,0 +1,29 @@
+<!-- @dsCard group="Base" height=200 -->
+<!doctype html>
+<html lang="it" class="ap-motion">
+<head><meta charset="utf-8"><title>Motion</title>
+<style>
+body{margin:0;padding:16px;}
+.demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:720px}
+.tile{padding:16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--surface-raised);color:var(--ink);font:600 .875rem/1.25rem var(--font-sans)}
+.tile small{display:block;font-weight:400;color:var(--ink-muted)}
+.bar{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+</style>
+</head>
+<body class="ap-base">
+<div class="bar"><button class="ap-btn ap-btn--secondary ap-btn--sm" type="button" id="replay">Ripeti</button><span class="ap-hint">Reveal con stagger: 700ms, passi da 90ms</span></div>
+<div class="demo" id="demo">
+  <div class="tile" data-ap-reveal>Reveal<small>duration-reveal</small></div>
+  <div class="tile" data-ap-reveal>Stagger<small>duration-stagger</small></div>
+  <div class="tile" data-ap-reveal>Ease<small>ease-standard</small></div>
+  <div class="tile" data-ap-reveal>Emphasis<small>ease-emphasis</small></div>
+</div>
+<script>
+  var tiles = document.querySelectorAll('#demo [data-ap-reveal]');
+  tiles.forEach(function (el, i) { el.style.setProperty('--ap-i', i); });
+  function play() { tiles.forEach(function (el) { el.classList.remove('is-in'); }); requestAnimationFrame(function () { requestAnimationFrame(function () { tiles.forEach(function (el) { el.classList.add('is-in'); }); }); }); }
+  document.getElementById('replay').addEventListener('click', play);
+  play();
+</script>
+</body>
+</html>
