@@ -15,7 +15,12 @@ npm run new -- tundra "Tundra"     # crea un nuovo sistema dal modello
 npm run check -- apis              # controlla un sistema (senza id: tutti)
 npm run build -- apis              # genera dist/apis/ senza installare nulla
 npm run release -- apis            # controlla, installa la skill, aggiorna i siti
+npm test                           # test degli strumenti + check di tutti i sistemi (anche in CI)
+npm run test:visual                # screenshot e accessibilità della galleria (Playwright)
+npm run test:visual:update         # rigenera gli screenshot di riferimento dopo un cambio voluto
 ```
+
+Gli strumenti non hanno dipendenze. Solo i test visivi usano Playwright e axe: `npm install` e, la prima volta, `npx playwright install chromium`.
 
 ## Com'è fatto un sistema
 
@@ -56,4 +61,16 @@ Un sito usa un sistema in due modi: lo elenca in `consumers` dentro `system.json
 - **Siti che lo usano**: copie allineate alla versione, nessun token inesistente nel loro CSS (variabili locali dichiarate con `/* ds-lint allow: --x --y */`).
 - **Rilascio**: la prima voce del changelog corrisponde alla versione.
 
-Non ancora coperto: test visivi automatici e audit axe delle anteprime (richiedono Playwright e un browser headless).
+## Test
+
+**`npm test`** (nessuna dipendenza, gira anche su GitHub a ogni push):
+- funzioni pure: contrasto WCAG su valori noti, calcolo della tipografia fluida, `tokens.css` completo in ogni tema;
+- strumenti end to end su sistemi temporanei: un sistema nuovo passa i controlli, il build produce tutti i file, e `check` fallisce davvero su graffa in più, token inesistente, primitivo nei componenti, colore scritto a mano, contrasto insufficiente, interlinea fuori griglia; `release` si rifiuta di rilasciare un sistema che non passa;
+- `check` di tutti i sistemi reali.
+
+**`npm run test:visual`** (in locale):
+- il build genera `dist/<id>/gallery/`, una pagina per ogni anteprima di componente collegata al pacchetto;
+- ogni pagina viene fotografata in ogni tema, a 375px e 1280px, e confrontata con `tests/visual/__screenshots__/<piattaforma>/` (tolleranza di 100 pixel, animazioni ferme);
+- ogni pagina passa un audit axe (WCAG 2.2 AA), e un test di controllo verifica che axe trovi davvero i problemi noti.
+
+Dopo una modifica visiva voluta: `npm run test:visual`, guarda le differenze nel report (`npx playwright show-report`), poi `npm run test:visual:update` e committa le nuove immagini. Gli screenshot di riferimento sono fatti su macOS: per farli girare in CI servirebbero quelli generati su Linux.

@@ -5,6 +5,10 @@ import { execFileSync } from 'node:child_process';
 import { pickSystems, loadSystem, DIST_DIR, SHARED_DOCS, writeFile, copyDir, readIf, changelogEntries, tilde, rel } from './lib/system.mjs';
 import * as E from './lib/emit.mjs';
 
+// Same React build the published Design System page loads.
+const REACT = '<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>';
+const REACT_DOM = '<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>';
+
 export function components(sys) {
   const dir = sys.file('components');
   if (!fs.existsSync(dir)) return [];
@@ -71,11 +75,33 @@ export function build(id, { quiet = false } = {}) {
   for (const [n, c] of Object.entries(artFiles)) writeFile(path.join(art, n), c);
   writeFile(path.join(art, 'design-system.json'), E.artifactIndex(sys, new Date().toISOString().replace(/\.\d+Z$/, 'Z')));
 
+  // 4. gallery: one page per component preview, wired to the package, for visual tests and manual review
+  const gallery = path.join(out, 'gallery');
+  const pages = [];
+  if (fs.existsSync(compDir)) {
+    const head = [
+      `<link rel="stylesheet" href="../package/tokens.css">`,
+      `<link rel="stylesheet" href="../package/${cssName}">`,
+      ...(files[`${id}-react.js`] ? [REACT, REACT_DOM, `<script src="../package/${id}-react.js"></script>`] : []),
+    ].join('\n');
+    for (const c of fs.readdirSync(compDir).sort()) {
+      const p = path.join(compDir, c, 'preview.html');
+      if (!fs.existsSync(p)) continue;
+      const html = fs.readFileSync(p, 'utf8');
+      if (!/<head>/i.test(html)) continue;
+      writeFile(path.join(gallery, `${c}.html`), html.replace(/<head>/i, `<head>\n${head}`));
+      pages.push(c);
+    }
+    writeFile(path.join(gallery, 'index.html'), `<!doctype html><meta charset="utf-8"><title>${m.name} ${m.version}</title><link rel="stylesheet" href="../package/tokens.css"><body style="font-family:var(--font-sans);background:var(--surface);color:var(--ink);padding:24px"><h1>${m.name} ${m.version}</h1><ul>${pages.map((c) => `<li><a href="${c}.html">${c}</a></li>`).join('')}</ul>`);
+    writeFile(path.join(gallery, 'pages.json'), JSON.stringify(pages) + '\n');
+  }
+
   if (!quiet) {
     console.log(`✔ ${m.name} ${m.version}`);
     console.log(`  package   ${rel(pkg)}  (${Object.keys(files).length} file${m.skill?.assets?.logo ? ' + logo' : ''})`);
     if (m.skill) console.log(`  skill     ${rel(path.join(out, 'skill', m.skill.name))}  + .zip`);
     console.log(`  artifact  ${rel(art)}  (${Object.keys(artFiles).length + 1} file)`);
+    if (pages.length) console.log(`  gallery   ${rel(gallery)}  (${pages.length} pagine)`);
   }
   return { sys, out, pkg };
 }

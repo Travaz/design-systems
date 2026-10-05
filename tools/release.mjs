@@ -2,10 +2,10 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { pickSystems, rel, tilde } from './lib/system.mjs';
+import { pickSystems, rel, tilde, DIST_DIR } from './lib/system.mjs';
 import { check } from './check.mjs';
 
-const SKILLS_DIR = path.join(os.homedir(), '.claude', 'skills');
+const SKILLS_DIR = process.env.DS_SKILLS_DIR || path.join(os.homedir(), '.claude', 'skills');
 
 for (const id of pickSystems(process.argv.slice(2))) {
   const { sys, errors, warnings } = check(id);
@@ -16,7 +16,7 @@ for (const id of pickSystems(process.argv.slice(2))) {
     continue;
   }
   console.log(`\n✔ ${m.name} ${m.version} — controlli superati${warnings.filter((w) => !w.startsWith('consumer')).length ? ' (con avvisi: npm run check -- ' + id + ')' : ''}`);
-  const out = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'dist', id);
+  const out = path.join(DIST_DIR, id);
 
   if (m.skill) {
     const dest = path.join(SKILLS_DIR, m.skill.name);

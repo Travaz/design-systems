@@ -5,8 +5,9 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-export const SYSTEMS_DIR = path.join(ROOT, 'systems');
-export const DIST_DIR = path.join(ROOT, 'dist');
+// DS_SYSTEMS_DIR / DS_DIST_DIR let tests run the tools on throwaway systems.
+export const SYSTEMS_DIR = process.env.DS_SYSTEMS_DIR || path.join(ROOT, 'systems');
+export const DIST_DIR = process.env.DS_DIST_DIR || path.join(ROOT, 'dist');
 export const SHARED_DOCS = path.join(ROOT, 'shared/docs');
 export const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/;
 
