@@ -86,7 +86,8 @@ export function build(id, { quiet = false } = {}) {
   for (const [g, v] of Object.entries(m.artifact?.assetGroups || {})) if (v.readme) artFiles[`assets/${g}/README.md`] = read(v.readme);
   for (const [n, c] of Object.entries(artFiles)) writeFile(path.join(art, n), c);
   if (m.files.fonts) {
-    const fontFiles = fs.readdirSync(sys.file(m.files.fonts)).filter((f) => /\.woff2?$/.test(f));
+    // only the files the page declares (see artifactTokens): latin subsets
+    const fontFiles = JSON.parse(artFiles['tokens.json']).type.fonts.map((f) => path.basename(f.file));
     fs.mkdirSync(path.join(art, 'fonts'), { recursive: true });
     for (const f of fontFiles) fs.copyFileSync(path.join(sys.file(m.files.fonts), f), path.join(art, 'fonts', f));
   }
