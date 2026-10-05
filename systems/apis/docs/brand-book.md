@@ -22,9 +22,9 @@ Questi principi vengono da designsystems.com (Figma) e sono la base di ogni deci
 Il sistema è giallo, nero e bianco. Gli altri colori naturali (prato, borragine, nettare, propoli, erica) servono solo per stati e grafici.
 
 - La pagina è `surface` (bianco cera in chiaro, nero alveare in scuro). Le card stanno su `surface-raised`; pozzetti, codice e intestazioni di tabella su `surface-sunken`.
-- Il testo è `ink`; il testo secondario è `ink-muted`. Entrambi superano 6.5:1 su tutte e tre le superfici in entrambi i temi.
-- `accent` è il giallo dell'ape. Usalo come **riempimento**, mai come testo: bottone primario, tab selezionata, switch acceso, un'evidenziazione per vista. Sopra il giallo il testo è sempre `on-accent` (nero carapace, 10.6:1), mai bianco.
-- Su fondo chiaro il giallo ha contrasto 1.7:1, quindi ogni riempimento `accent` porta un bordo da 1px in `accent-edge` per restare visibile.
+- Il testo è `ink`; il testo secondario è `ink-muted`. Entrambi arrivano almeno a {{contrast ink,ink-muted on surface,surface-raised,surface-sunken}} su tutte e tre le superfici, in entrambi i temi.
+- `accent` è il giallo dell'ape. Usalo come **riempimento**, mai come testo: bottone primario, tab selezionata, switch acceso, un'evidenziazione per vista. Sopra il giallo il testo è sempre `on-accent` (nero carapace, {{contrast on-accent on accent}}), mai bianco.
+- Su fondo chiaro il giallo ha contrasto {{contrast accent on surface light}}, quindi ogni riempimento `accent` porta un bordo da 1px in `accent-edge` per restare visibile.
 - Quando serve un giallo leggibile come testo (occhielli, etichette), usa `accent-text` su `surface` o su `accent-soft`.
 - I link sono `link` (blu borragine), sottolineati a riposo. Il giallo non è mai un link.
 - Gli stati usano coppie fisse: `success` su `success-soft`, `warning` su `warning-soft`, `danger` su `danger-soft`, `info` su `info-soft`. Ogni stato ha sempre anche un'icona e una parola, mai solo il colore. `success` (verde prato) e `danger` (rosso propoli) differiscono anche in luminosità.
@@ -66,7 +66,7 @@ Regole:
 
 ## Stati e focus
 
-- Il focus è sempre visibile: anello pieno da 2px in `focus`, distanziato 2px dal controllo. La distanza fa sì che l'anello tocchi sempre una superficie e mai il riempimento (nemmeno il giallo): supera 10:1 su tutte le superfici, in entrambi i temi. Non togliere mai `outline-offset`.
+- Il focus è sempre visibile: anello pieno da 2px in `focus`, distanziato 2px dal controllo. La distanza fa sì che l'anello tocchi sempre una superficie e mai il riempimento (nemmeno il giallo): arriva almeno a {{contrast focus on surface,surface-raised,surface-sunken}} su tutte le superfici, in entrambi i temi. Non togliere mai `outline-offset`.
 - Hover: `surface-hover` per elementi neutri, `accent-hover` per il primario. Premuto: `accent-pressed` e 1px verso il basso.
 - Disabilitato: riempimento `disabled`, testo `ink-muted`, cursore `not-allowed`, e un motivo spiegato vicino al controllo quando non è ovvio.
 

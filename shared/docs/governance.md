@@ -49,6 +49,7 @@ Prima di considerarlo parte del sistema:
 - Un nuovo **primitivo** si aggiunge solo se nessun primitivo esistente può servire il nuovo semantico.
 - Un **token di componente** vive in `apis.css` e punta solo a un semantico.
 - Nomi: minuscolo, trattini, per intenzione. Mai il valore nel nome.
+- Nelle note d'uso e nei testi, i rapporti di contrasto si scrivono come segnaposto `{{contrast fg on bg}}`: il build li calcola, così la documentazione non può dire il falso.
 
 ## Versioni
 

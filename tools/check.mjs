@@ -4,6 +4,7 @@ import path from 'node:path';
 import { pickSystems, NAME_RE, themes, primitives, semantics, isPrimitiveRef, resolveColor, flatFamilies, definedVars, rel } from './lib/system.mjs';
 import { parseColor, contrast } from './lib/color.mjs';
 import { build, components } from './build.mjs';
+import { proseSources, renderClaims, lintReferences, lintProps } from './lib/docs.mjs';
 
 export function check(id) {
   const { sys, pkg } = build(id, { quiet: true });
@@ -85,7 +86,16 @@ export function check(id) {
   const firstEntry = (sys.changelog.match(/^- .*?· ([\d.]+) ·/m) || [])[1];
   if (firstEntry !== sys.meta.version) W('CHANGELOG.md', `la prima voce è ${firstEntry || 'assente'}, ma system.json dice ${sys.meta.version}`);
 
-  /* 7. consumers: copies in sync with this build, their CSS uses only real tokens */
+  /* 7. documentation: computed claims resolve, named tokens and classes exist, props agree */
+  for (const [label, text] of proseSources(sys)) {
+    renderClaims(sys, text, label).errors.forEach((e) => E('documentazione', e));
+    lintReferences(sys, label, text).forEach((p) => E('documentazione', p));
+    const hand = [...text.matchAll(/(?<![\d.])(\d{1,2}(?:\.\d+)?):1\b/g)].map((x) => +x[1]).filter((n) => ![3, 4.5, 7].includes(n));
+    if (hand.length) W('documentazione', `${label}: rapporti di contrasto scritti a mano (${hand.map((n) => n + ':1').join(', ')}); usa {{contrast fg on bg}}`);
+  }
+  lintProps(sys, Object.fromEntries(comps.map((c) => [c.name, c.readme]))).forEach((p) => E('componenti', p));
+
+  /* 8. consumers: copies in sync with this build, their CSS uses only real tokens */
   for (const c of sys.meta.consumers || []) {
     const dir = path.resolve(sys.dir, c.dir);
     if (!fs.existsSync(dir)) { W(`consumer ${c.name}`, `cartella non trovata: ${dir}`); continue; }

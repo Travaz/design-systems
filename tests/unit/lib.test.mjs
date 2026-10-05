@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { contrast, parseColor } from '../../tools/lib/color.mjs';
 import { fluid, typeSize, loadSystem, listSystems, semantics, themes } from '../../tools/lib/system.mjs';
 import { tokensCss, dtcg, artifactTokens, tailwind } from '../../tools/lib/emit.mjs';
+import { renderClaims } from '../../tools/lib/docs.mjs';
 
 test('contrast: WCAG reference values', () => {
   assert.equal(contrast('#000000', '#FFFFFF').toFixed(2), '21.00');
@@ -30,6 +31,15 @@ test('fluid: clamp hits both ends of the range', () => {
   assert.ok(Math.abs(px(1280) - 88) < 0.01, `1280px → ${px(1280)}`);
   assert.ok(px(800) > 48 && px(800) < 88);
   assert.deepEqual(typeSize(sys, { size: 16, lineHeight: 24 }), { size: '1rem', lineHeight: '1.5rem' });
+});
+
+test('renderClaims: lowest ratio across pairs and themes, floored, never rounded up', () => {
+  const sys = { tokens: { themes: [{ id: 'light' }, { id: 'dark' }], color: {
+    primitive: { black: { value: '#000000' }, white: { value: '#FFFFFF' }, grey: { value: '#767676' } },
+    semantic: { ink: { light: 'black', dark: 'white' }, bg: { light: 'white', dark: 'grey' } } } } };
+  assert.equal(renderClaims(sys, '{{contrast ink on bg light}}').text, '21.0:1');
+  assert.equal(renderClaims(sys, '{{contrast ink on bg}}').text, '4.5:1'); // dark: white on #767676 = 4.54
+  assert.equal(renderClaims(sys, 'x {{contrast ink on nope}}').errors.length, 1);
 });
 
 for (const id of listSystems()) {

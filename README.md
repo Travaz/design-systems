@@ -49,6 +49,17 @@ dist/<id>/
 
 Un sito usa un sistema in due modi: lo elenca in `consumers` dentro `system.json` (il rilascio copia i file e il controllo segnala copie vecchie e token inesistenti nel suo CSS), oppure installa il pacchetto con `npm install ../design-systems/dist/<id>/package`.
 
+## Numeri nei testi
+
+Nei testi (brand book, schede dei componenti, note dei token) i rapporti di contrasto non si scrivono a mano: si scrive un segnaposto e il build mette il valore vero, il più basso tra tutte le coppie e tutti i temi, arrotondato per difetto.
+
+```
+Il testo secondario arriva almeno a {{contrast ink-muted on surface,surface-raised}}.
+Sul rosso il testo è {{contrast on-danger on danger light}} in chiaro.
+```
+
+Le soglie WCAG (4.5:1, 3:1, 7:1) restano scritte, perché sono regole e non misure.
+
 ## Cosa controlla `npm run check`
 
 - **Contrasto WCAG** di ogni coppia dichiarata in `tokens.json → contrast`, in ogni tema.
@@ -58,6 +69,8 @@ Un sito usa un sistema in due modi: lo elenca in `consumers` dentro `system.json
 - **Sintassi CSS**: parentesi graffe bilanciate (una graffa in più fa ignorare al browser la regola successiva, senza errori visibili).
 - **Tipografia fluida**: entrambi gli estremi degli stili fluidi sulla griglia da 4.
 - **Componenti**: README con frase di scopo, anteprima presente, bundle coerente con le cartelle.
+- **Documentazione**: ogni token, classe o variabile citata tra backtick nei testi esiste davvero (anche i modelli come `pollen-*`); i segnaposti `{{contrast fg on bg}}` si risolvono; i rapporti di contrasto scritti a mano sono segnalati.
+- **Prop dei componenti**: ogni prop dichiarata nei tipi è usata dal componente e documentata nella sua scheda, e viceversa.
 - **Siti che lo usano**: copie allineate alla versione, nessun token inesistente nel loro CSS (variabili locali dichiarate con `/* ds-lint allow: --x --y */`).
 - **Rilascio**: la prima voce del changelog corrisponde alla versione.
 

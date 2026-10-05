@@ -4,6 +4,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pickSystems, loadSystem, DIST_DIR, SHARED_DOCS, writeFile, copyDir, readIf, changelogEntries, tilde, rel } from './lib/system.mjs';
 import * as E from './lib/emit.mjs';
+import { renderClaims, renderedSystem } from './lib/docs.mjs';
 
 // Same React build the published Design System page loads.
 const REACT = '<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>';
@@ -21,12 +22,15 @@ export function components(sys) {
 }
 
 export function build(id, { quiet = false } = {}) {
-  const sys = loadSystem(id);
+  const raw = loadSystem(id);
+  const sys = renderedSystem(raw); // token notes with {{contrast …}} computed
+  const prose = (text) => renderClaims(raw, text).text;
+  const read = (rel) => prose(fs.readFileSync(sys.file(rel), 'utf8'));
   const m = sys.meta, out = path.join(DIST_DIR, id);
   fs.rmSync(out, { recursive: true, force: true });
   const stampCss = `/* ${E.stamp(sys)} */\n`;
   const cssName = E.baseName(m.files.componentCss);
-  const comps = components(sys);
+  const comps = components(sys).map((c) => ({ ...c, readme: prose(c.readme) }));
 
   // 1. package: what sites and apps consume
   const pkg = path.join(out, 'package');
@@ -46,10 +50,10 @@ export function build(id, { quiet = false } = {}) {
   // 2. skill: the folder Claude reads
   if (m.skill) {
     const sk = path.join(out, 'skill', m.skill.name);
-    writeFile(path.join(sk, 'SKILL.md'), E.renderTemplate(fs.readFileSync(sys.file(m.skill.template), 'utf8'), {
+    writeFile(path.join(sk, 'SKILL.md'), E.renderTemplate(read(m.skill.template), {
       version: m.version, artifactUrl: m.artifact?.url || '(non pubblicato)', sourceDir: tilde(sys.dir), changelog: changelogEntries(sys),
     }));
-    writeFile(path.join(sk, 'references/brand-book.md'), fs.readFileSync(sys.file(m.files.brandBook), 'utf8'));
+    writeFile(path.join(sk, 'references/brand-book.md'), read(m.files.brandBook));
     writeFile(path.join(sk, 'references/tokens.md'), E.tokensMd(sys));
     if (comps.length) writeFile(path.join(sk, 'references/components.md'), E.componentsMd(sys, comps));
     for (const d of m.skill.sharedDocs || []) writeFile(path.join(sk, 'references', d), fs.readFileSync(path.join(SHARED_DOCS, d), 'utf8'));
@@ -61,7 +65,7 @@ export function build(id, { quiet = false } = {}) {
   // 3. artifact: the files of the published Design System page
   const art = path.join(out, 'artifact', 'project');
   const artFiles = {
-    'README.md': fs.readFileSync(sys.file(m.files.brandBook), 'utf8'),
+    'README.md': read(m.files.brandBook),
     'tokens.json': E.artifactTokens(sys),
     'components/bundle.css': stampCss + fs.readFileSync(sys.file(m.files.componentCss), 'utf8'),
   };
@@ -69,9 +73,9 @@ export function build(id, { quiet = false } = {}) {
   if (m.files.types) artFiles['components/index.d.ts'] = fs.readFileSync(sys.file(m.files.types), 'utf8');
   const compDir = sys.file('components');
   if (fs.existsSync(compDir)) for (const c of fs.readdirSync(compDir)) {
-    for (const f of ['README.md', 'preview.html']) { const p = path.join(compDir, c, f); if (fs.existsSync(p)) artFiles[`components/${c}/${f}`] = fs.readFileSync(p, 'utf8'); }
+    for (const f of ['README.md', 'preview.html']) { const p = path.join(compDir, c, f); if (fs.existsSync(p)) artFiles[`components/${c}/${f}`] = f === 'README.md' ? prose(fs.readFileSync(p, 'utf8')) : fs.readFileSync(p, 'utf8'); }
   }
-  for (const [g, v] of Object.entries(m.artifact?.assetGroups || {})) if (v.readme) artFiles[`assets/${g}/README.md`] = fs.readFileSync(sys.file(v.readme), 'utf8');
+  for (const [g, v] of Object.entries(m.artifact?.assetGroups || {})) if (v.readme) artFiles[`assets/${g}/README.md`] = read(v.readme);
   for (const [n, c] of Object.entries(artFiles)) writeFile(path.join(art, n), c);
   writeFile(path.join(art, 'design-system.json'), E.artifactIndex(sys, new Date().toISOString().replace(/\.\d+Z$/, 'Z')));
 
@@ -103,7 +107,7 @@ export function build(id, { quiet = false } = {}) {
     console.log(`  artifact  ${rel(art)}  (${Object.keys(artFiles).length + 1} file)`);
     if (pages.length) console.log(`  gallery   ${rel(gallery)}  (${pages.length} pagine)`);
   }
-  return { sys, out, pkg };
+  return { sys: raw, rendered: sys, out, pkg }; // raw: the sources as written, for checks
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -46,7 +46,7 @@
 
   function TextField(p) {
     var id = useId(p.id), hintId = id + '-hint', errId = id + '-err';
-    var rest = omit(p, ['label', 'hint', 'error', 'id', 'multiline', 'className', 'optionalLabel']);
+    var rest = omit(p, ['label', 'hint', 'error', 'id', 'multiline', 'className']);
     var describedBy = cx(p.hint && hintId, p.error && errId) || undefined;
     var control = h(p.multiline ? 'textarea' : 'input', Object.assign({ id: id, className: 'ap-input', 'aria-invalid': p.error ? true : undefined, 'aria-describedby': describedBy }, rest));
     return h('div', { className: cx('ap-field', p.className) },

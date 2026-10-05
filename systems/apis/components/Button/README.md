@@ -4,13 +4,13 @@
 
 Scopo: avviare un'azione. Un bottone fa qualcosa; un link porta da qualche parte (per la navigazione usa `href`, che rende un `<a>`).
 
-**Varianti**
+**Varianti** (`variant`)
 - `primary`: giallo `accent` con testo `on-accent`. Al massimo **uno per vista**, per l'azione per cui la vista esiste.
 - `secondary` (predefinito): fondo `surface-raised`, bordo `line-strong`. Azioni alternative.
 - `tertiary`: senza fondo né bordo. Azioni a bassa enfasi, barre degli strumenti, "Annulla".
 - `danger`: riempimento `danger`. Solo per l'azione che distrugge qualcosa, di solito dentro una conferma.
 
-**Dimensioni:** `sm` (32px, tabelle e toolbar delle app), `md` (40px, predefinito), `lg` (48px, sito e mobile).
+**Dimensioni** (`size`): `sm` (32px, tabelle e toolbar delle app), `md` (40px, predefinito), `lg` (48px, sito e mobile).
 
 **Chi lo usa fornisce:** `children` (l'etichetta), `onClick` oppure `href`, opzionali `iconStart`/`iconEnd` (nome di `Icon`), `loading`, `disabled`.
 
