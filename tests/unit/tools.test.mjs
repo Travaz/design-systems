@@ -109,3 +109,18 @@ test('check fails when a component uses a prop its types do not declare', () => 
   assert.equal(r.code, 1, r.out);
   assert.match(r.out, /la prop `ghost` è usata dal componente ma manca nei tipi/);
 });
+
+test('palette --into writes primitives that pass check and can be wired to semantics', () => {
+  fresh('fixture');
+  const r = run('palette.mjs', '#7A5BA6', '--name', 'brand', '--into', 'fixture');
+  assert.equal(r.code, 0, r.out);
+  const t = JSON.parse(fs.readFileSync(path.join(tmp, 'systems', 'fixture', 'tokens.json'), 'utf8'));
+  assert.equal(Object.keys(t.color.primitive).filter((n) => n.startsWith('brand-')).length, 11);
+  const c = run('check.mjs', 'fixture');
+  assert.equal(c.code, 0, c.out);
+  assert.match(c.out, /non usati da nessun semantico: brand-50/); // generated, not yet wired
+
+  // reusing an existing name replaces those primitives and says so
+  const again = run('palette.mjs', '#2F5BD3', '--name', 'accent', '--into', 'fixture');
+  assert.match(again.out, /Sostituiti 2 primitivi esistenti \(accent-300, accent-600\)/);
+});

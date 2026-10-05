@@ -88,6 +88,8 @@ jobs:
         with:
           name: design-systems-${{ github.sha }}
           path: |
+            dist/index.html
+            dist/*/specimen.html
             dist/*/package
             dist/*/skill/*.zip
           retention-days: 90

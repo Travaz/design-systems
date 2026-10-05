@@ -54,3 +54,39 @@ for (const id of listSystems()) {
     }
   });
 }
+
+// The specimen of each system and the collection index: screenshot and accessibility in every theme.
+async function openPage(page, rel, theme) {
+  const external = [];
+  await page.route(/^(https?|wss?):/, (route) => { external.push(route.request().url()); return route.abort(); });
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.emulateMedia({ colorScheme: theme === 'dark' ? 'dark' : 'light', reducedMotion: 'reduce' });
+  await page.goto(pathToFileURL(path.join(DIST_DIR, rel)).href, { waitUntil: 'networkidle' });
+  await page.evaluate((t) => { document.documentElement.dataset.theme = t; }, theme);
+  await page.evaluate(() => document.fonts.ready);
+  expect(external, `richieste esterne:\n${external.join('\n')}`).toEqual([]);
+}
+async function audit(page) {
+  const { violations } = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+  const report = violations.map((v) => `${v.id} (${v.impact}): ${v.help}\n    ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join('\n    ')}`);
+  expect(report, report.join('\n')).toEqual([]);
+}
+
+for (const id of listSystems()) {
+  const sys = loadSystem(id);
+  for (const theme of themes(sys)) {
+    test(`${sys.meta.name} · specimen · ${theme}`, async ({ page }) => {
+      await openPage(page, `${id}/specimen.html`, theme);
+      await expect(page).toHaveScreenshot([id, `specimen-${theme}.png`], { fullPage: true });
+      await audit(page);
+    });
+  }
+}
+
+for (const scheme of ['light', 'dark']) {
+  test(`indice della raccolta · ${scheme}`, async ({ page }) => {
+    await openPage(page, 'index.html', scheme);
+    await expect(page).toHaveScreenshot([`index-${scheme}.png`], { fullPage: true });
+    await audit(page);
+  });
+}

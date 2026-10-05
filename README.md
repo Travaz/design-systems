@@ -15,12 +15,30 @@ npm run new -- tundra "Tundra"     # crea un nuovo sistema dal modello
 npm run check -- apis              # controlla un sistema (senza id: tutti)
 npm run build -- apis              # genera dist/apis/ senza installare nulla
 npm run release -- apis            # controlla, installa la skill, aggiorna i siti
+npm run palette -- "#F7BE16" --name pollen --at 400 --hue-shift -20   # scala OKLCH da un colore
 npm test                           # test degli strumenti + check di tutti i sistemi (anche in CI)
 npm run test:visual                # screenshot e accessibilità della galleria (Playwright)
 npm run test:visual:update         # rigenera gli screenshot di riferimento dopo un cambio voluto
 ```
 
 Gli strumenti non hanno dipendenze. Solo i test visivi usano Playwright e axe: `npm install` e, la prima volta, `npx playwright install chromium`.
+
+## Creare un nuovo sistema
+
+1. `npm run new -- tundra "Tundra"`: crea `systems/tundra/` dal modello, già conforme ai controlli.
+2. Scegli il colore di partenza e genera le scale:
+
+```bash
+npm run palette -- "#2F6F62" --name moss --light "#FBFAF7" --dark "#121413"
+```
+
+   Il comando crea 11 gradini in OKLCH, con luminosità percettivamente uniforme, il colore di partenza tenuto esatto e il croma che cala verso gli estremi. Per ogni gradino indica il contrasto sui tuoi fondi e cosa può fare: testo su chiaro, testo su scuro, bordo, fondo per testo scuro o bianco. `--at 400` fissa il gradino del colore di partenza; `--hue-shift -20` gira la tinta verso i gradini scuri (i gialli che scuriscono verso l'ambra); `--into tundra` scrive i primitivi direttamente nel sistema e avvisa se ne sostituisce di esistenti.
+3. Collega i semantici ai gradini giusti in `tokens.json`, scrivi `docs/brand-book.md`, poi `npm run check -- tundra`.
+4. Guarda il risultato in `dist/tundra/specimen.html` e nella galleria, e lancia `npm run release -- tundra`.
+
+## Specimen e indice
+
+Il build genera per ogni sistema `dist/<id>/specimen.html`: colori semantici nei due temi, contrasto misurato di ogni coppia dichiarata (✓ o ✗, con campione di testo o di bordo secondo la soglia), primitivi, scala tipografica, spazi, raggi ed elevazione. `dist/index.html` raccoglie tutti i sistemi con la loro palette. Entrambe le pagine sono coperte dai test visivi e da axe.
 
 ## Com'è fatto un sistema
 

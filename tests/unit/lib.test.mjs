@@ -5,6 +5,7 @@ import { contrast, parseColor } from '../../tools/lib/color.mjs';
 import { fluid, typeSize, loadSystem, listSystems, semantics, themes } from '../../tools/lib/system.mjs';
 import { tokensCss, dtcg, artifactTokens, tailwind } from '../../tools/lib/emit.mjs';
 import { renderClaims } from '../../tools/lib/docs.mjs';
+import { hexToOklch, oklchToHex, scale, roles, STEPS } from '../../tools/lib/oklch.mjs';
 
 test('contrast: WCAG reference values', () => {
   assert.equal(contrast('#000000', '#FFFFFF').toFixed(2), '21.00');
@@ -40,6 +41,31 @@ test('renderClaims: lowest ratio across pairs and themes, floored, never rounded
   assert.equal(renderClaims(sys, '{{contrast ink on bg light}}').text, '21.0:1');
   assert.equal(renderClaims(sys, '{{contrast ink on bg}}').text, '4.5:1'); // dark: white on #767676 = 4.54
   assert.equal(renderClaims(sys, 'x {{contrast ink on nope}}').errors.length, 1);
+});
+
+test('oklch: hex round-trips and known values', () => {
+  for (const h of ['#F7BE16', '#1A1612', '#2F55A4', '#FFFFFF', '#000000', '#7A5BA6']) assert.equal(oklchToHex(hexToOklch(h)), h);
+  const white = hexToOklch('#FFFFFF');
+  assert.ok(Math.abs(white.L - 1) < 1e-3 && white.C < 1e-3);
+});
+
+test('palette: 11 valid steps, lightness strictly decreasing, seed kept exactly', () => {
+  for (const [seed, at] of [['#F7BE16', 400], ['#2F55A4', undefined], ['#3D6B1F', 600], ['#EEEEEE', undefined]]) {
+    const s = scale(seed, { at, hueShift: -20 });
+    assert.deepEqual(s.map((x) => x.step), STEPS);
+    s.forEach((x) => assert.match(x.hex, /^#[0-9A-F]{6}$/));
+    for (let i = 1; i < s.length; i++) assert.ok(s[i].L < s[i - 1].L, `${seed}: step ${s[i].step} not darker than ${s[i - 1].step}`);
+    assert.ok(s.some((x) => x.seed && x.hex === seed.toUpperCase()), `${seed} kept`);
+    if (at) assert.equal(s.find((x) => x.seed).step, at);
+  }
+  assert.throws(() => scale('#F7BE16', { at: 450 }));
+});
+
+test('palette: roles follow WCAG thresholds', () => {
+  assert.deepEqual(roles('#000000').roles, ['testo su chiaro', 'fondo per testo bianco']); // 1.1:1 on #121212: not even a border
+  assert.deepEqual(roles('#FFFFFF').roles, ['testo su scuro', 'fondo per testo scuro']);
+  assert.ok(roles('#767676').roles.includes('testo su chiaro'));
+  assert.ok(!roles('#777777').roles.includes('testo su chiaro'));
 });
 
 for (const id of listSystems()) {

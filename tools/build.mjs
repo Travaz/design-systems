@@ -2,9 +2,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { ROOT, pickSystems, loadSystem, DIST_DIR, SHARED_DOCS, writeFile, copyDir, readIf, changelogEntries, tilde, rel } from './lib/system.mjs';
+import { ROOT, listSystems, pickSystems, loadSystem, DIST_DIR, SHARED_DOCS, writeFile, copyDir, readIf, changelogEntries, tilde, rel } from './lib/system.mjs';
 import * as E from './lib/emit.mjs';
 import { renderClaims, renderedSystem } from './lib/docs.mjs';
+import { specimenHtml, indexHtml } from './lib/specimen.mjs';
 
 // The gallery is offline: React 18 UMD comes from node_modules (npm install) and is copied next to it.
 const REACT_UMD = ['react/umd/react.production.min.js', 'react-dom/umd/react-dom.production.min.js'];
@@ -112,16 +113,27 @@ export function build(id, { quiet = false } = {}) {
     writeFile(path.join(gallery, 'pages.json'), JSON.stringify(pages) + '\n');
   }
 
+  // 5. specimen: colours, contrast, type, space and shape on one page
+  writeFile(path.join(out, 'specimen.html'), specimenHtml(sys, { cssName }));
+
   if (!quiet) {
     console.log(`✔ ${m.name} ${m.version}`);
     console.log(`  package   ${rel(pkg)}  (${Object.keys(files).length} file${m.skill?.assets?.logo ? ' + logo' : ''})`);
     if (m.skill) console.log(`  skill     ${rel(path.join(out, 'skill', m.skill.name))}  + .zip`);
     console.log(`  artifact  ${rel(art)}  (${Object.keys(artFiles).length + 1} file)`);
     if (pages.length) console.log(`  gallery   ${rel(gallery)}  (${pages.length} pagine)`);
+    console.log(`  specimen  ${rel(path.join(out, 'specimen.html'))}`);
   }
   return { sys: raw, rendered: sys, out, pkg }; // raw: the sources as written, for checks
 }
 
+/** dist/index.html: every system of the collection with its colours and links. */
+export function buildIndex() {
+  writeFile(path.join(DIST_DIR, 'index.html'), indexHtml(listSystems().map((id) => renderedSystem(loadSystem(id)))));
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   for (const id of pickSystems(process.argv.slice(2))) build(id);
+  buildIndex();
+  console.log(`  indice    ${rel(path.join(DIST_DIR, 'index.html'))}`);
 }
