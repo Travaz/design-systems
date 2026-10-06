@@ -136,3 +136,41 @@ test('build still produces gallery and artifact where zip is not installed (the 
   assert.ok(fs.existsSync(path.join(tmp, 'dist', 'fixture', 'artifact', 'project', 'tokens.json')));
   assert.ok(fs.existsSync(path.join(tmp, 'dist', 'fixture', 'specimen.html')));
 });
+
+test('check fails on a skill that would not import (description over 1024 characters, reserved name)', () => {
+  fresh('broken');
+  edit('broken', 'skill/SKILL.md', (s) => s.replace('AGGIORNA', 'x'.repeat(1100) + ' AGGIORNA'));
+  let r = run('check.mjs', 'broken');
+  assert.equal(r.code, 1, r.out);
+  assert.match(r.out, /skill: description di \d+ caratteri \(massimo 1024\)/);
+
+  fresh('broken');
+  edit('broken', 'system.json', (s) => s.replace('"broken-design-system"', '"claude-broken"'));
+  edit('broken', 'skill/SKILL.md', (s) => s.replace(/^name: .*$/m, 'name: claude-broken'));
+  r = run('check.mjs', 'broken');
+  assert.equal(r.code, 1, r.out);
+  assert.match(r.out, /parola riservata/);
+});
+
+test('export saves <skill>-<version>.zip with the skill folder at its root', () => {
+  fresh('fixture');
+  const out = path.join(tmp, 'exported');
+  const r = run('export.mjs', 'fixture', '--out', out);
+  assert.equal(r.code, 0, r.out);
+  const version = JSON.parse(fs.readFileSync(path.join(tmp, 'systems', 'fixture', 'system.json'), 'utf8')).version;
+  const zip = path.join(out, `fixture-design-system-${version}.zip`);
+  assert.ok(fs.existsSync(zip), r.out);
+  const list = spawnSync('unzip', ['-Z1', zip], { encoding: 'utf8' }).stdout.split('\n');
+  assert.ok(list.includes('fixture-design-system/SKILL.md'), list.join('\n'));
+  assert.ok(list.every((f) => !f || f.startsWith('fixture-design-system/')));
+});
+
+test('export refuses a failing system and writes nothing', () => {
+  fresh('broken');
+  edit('broken', 'css/broken.css', (s) => s + '\n}\n');
+  const out = path.join(tmp, 'exported-broken');
+  const r = run('export.mjs', 'broken', '--out', out);
+  assert.equal(r.code, 1, r.out);
+  assert.match(r.out, /export annullato/);
+  assert.ok(!fs.existsSync(out));
+});

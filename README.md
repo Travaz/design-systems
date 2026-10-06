@@ -15,6 +15,7 @@ npm run new -- tundra "Tundra"     # crea un nuovo sistema dal modello
 npm run check -- apis              # controlla un sistema (senza id: tutti)
 npm run build -- apis              # genera dist/apis/ senza installare nulla
 npm run release -- apis            # controlla, installa la skill, aggiorna i siti
+npm run export -- apis             # controlla e salva la skill in ~/Downloads (--out <cartella> per cambiarla)
 npm run palette -- "#F7BE16" --name pollen --at 400 --hue-shift -20   # scala OKLCH da un colore
 npm test                           # test degli strumenti + check di tutti i sistemi (anche in CI)
 npm run test:visual                # screenshot e accessibilità della galleria (Playwright)
@@ -69,6 +70,16 @@ dist/<id>/
 
 Un sito usa un sistema in due modi: lo elenca in `consumers` dentro `system.json` (il rilascio copia i file e il controllo segnala copie vecchie e token inesistenti nel suo CSS), oppure installa il pacchetto con `npm install ../design-systems/dist/<id>/package`.
 
+## Esportare una skill
+
+`npm run export -- apis` esegue i controlli e salva `apis-design-system-<versione>.zip` in `~/Downloads` (oppure nella cartella indicata con `--out`). Lo zip contiene la cartella della skill con `SKILL.md`. La stessa copia è allegata a ogni GitHub Release.
+
+- **claude.ai e app desktop:** Impostazioni → Capacità → Skill → carica lo zip.
+- **Claude Code su un altro computer:** estrai lo zip in `~/.claude/skills/`, oppure in `.claude/skills/` dentro un progetto.
+- **API:** carica la cartella con l'endpoint Skills.
+
+`check` verifica che la skill si possa importare: `name` fatto di minuscole, cifre e trattini, al massimo 64 caratteri, senza parole riservate e uguale al nome della cartella; `description` presente, al massimo 1024 caratteri, senza `<` o `>`; nel frontmatter solo chiavi ammesse.
+
 ## Numeri nei testi
 
 Nei testi (brand book, schede dei componenti, note dei token) i rapporti di contrasto non si scrivono a mano: si scrive un segnaposto e il build mette il valore vero, il più basso tra tutte le coppie e tutti i temi, arrotondato per difetto.
@@ -93,6 +104,7 @@ Le soglie WCAG (4.5:1, 3:1, 7:1) restano scritte, perché sono regole e non misu
 - **Prop dei componenti**: ogni prop dichiarata nei tipi è usata dal componente e documentata nella sua scheda, e viceversa.
 - **Siti che lo usano**: copie allineate alla versione, nessun token inesistente nel loro CSS (variabili locali dichiarate con `/* ds-lint allow: --x --y */`).
 - **Rilascio**: la prima voce del changelog corrisponde alla versione.
+- **Skill**: il frontmatter di `SKILL.md` rispetta il formato richiesto per l'importazione (nome, lunghezza della descrizione, chiavi ammesse).
 
 ## Come testare
 

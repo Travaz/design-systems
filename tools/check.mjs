@@ -5,9 +5,10 @@ import { filesUnder, pickSystems, NAME_RE, themes, primitives, semantics, isPrim
 import { parseColor, contrast } from './lib/color.mjs';
 import { build, components } from './build.mjs';
 import { proseSources, renderClaims, lintReferences, lintProps } from './lib/docs.mjs';
+import { lintSkill } from './lib/skill.mjs';
 
 export function check(id) {
-  const { sys, pkg } = build(id, { quiet: true });
+  const { sys, pkg, out } = build(id, { quiet: true });
   const errors = [], warnings = [];
   const E = (where, msg) => errors.push(`${where}: ${msg}`);
   const W = (where, msg) => warnings.push(`${where}: ${msg}`);
@@ -90,6 +91,7 @@ export function check(id) {
   /* 6. release hygiene */
   const firstEntry = (sys.changelog.match(/^- .*?· ([\d.]+) ·/m) || [])[1];
   if (firstEntry !== sys.meta.version) W('CHANGELOG.md', `la prima voce è ${firstEntry || 'assente'}, ma system.json dice ${sys.meta.version}`);
+  if (sys.meta.skill) lintSkill(path.join(out, 'skill', sys.meta.skill.name)).forEach((p) => E('skill', p));
 
   /* 7. documentation: computed claims resolve, named tokens and classes exist, props agree */
   for (const [label, text] of proseSources(sys)) {
