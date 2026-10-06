@@ -1,7 +1,7 @@
 {
   "id": "apis",
   "name": "Apis",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Design system ispirato all'ape: giallo polline, nero carapace, bianco cera. Prima applicazione: la landing page personale di travaz.dev.",
   "language": "it",
   "namespace": "Apis",

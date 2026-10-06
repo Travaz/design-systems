@@ -1,4 +1,4 @@
-Apis è il design system di travaz.dev: il sito pubblico e tutte le app interne usano gli stessi token, le stesse regole e gli stessi componenti. Prende i colori dall'ape e dal suo mondo: il giallo del polline, il nero del carapace, il bianco della cera, e poi i fiori e le resine che l'ape visita. Prende l'ordine dall'alveare: una griglia regolare, poche forme ripetute bene, ogni cella con uno scopo.
+Apis è il design system di travaz.dev: la homepage, le pagine personali e gli strumenti pubblicati sullo stesso dominio, come la Wishlist, usano gli stessi token, le stesse regole e gli stessi componenti. Le altre app hanno ciascuna il proprio design system. Prende i colori dall'ape e dal suo mondo: il giallo del polline, il nero del carapace, il bianco della cera, e poi i fiori e le resine che l'ape visita. Prende l'ordine dall'alveare: una griglia regolare, poche forme ripetute bene, ogni cella con uno scopo.
 
 ## Principi
 
@@ -55,7 +55,7 @@ Regole:
 - Componenti a dimensione fissa (bottoni, input): l'altezza viene da `size-control-*`, il padding si adatta. Componenti guidati dal contenuto (tabelle, card): il padding è fisso, l'altezza segue il contenuto.
 - I bordi sono inclusi nelle misure (`box-sizing: border-box`).
 - Sito: griglia a 12 colonne, contenuto massimo `size-content` (1200px). Margini laterali `space-4` su mobile, `space-6` su tablet, `space-8` su desktop. Tra le sezioni `space-16` (mobile `space-12`).
-- App interne: layout fluido, sidebar più area di lavoro; tra i gruppi `space-8`, tra le sezioni `space-12`. Le tabelle dense possono scorrere orizzontalmente nel loro contenitore, mai la pagina.
+- Strumenti: layout fluido, sidebar più area di lavoro; tra i gruppi `space-8`, tra le sezioni `space-12`. Le tabelle dense possono scorrere orizzontalmente nel loro contenitore, mai la pagina.
 - Breakpoint: `bp-sm` 640, `bp-md` 768, `bp-lg` 1024, `bp-xl` 1280. Progetta mobile-first.
 
 ## Forme ed elevazione
@@ -156,9 +156,9 @@ Undici componenti React in `window.Apis`, più le classi `ap-*` per chi non usa 
 - Dati: `DataTable`
 - Base: `Icon`, `Motion` (pattern di movimento e script `apis-motion.js`)
 
-### Sito e app interne
+### Sito e strumenti
 
-Sono lo stesso sistema con due trattamenti. Il **sito** può usare `display` e `headline`, `body-lg`, spazi da `space-16` e `space-24`, `radius-lg`, il giallo in grandi campi. Le **app interne** sono dense e silenziose: titoli da `heading`, testo `body-sm` nelle tabelle, controlli `sm`, un solo bottone primario per vista, il giallo solo per l'azione principale e la selezione. Ogni app interna non di produzione mostra `EnvironmentBanner` in cima.
+Sono lo stesso sistema con due trattamenti. Il **sito** può usare `display` e `headline`, `body-lg`, spazi da `space-16` e `space-24`, `radius-lg`, il giallo in grandi campi. Gli **strumenti** sono densi e silenziosi: titoli da `heading`, testo `body-sm` nelle tabelle, controlli `sm`, un solo bottone primario per vista, il giallo solo per l'azione principale e la selezione. Ogni strumento non di produzione mostra `EnvironmentBanner` in cima.
 
 ### Aggiungere o cambiare un componente
 

@@ -2,6 +2,7 @@
 
 Una riga per rilascio: data · versione · cosa è cambiato. Le versioni seguono semver (vedi `governance.md`).
 
+- 2026-10-06 · 1.4.1 · Campo d'uso: Apis vale per travaz.dev (sito e strumenti dello stesso dominio), non più per tutte le app interne; ogni altra app ha il suo sistema nella raccolta. La skill lo dice nella descrizione e chiede quale sistema usare fuori da travaz.dev. Il trattamento "app interne" si chiama ora "strumenti".
 - 2026-10-05 · 1.4.0 · `DataTable`: nuova opzione di colonna `nowrap` (classe `is-nowrap`) per identificativi, date e codici, che sul telefono andavano a capo sul trattino ("2026-" / "116").
 - 2026-10-05 · 1.3.0 · Caratteri inclusi: Bricolage Grotesque, Instrument Sans e JetBrains Mono in WOFF2 (latino e latino esteso, licenza OFL) in `fonts/`, dichiarati con `@font-face` in `tokens.css`. Nessuna richiesta a Google Fonts: privacy dei visitatori, caratteri disponibili prima, test che non dipendono dalla rete.
 - 2026-10-05 · 1.2.1 · Documentazione verificata: i rapporti di contrasto nel brand book e nelle note dei token sono calcolati dal build (`{{contrast …}}`); corregge quattro valori dichiarati che non erano veri (bordi 3.4:1, non 3.5; `accent-text` 5.3:1, non 5.4; testo sul giallo 10.5:1; giallo sul fondo 1.6:1). Documentate le prop `variant`, `size`, `as`, `titleAs`; rimossa la prop morta `optionalLabel`.

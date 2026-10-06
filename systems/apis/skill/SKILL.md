@@ -1,11 +1,11 @@
 ---
 name: apis-design-system
-description: Apis, il design system personale di Daniel Travaglia (travaz.dev), ispirato all'ape — giallo polline, nero carapace, bianco cera e i colori naturali del prato. Usala ogni volta che progetti, costruisci, ristili o revisioni una UI per travaz.dev o per qualsiasi app interna di Daniel; quando scrivi HTML/CSS/Tailwind/React/Vue o template server-side per queste interfacce; quando crei mockup, landing page, dashboard, moduli o tabelle; e quando l'utente nomina "Apis", "il mio design system", "il mio stile", "travaz", "brand", "token", "palette dell'ape" o classi `ap-`, anche se non nomina la skill. Use this skill for any UI work on travaz.dev or Daniel's internal apps (website, dashboard, admin panel, form, component, mockup, restyle, design review) even when the request is in English.
+description: Apis, il design system del sito personale di Daniel Travaglia, travaz.dev, ispirato all'ape: giallo polline, nero carapace, bianco cera e i colori naturali del prato. Usala solo per le pagine e gli strumenti pubblicati su travaz.dev (homepage, pagine personali, Wishlist e altre pagine del dominio): quando ne progetti, costruisci, ristili o revisioni la UI in HTML, CSS, Tailwind o React, e quando l'utente nomina "Apis", "travaz.dev", "il mio sito", "palette dell'ape" o classi `ap-`. Non usarla per altre app o altri progetti: ognuno ha il suo design system nella raccolta design-systems, e se non ne ha uno chiedi quale usare invece di applicare Apis. Use it only for travaz.dev pages and tools, also when the request is in English; never for other apps.
 ---
 
 # Apis — design system di travaz.dev
 
-Apis è la linea guida unica per il sito travaz.dev e per tutte le app interne. Colori dall'ape (giallo `accent`, nero `carapace`, bianco cera `surface`), ordine dall'alveare (griglia da 8, poche forme ripetute bene), principi da designsystems.com.
+Apis è la linea guida del sito travaz.dev e degli strumenti pubblicati sullo stesso dominio, come la Wishlist. Le altre app e gli altri progetti hanno ciascuno il proprio design system nella raccolta: se il lavoro non riguarda travaz.dev, non applicare Apis e chiedi quale sistema usare. Colori dall'ape (giallo `accent`, nero `carapace`, bianco cera `surface`), ordine dall'alveare (griglia da 8, poche forme ripetute bene), principi da designsystems.com.
 
 Versione {{version}}. Design system pubblicato (riferimento visivo con anteprime live): {{artifactUrl}}
 
@@ -28,11 +28,11 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 | `assets/apis-motion.js` | Pattern di movimento: reveal allo scroll, sequenze, cambio tema. Va in `<head>` senza `defer`. |
 | `assets/tokens.json` | Token in formato W3C DTCG (Style Dictionary, Figma variables, Tokens Studio). |
 | `assets/logo/` | `apis-mark.svg` (colore) e `apis-mark-mono.svg` (un inchiostro). |
-| `assets/templates/` | `website.html` (trattamento sito) e `app-shell.html` (trattamento app interna). Si aspettano accanto `tokens.css`, `apis.css` e `apis-mark.svg`. |
+| `assets/templates/` | `website.html` (trattamento sito) e `app-shell.html` (trattamento strumento). Si aspettano accanto `tokens.css`, `apis.css` e `apis-mark.svg`. |
 
 ## Flusso di lavoro
 
-1. **Capisci il contesto.** Sito pubblico o app interna? I due trattamenti sono descritti in `brand-book.md` → "Sito e app interne". Guarda lo stack del progetto (Tailwind? React? template server-side?).
+1. **Capisci il contesto.** Il progetto è travaz.dev? Se no, fermati: Apis non è il suo sistema. Se sì: pagina del sito o strumento? I due trattamenti sono descritti in `brand-book.md` → "Sito e strumenti". Guarda lo stack del progetto (Tailwind? React? template server-side?).
 2. **Controlla se Apis è già installato** nel progetto (cerca `--accent`, `ap-btn`, `tokens.css`). Se c'è, usa quello che c'è e non duplicarlo.
 3. **Installa i token se mancano.** Copia `assets/tokens.css` e `assets/apis.css` nella cartella degli stili; copia anche la cartella `assets/fonts/` accanto a `tokens.css` (i caratteri sono inclusi: non aggiungere link a Google Fonts). Con Tailwind v4 aggiungi anche `assets/tailwind.css` dopo `tokens.css`. Con React puoi usare i componenti di `assets/apis-react.js` o riscriverli come moduli seguendo le stesse classi.
 4. **Costruisci solo con token semantici** (`surface`, `ink`, `accent`, `line`, `space-*`, `radius-*`…). Mai valori esadecimali o pixel scritti a mano, mai primitivi (`pollen-400`, `comb-200`) in un componente. Se un token manca, segui `governance.md`.
@@ -48,7 +48,7 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 - Bricolage Grotesque solo per `display`/`headline`/`title`. Tutto il resto in Instrument Sans. Numeri in tabelle e KPI in JetBrains Mono con `tabular-nums`.
 - Gli stati hanno sempre **icona + parola + colore**, mai solo il colore.
 - Il focus è sempre visibile: `outline: 2px solid var(--focus); outline-offset: 2px`.
-- La striscia gialla e nera è il segnale di attenzione: solo `EnvironmentBanner` e `ap-stripe`. Le app interne non di produzione mostrano sempre `EnvironmentBanner`.
+- La striscia gialla e nera è il segnale di attenzione: solo `EnvironmentBanner` e `ap-stripe`. Gli strumenti non di produzione mostrano sempre `EnvironmentBanner`.
 - Entrambi i temi, sempre: niente colori che esistono solo in chiaro o solo in scuro; `body` ha `background: var(--surface)`.
 - Icone Lucide (24px, tratto 2px, arrotondate), un colore con `currentColor`; icona senza testo = `aria-label`.
 - Niente emoji nell'interfaccia, niente punti esclamativi, niente gradienti viola-blu, niente card con bordo colorato a sinistra.
