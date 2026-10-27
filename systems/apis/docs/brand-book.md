@@ -46,7 +46,9 @@ Regole:
 - Il testo predefinito è `body` (16/24). Nelle app dense si scende a `body-sm` (14/20), mai sotto 12px.
 - `display-xl` è la frase unica di una landing (un nome, un prodotto): una volta per sito, mai nelle app. `display` al massimo una volta per pagina. Le app partono da `heading` come titolo di pagina.
 - Tutte le interlinee sono multipli di 4. Le righe di testo lungo non superano `size-prose` (70 caratteri).
-- I titoli hanno `text-wrap: balance`. Gli `overline` sono in maiuscolo con spaziatura 0.08em e non superano tre parole.
+- I titoli hanno `text-wrap: balance`. Gli `overline` sono in maiuscolo con spaziatura 0.08em e non superano tre parole; al massimo uno per schermata, e solo quando dà un contesto che il titolo non ha: sopra ogni card diventano rumore.
+- Il monospazio è per codice e numeri in colonna, mai per frasi o etichette.
+- Nelle app native i caratteri cambiano ruolo: vedi "App nativa".
 - I quattro stili display sono **fluidi**: crescono in modo continuo da 360px a 1280px di larghezza (`display-xl` 48/52 → 88/88, `display` 40/44 → 56/60, `headline` 32/40 → 40/48, `title` 28/36 → 32/40). Entrambi gli estremi stanno sulla griglia da 4. Usa le classi `ap-display-xl`, `ap-display`, `ap-headline`, `ap-title` o `font: var(--type-…)`, mai dimensioni scritte a mano o media query per i titoli.
 
 ## Spazio, griglia e layout
@@ -143,7 +145,7 @@ Giallo, nero ed esagono sono riconoscibili proprio perché sono pochi. Usati ovu
 
 ## Iconografia
 
-- Usa le icone di Lucide (open source): griglia 24px, tratto 2px, terminali e angoli arrotondati. È lo stesso stile delle icone interne di Apis.
+- Sul web usa le icone di Lucide (open source): griglia 24px, tratto 2px, terminali e angoli arrotondati. È lo stesso stile delle icone interne di Apis. Nelle app native si usano gli SF Symbols (vedi "App nativa").
 - Dimensioni: `size-icon-sm` (16) nei controlli piccoli e accanto a `body-sm`, `size-icon-md` (24) di default, `size-icon-lg` (32) per funzioni e stati vuoti. Non scendere sotto 16px.
 - Un solo colore per icona, ereditato con `currentColor`. Due colori al massimo solo sul sito; tre o più è un'illustrazione.
 - Nomi per ciò che si vede, in inglese e con trattini: `circle-check`, `hexagon-plus`. Varianti con la barra: `hexagon/filled`.
@@ -185,7 +187,23 @@ Undici componenti React in `window.Apis`, più le classi `ap-*` per chi non usa 
 
 ### Sito e strumenti
 
-Sono lo stesso sistema con due trattamenti. Il **sito** può usare `display` e `headline`, `body-lg`, spazi da `space-16` e `space-24`, `radius-lg`, il giallo in grandi campi. Gli **strumenti** sono densi e silenziosi: titoli da `heading`, testo `body-sm` nelle tabelle, controlli `sm`, un solo bottone primario per vista, il giallo solo per l'azione principale e la selezione. Ogni strumento non di produzione mostra `EnvironmentBanner` in cima.
+Sono lo stesso sistema con tre trattamenti: sito, strumenti e app nativa. Il **sito** può usare `display` e `headline`, `body-lg`, spazi da `space-16` e `space-24`, `radius-lg`, il giallo in grandi campi. Gli **strumenti** sono densi e silenziosi: titoli da `heading`, testo `body-sm` nelle tabelle, controlli `sm`, un solo bottone primario per vista, il giallo solo per l'azione principale e la selezione. Ogni strumento non di produzione mostra `EnvironmentBanner` in cima.
+
+### App nativa
+
+Il trattamento delle app iOS (oggi Gym Harness). Su iPhone la piattaforma decide struttura, navigazione e controlli; Apis porta il marchio con la tinta, i titoli e il movimento. Le regole vengono dal riferimento iOS e dall'audit nativo di Impeccable e dalle schermate di app e dal registro dei "tells" di Taste Skill: un'app che sembra un sito portato su iPhone non ispira fiducia.
+
+- **Caratteri.** Il testo dell'interfaccia è SF Pro con gli stili di sistema e Dynamic Type (corpo 17 pt, minimo 11 pt). Bricolage Grotesque solo nei momenti display: titoli grandi della navigazione, il titolo del passo in corso, il numero eroe (timer, carico), sempre scalato con Dynamic Type. I numeri usano le cifre tabulari di SF Pro; niente JetBrains Mono nell'app.
+- **Icone.** SF Symbols, allineati al testo e scalati con lui.
+- **Colore.** Fondo `app-ground` quasi neutro, card e righe `app-raised` un tono sopra, controlli secondari `app-fill`. Il giallo `accent` è l'unica tinta: azione principale, selezione, progresso. Testi e stati sono quelli di Apis.
+- **Superfici.** Nessun bordo sulle card: separa il tono. `radius-xl` per le card, come le liste raggruppate di iOS; capsule per bottoni e pillole; raggi concentrici dentro una card. Il bordo da 1px resta solo dove un controllo ne ha bisogno per farsi riconoscere.
+- **Bottoni.** Capsule. Primario: riempimento `accent`, testo `on-accent`, senza bordo. Secondario: `app-fill` e testo `ink`. Terziario: solo testo. Almeno 44 pt di altezza; le azioni da usare con le mani sudate 56 pt. Premuto: `motion-press-scale`.
+- **Etichette.** Nessuna etichetta maiuscola sopra le card. Un'informazione sta in un posto solo: il titolo non si ripete nel testo, un numero non si ripete nella legenda.
+- **Controlli di sistema.** Tab bar per le sezioni, stack per la gerarchia, fogli per i compiti brevi; switch, stepper, picker, menu, azioni a scorrimento di sistema; liste raggruppate per impostazioni ed elenchi; Liquid Glass su barre e controlli di navigazione, contenuto sui colori Apis.
+- **Una domanda per schermata.** Ogni schermata risponde prima a una domanda ("cosa faccio oggi?"): la risposta è il blocco più grande, con la sua azione. Il dato da notare (una pausa lunga, un sonno scarso, una fase nuova) è la riga sotto il titolo della risposta, non una card a parte. Il resto è un rimando di una riga o vive in un'altra schermata.
+- **Verifica.** Screenshot dal simulatore in chiaro, in scuro e con Dynamic Type grande: nessun testo troncato o sovrapposto.
+
+In SwiftUI le app generano i token da `tokens.json` (Gym Harness: `tools/gen_apis_tokens.py`), con `surface`, `surface-raised`, `surface-sunken` e `surface-hover` presi da `app-ground`, `app-raised` e `app-fill`.
 
 ### Aggiungere o cambiare un componente
 
