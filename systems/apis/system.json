@@ -1,8 +1,8 @@
 {
   "id": "apis",
   "name": "Apis",
-  "version": "1.4.1",
-  "description": "Design system ispirato all'ape: giallo polline, nero carapace, bianco cera. Prima applicazione: la landing page personale di travaz.dev.",
+  "version": "1.5.0",
+  "description": "Design system ispirato all'ape: giallo polline, nero carapace, bianco cera. Usato da travaz.dev e dall'app iPhone Gym Harness.",
   "language": "it",
   "namespace": "Apis",
   "classPrefix": "ap-",

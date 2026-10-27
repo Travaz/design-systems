@@ -2,6 +2,7 @@
 
 Una riga per rilascio: data · versione · cosa è cambiato. Le versioni seguono semver (vedi `governance.md`).
 
+- 2026-10-27 · 1.5.0 · Movimento più preciso, da Emil Kowalski (animations.dev), Impeccable e Taste Skill: token `motion-press-scale` (0.97), `motion-enter-scale` (0.96), `motion-rise` (16px), `motion-blur` (2px); regole su frequenza, velocità, uscite, niente rimbalzi, interruzione, origine e riduzione del movimento; tabella per SwiftUI. Scope esteso all'app iPhone Gym Harness. Nel `tokens.json` DTCG i token di movimento che non sono durate o curve hanno il tipo giusto (`number`, `dimension`).
 - 2026-10-06 · 1.4.1 · Campo d'uso: Apis vale per travaz.dev (sito e strumenti dello stesso dominio), non più per tutte le app interne; ogni altra app ha il suo sistema nella raccolta. La skill lo dice nella descrizione e chiede quale sistema usare fuori da travaz.dev. Il trattamento "app interne" si chiama ora "strumenti".
 - 2026-10-05 · 1.4.0 · `DataTable`: nuova opzione di colonna `nowrap` (classe `is-nowrap`) per identificativi, date e codici, che sul telefono andavano a capo sul trattino ("2026-" / "116").
 - 2026-10-05 · 1.3.0 · Caratteri inclusi: Bricolage Grotesque, Instrument Sans e JetBrains Mono in WOFF2 (latino e latino esteso, licenza OFL) in `fonts/`, dichiarati con `@font-face` in `tokens.css`. Nessuna richiesta a Google Fonts: privacy dei visitatori, caratteri disponibili prima, test che non dipendono dalla rete.

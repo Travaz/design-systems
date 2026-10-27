@@ -83,11 +83,38 @@ Il movimento di Apis è quello di un'ape che atterra: parte deciso e si posa con
 | Rise all'ingresso (`ap-rise`) | Solo l'hero | `duration-reveal`, `ease-emphasis` |
 | Cell-in, cell-open | Solo favo e ritratto dell'hero | `duration-reveal` / 1000ms, `ease-emphasis` |
 | Cambio tema | Il bottone del tema | 600ms, cerchio dal bottone, `ease-emphasis` |
+| Pressione | Bottoni, card di scelta, righe toccabili | scala `motion-press-scale` (0.97) in `duration-fast`, `ease-standard`; al rilascio torna a 1 |
+| Ingresso di un elemento | Popover, card, segno di selezione | da `motion-enter-scale` (0.96) e opacità 0, mai da scala 0; `duration-base`, `ease-standard` |
+| Sequenza di una schermata | Titolo, testo, controlli di un passo | salgono di `motion-rise` (16px) con opacità, in ordine di lettura, a passi di `duration-stagger`, massimo 5 |
+| Cambio sul posto | Un numero, un'etichetta, un'immagine che cambia | dissolvenza incrociata, `motion-blur` (2px) su ciò che esce, `duration-base` |
 
 - **Un solo momento orchestrato per pagina**: l'ingresso dell'hero. Tutto il resto è reveal discreto o feedback.
 - Il contenuto è leggibile senza JavaScript: `apis-motion.js` aggiunge `.ap-motion` a `<html>` e solo allora gli elementi partono nascosti.
 - Con `prefers-reduced-motion` lo script non attiva nulla e le durate dei token vanno a zero.
 - Niente parallax sullo scroll, niente testo animato parola per parola, niente loop vicino al testo che non si fermino al passaggio del mouse.
+- **La frequenza decide.** Ciò che si vede molte volte al giorno (liste, tab, azioni ripetute, scorciatoie da tastiera) si muove poco o niente. I momenti rari (un benvenuto, la fine di un percorso, il primo ingresso) possono prendersi `duration-reveal`.
+- **Veloce.** L'interfaccia resta sotto i 300ms; solo reveal e momento orchestrato arrivano a `duration-reveal`.
+- **Uscire costa meno che entrare.** Ciò che lascia lo schermo per sempre esce in circa il 70% della durata di ingresso, con `ease-exit`. Mai una curva che parte lenta (ease-in) per qualcosa che l'utente aspetta di vedere.
+- **Niente rimbalzi.** Nessuna curva elastica né sovraelongazione, anche con le molle (rimbalzo 0): l'ape si posa, non rimbalza.
+- **Interrompibile.** Un tocco o un gesto durante un'animazione la riprende da dove si trova; non la fa ripartire da capo.
+- **Dall'origine.** Menu e popover si aprono dal punto che li ha aperti, non dal centro.
+- **Riduzione del movimento:** resta lo stato finale. Niente spostamenti, scale o blur, solo opacità.
+
+### Nelle app native (SwiftUI)
+
+Stessi token, stesse regole. Le app iOS generano i valori da `tokens.json` (in Gym Harness: `tools/gen_apis_tokens.py` → `ApisMotion`).
+
+| Token o regola | SwiftUI |
+|---|---|
+| `ease-standard`, `ease-emphasis`, `ease-exit` con una durata | `.timingCurve(0.2, 0, 0, 1, duration:)`, `.timingCurve(0.16, 1, 0.3, 1, duration:)`, `.timingCurve(0.4, 0, 1, 1, duration:)` |
+| Gesti (trascinare, chiudere un foglio) | `.spring(duration: 0.32, bounce: 0)`: eredita la velocità del dito e resta interrompibile |
+| `motion-press-scale` | un `ButtonStyle` con `scaleEffect(configuration.isPressed ? 0.97 : 1)` |
+| `motion-rise` + `duration-stagger` | `offset(y:)` e `opacity` con ritardo `indice × 0.09`, massimo 5 passi |
+| Cambio sul posto di un numero | `.contentTransition(.numericText())` |
+| Scelta confermata | `.sensoryFeedback(.selection, trigger:)`; `.impact` solo per azioni che salvano qualcosa |
+| Riduzione del movimento | `@Environment(\.accessibilityReduceMotion)`: solo opacità |
+
+Su iOS 26 barre, tab bar e controlli di navigazione sono in Liquid Glass di sistema; contenuto, card e fogli restano sui colori Apis.
 
 ## Dosaggio del marchio
 

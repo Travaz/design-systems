@@ -65,7 +65,10 @@ export function dtcg(sys) {
   if (T.zIndex) out.zIndex = Object.fromEntries(T.zIndex.tokens.map((t) => [t.name, { $type: 'number', $value: +t.value, $description: t.usage }]));
   if (T.motion) out.motion = Object.fromEntries(T.motion.tokens.map((t) => {
     const bez = t.value.match(/cubic-bezier\(([^)]+)\)/);
-    return [t.name, bez ? { $type: 'cubicBezier', $value: bez[1].split(',').map(Number), $description: t.usage } : { $type: 'duration', $value: t.value, $description: t.usage }];
+    if (bez) return [t.name, { $type: 'cubicBezier', $value: bez[1].split(',').map(Number), $description: t.usage }];
+    if (/^\d+(\.\d+)?m?s$/.test(t.value)) return [t.name, { $type: 'duration', $value: t.value, $description: t.usage }];
+    if (/^-?\d+(\.\d+)?px$/.test(t.value)) return [t.name, { $type: 'dimension', $value: t.value, $description: t.usage }];
+    return [t.name, { $type: 'number', $value: +t.value, $description: t.usage }];
   }));
   out.fontFamily = Object.fromEntries(Object.entries(T.type.families).map(([k, v]) => [k, { $type: 'fontFamily', $value: v }]));
   out.typography = Object.fromEntries(T.type.styles.map((s) => [s.name, { $type: 'typography', $value: { fontFamily: `{fontFamily.${s.family}}`, fontSize: px(s.size), lineHeight: px(s.lineHeight), fontWeight: s.weight, letterSpacing: s.tracking }, $description: s.usage, ...(s.fluid ? { $extensions: { fluid: { minViewport: px((T.type.fluidRange || {}).min || 360), maxViewport: px((T.type.fluidRange || {}).max || 1280), fontSize: px(s.fluid.size), lineHeight: px(s.fluid.lineHeight) } } } : {}) }]));

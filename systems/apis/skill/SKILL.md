@@ -1,11 +1,11 @@
 ---
 name: apis-design-system
-description: Apis, il design system del sito personale di Daniel Travaglia, travaz.dev, ispirato all'ape: giallo polline, nero carapace, bianco cera e i colori naturali del prato. Usala solo per le pagine e gli strumenti pubblicati su travaz.dev (homepage, pagine personali, Wishlist e altre pagine del dominio): quando ne progetti, costruisci, ristili o revisioni la UI in HTML, CSS, Tailwind o React, e quando l'utente nomina "Apis", "travaz.dev", "il mio sito", "palette dell'ape" o classi `ap-`. Non usarla per altre app o altri progetti: ognuno ha il suo design system nella raccolta design-systems, e se non ne ha uno chiedi quale usare invece di applicare Apis. Use it only for travaz.dev pages and tools, also when the request is in English; never for other apps.
+description: Apis, il design system del sito personale di Daniel Travaglia, travaz.dev, ispirato all'ape: giallo polline, nero carapace, bianco cera e i colori naturali del prato. Usala per le pagine e gli strumenti pubblicati su travaz.dev (homepage, pagine personali, Wishlist e altre pagine del dominio) e per l'app iPhone Gym Harness (SwiftUI): quando ne progetti, costruisci, ristili o revisioni la UI in HTML, CSS, Tailwind, React o SwiftUI, quando ne progetti il movimento, e quando l'utente nomina "Apis", "travaz.dev", "il mio sito", "Gym Harness", "palette dell'ape" o classi `ap-`. Non usarla per altre app o altri progetti: ognuno ha il suo design system nella raccolta design-systems, e se non ne ha uno chiedi quale usare invece di applicare Apis. Use it only for travaz.dev and Gym Harness, also when the request is in English; never for other apps.
 ---
 
-# Apis — design system di travaz.dev
+# Apis — design system di travaz.dev e Gym Harness
 
-Apis è la linea guida del sito travaz.dev e degli strumenti pubblicati sullo stesso dominio, come la Wishlist. Le altre app e gli altri progetti hanno ciascuno il proprio design system nella raccolta: se il lavoro non riguarda travaz.dev, non applicare Apis e chiedi quale sistema usare. Colori dall'ape (giallo `accent`, nero `carapace`, bianco cera `surface`), ordine dall'alveare (griglia da 8, poche forme ripetute bene), principi da designsystems.com.
+Apis è la linea guida del sito travaz.dev, degli strumenti pubblicati sullo stesso dominio, come la Wishlist, e dell'app iPhone Gym Harness. Le altre app e gli altri progetti hanno ciascuno il proprio design system nella raccolta: se il lavoro non riguarda travaz.dev o Gym Harness, non applicare Apis e chiedi quale sistema usare. Colori dall'ape (giallo `accent`, nero `carapace`, bianco cera `surface`), ordine dall'alveare (griglia da 8, poche forme ripetute bene), principi da designsystems.com.
 
 Versione {{version}}. Design system pubblicato (riferimento visivo con anteprime live): {{artifactUrl}}
 
@@ -32,7 +32,7 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 
 ## Flusso di lavoro
 
-1. **Capisci il contesto.** Il progetto è travaz.dev? Se no, fermati: Apis non è il suo sistema. Se sì: pagina del sito o strumento? I due trattamenti sono descritti in `brand-book.md` → "Sito e strumenti". Guarda lo stack del progetto (Tailwind? React? template server-side?).
+1. **Capisci il contesto.** Il progetto è travaz.dev o Gym Harness? Se no, fermati: Apis non è il suo sistema. In Gym Harness (SwiftUI) i token arrivano già come `ApisColor`, `ApisSpace`, `ApisFont`, `ApisMotion`: usa quelli, e le regole del brand book valgono uguali; i passi 2–3 qui sotto riguardano il web. Se sì: pagina del sito o strumento? I due trattamenti sono descritti in `brand-book.md` → "Sito e strumenti". Guarda lo stack del progetto (Tailwind? React? template server-side?).
 2. **Controlla se Apis è già installato** nel progetto (cerca `--accent`, `ap-btn`, `tokens.css`). Se c'è, usa quello che c'è e non duplicarlo.
 3. **Installa i token se mancano.** Copia `assets/tokens.css` e `assets/apis.css` nella cartella degli stili; copia anche la cartella `assets/fonts/` accanto a `tokens.css` (i caratteri sono inclusi: non aggiungere link a Google Fonts). Con Tailwind v4 aggiungi anche `assets/tailwind.css` dopo `tokens.css`. Con React puoi usare i componenti di `assets/apis-react.js` o riscriverli come moduli seguendo le stesse classi.
 4. **Costruisci solo con token semantici** (`surface`, `ink`, `accent`, `line`, `space-*`, `radius-*`…). Mai valori esadecimali o pixel scritti a mano, mai primitivi (`pollen-400`, `comb-200`) in un componente. Se un token manca, segui `governance.md`.
@@ -54,7 +54,7 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 - Niente emoji nell'interfaccia, niente punti esclamativi, niente gradienti viola-blu, niente card con bordo colorato a sinistra.
 - **Dosaggio**: l'esagono solo per marchio, ritratto principale, favo dell'hero e stati vuoti (mai per elenchi, timeline, chip). Il giallo o in un grande campo per pagina o in singoli dettagli, non sparso.
 - Titoli con gli stili fluidi (`ap-display-xl`, `ap-display`, `ap-headline`, `ap-title` o `var(--type-…)`): niente dimensioni scritte a mano né media query per i titoli.
-- Movimento solo con i pattern di `apis-motion.js` (`data-ap-reveal`, `ap-rise`, `ap-cell-in`, `Apis.motion.toggleTheme`): un solo momento orchestrato per pagina.
+- Movimento solo con i pattern di `apis-motion.js` (`data-ap-reveal`, `ap-rise`, `ap-cell-in`, `Apis.motion.toggleTheme`) sul web e con `ApisMotion` nelle app: un solo momento orchestrato per pagina o percorso. Pressione a `motion-press-scale`, ingressi mai da scala 0, niente rimbalzi né curve che partono lente, sotto i 300ms tranne reveal e momento orchestrato; meno movimento per ciò che si vede spesso (brand book → "Movimento").
 
 ## Checklist prima di consegnare
 
@@ -66,7 +66,7 @@ Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarl
 - [ ] Ogni campo ha un `label`; aiuti ed errori collegati con `aria-describedby`; un solo `h1`, titoli in ordine
 - [ ] Testi: maiuscola iniziale, verbi del glossario, errori e stati vuoti secondo i modelli, formato CHF `12'480.00` e date `1 ott 2026`
 - [ ] Layout funzionante da 360px a 1440px, nessuno scorrimento orizzontale della pagina
-- [ ] `prefers-reduced-motion` rispettato
+- [ ] `prefers-reduced-motion` (web) o `accessibilityReduceMotion` (app) rispettato: resta lo stato finale, solo opacità
 - [ ] Se hai aggiunto un token o un componente: scheda scritta, design system pubblicato aggiornato, riga nel changelog
 
 ## Quando l'utente chiede di cambiare Apis
