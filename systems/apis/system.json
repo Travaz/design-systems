@@ -1,8 +1,8 @@
 {
   "id": "apis",
   "name": "Apis",
-  "version": "1.7.0",
-  "description": "Design system inspired by the bee: pollen yellow, carapace black, wax white. Used by travaz.dev and the Gym Harness iPhone app.",
+  "version": "1.7.1",
+  "description": "A design system drawn from the nature of honeybees: pollen yellow, carapace black, wax white and the order of the hive.",
   "language": "en",
   "namespace": "Apis",
   "classPrefix": "ap-",

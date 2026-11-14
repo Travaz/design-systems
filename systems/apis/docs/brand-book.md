@@ -1,4 +1,4 @@
-Apis is the design system of travaz.dev: the homepage, the personal pages and the tools published on the same domain, such as the Wishlist, use the same tokens, the same rules and the same components. Other apps each have their own design system. Apis takes its colours from the bee and its world: the yellow of pollen, the black of the carapace, the white of wax, and then the flowers and resins the bee visits. It takes its order from the hive: a regular grid, a few shapes repeated well, every cell with a purpose.
+Apis is a design system drawn from the nature of honeybees. It takes its colours from the bee and its world: the yellow of pollen, the black of the carapace, the white of wax, and then the flowers and resins the bee visits. It takes its order from the hive: a regular grid, a few shapes repeated well, every cell with a purpose. And it takes its manner from the way a bee works: it sets off decisively, lands calmly and wastes nothing. Whatever adopts Apis uses the same tokens, the same rules and the same components.
 
 ## Principles
 
