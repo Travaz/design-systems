@@ -124,7 +124,7 @@ Apis moves like a bee landing: it sets off decisively and settles calmly. Motion
 
 ### With Motion (motion.dev)
 
-On travaz.dev, CSS and `apis-motion.js` cover every pattern without third-party code. For React apps and richer interactions use Motion: the package motion for plain JavaScript, motion/react for React (version 14). Take every value from `apis-motion-presets.js`, which reads the tokens through `apis-motion-tokens.js`: code never repeats a duration or a curve.
+On sites that load no third-party code, such as travaz.dev, CSS and `apis-motion.js` cover every pattern. For React apps and richer interactions use Motion: the package motion for plain JavaScript, motion/react for React (version 14). Take every value from `apis-motion-presets.js`, which reads the tokens through `apis-motion-tokens.js`: code never repeats a duration or a curve.
 
 | Need | Preset or helper |
 |---|---|
