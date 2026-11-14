@@ -1,14 +1,14 @@
 # DataTable
 
-**Classi:** `ap-table-wrap` > `table.ap-table` (+ `ap-table--compact`); numeric cells `is-num`, cells that never wrap `is-nowrap`
+**Classes:** `ap-table-wrap` > `table.ap-table` (+ `ap-table--compact`); numeric cells `is-num`, cells that never wrap `is-nowrap`
 
-Scopo: mostrare molti record con gli stessi campi, da scorrere, confrontare e ordinare.
+Purpose: show many records with the same fields, to scan, compare and sort.
 
-**Spaziatura guidata dal contenuto:** il padding delle celle è fisso, l'altezza delle righe segue il testo. `density="compact"` per le app molto dense.
+**Content-driven spacing:** cell padding is fixed, row height follows the text. `density="compact"` for very dense apps.
 
-**Chi lo usa fornisce:** `columns` (`[{key, label, numeric?, nowrap?, render?}]`), `rows` (oggetti con un `id`), opzionali `caption`, `density`, `scrollable` (rende il contenitore focalizzabile per lo scorrimento da tastiera).
+**The consumer provides:** `columns` (`[{key, label, numeric?, nowrap?, render?}]`), `rows` (objects with an `id`), optional `caption`, `density`, `scrollable` (makes the container focusable for keyboard scrolling).
 
-**Regole:** identificativi, date, codici e importi non vanno mai a capo: `numeric` per i numeri (a destra, cifre tabulari), `nowrap` per numeri di documento, date e codici. Sul telefono la tabella scorre in orizzontale nel suo contenitore. Numeri allineati a destra in `data` con cifre tabulari; testo a sinistra; intestazioni in `ink-muted`, maiuscola iniziale; stato con `Badge`, mai con il solo colore del testo. La tabella scorre in orizzontale nel suo contenitore, mai la pagina.
+**Rules:** identifiers, dates, codes and amounts never wrap: `numeric` for numbers (right-aligned, tabular figures), `nowrap` for document numbers, dates and codes. On a phone the table scrolls horizontally inside its container. Numbers right-aligned in `data` with tabular figures; text on the left; headers in `ink-muted`, sentence case; status with `Badge`, never with text colour alone. The table scrolls horizontally inside its container, never the page.
 
-- Do: una `caption` che dice cosa contiene la tabella.
-- Don't: righe a colori alterni; il bordo `line` e l'hover bastano.
+- Do: a `caption` that says what the table contains.
+- Don't: zebra-striped rows; the `line` border and the hover are enough.

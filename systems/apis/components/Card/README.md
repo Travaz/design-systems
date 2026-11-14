@@ -1,12 +1,12 @@
 # Card
 
-**Classi:** `ap-card` (+ `ap-card--interactive` on `<a>`) > `ap-card__eyebrow`, `ap-card__title`, `ap-card__body`, `ap-card__footer`
+**Classes:** `ap-card` (+ `ap-card--interactive` on `<a>`) > `ap-card__eyebrow`, `ap-card__title`, `ap-card__body`, `ap-card__footer`
 
-Scopo: raggruppare le informazioni su un solo oggetto (un progetto, un articolo, un cliente) in un blocco che si può scorrere e confrontare.
+Purpose: group the information about a single object (a project, an article, a client) in a block that can be scanned and compared.
 
-**Anatomia:** occhiello opzionale (`accent-text`, maiuscolo) · titolo · corpo · piè di pagina opzionale con azioni o metadati.
+**Anatomy:** optional eyebrow (`accent-text`, uppercase) · title · body · optional footer with actions or metadata.
 
-**Chi lo usa fornisce:** `title`, opzionali `eyebrow`, `children`, `footer`, `href` (rende tutta la card un link, con hover in `elevation-2`), `titleAs` per il livello del titolo corretto nella pagina, `as` per cambiare l'elemento contenitore (predefinito `article`).
+**The consumer provides:** `title`, optional `eyebrow`, `children`, `footer`, `href` (makes the whole card a link, with hover in `elevation-2`), `titleAs` for the correct heading level in the page, `as` to change the container element (default `article`).
 
-- Do: card della stessa riga con la stessa struttura e altezze guidate dal contenuto.
-- Don't: card dentro card. Don't: più di un link o bottone dentro una card con `href`.
+- Do: cards in the same row with the same structure and content-driven heights.
+- Don't: cards inside cards. Don't: more than one link or button inside a card with `href`.

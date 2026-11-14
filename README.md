@@ -62,7 +62,7 @@ systems/<id>/
 
 ```
 dist/<id>/
-  package/     tokens.css · tokens.json (W3C DTCG) · tailwind.css · <id>.css · <id>-react.js · <id>-motion.js · fonts/ · logo/ · package.json
+  package/     tokens.css · tokens.json (W3C DTCG) · tailwind.css · <id>.css · <id>-react.js · <id>-motion.js · <id>-motion-tokens.js · <id>-motion-presets.js · fonts/ · logo/ · package.json
   gallery/     una pagina per componente, per i test visivi e per guardarli a mano
   skill/       <id>-design-system/ e il .zip da caricare su claude.ai
   artifact/    i file della pagina "Design System" pubblicata
@@ -99,7 +99,7 @@ Le soglie WCAG (4.5:1, 3:1, 7:1) restano scritte, perché sono regole e non misu
 - **CSS dei componenti**: solo token esistenti, nessun primitivo, nessun colore scritto a mano (eccezioni marcate con `lint-allow-literal`).
 - **Sintassi CSS**: parentesi graffe bilanciate (una graffa in più fa ignorare al browser la regola successiva, senza errori visibili).
 - **Tipografia fluida**: entrambi gli estremi degli stili fluidi sulla griglia da 4.
-- **Componenti**: README con frase di scopo, anteprima presente, bundle coerente con le cartelle.
+- **Componenti**: README con la riga `Purpose:`, anteprima presente, bundle coerente con le cartelle.
 - **Documentazione**: ogni token, classe o variabile citata tra backtick nei testi esiste davvero (anche i modelli come `pollen-*`); i segnaposti `{{contrast fg on bg}}` si risolvono; i rapporti di contrasto scritti a mano sono segnalati.
 - **Prop dei componenti**: ogni prop dichiarata nei tipi è usata dal componente e documentata nella sua scheda, e viceversa.
 - **Siti che lo usano**: copie allineate alla versione, nessun token inesistente nel loro CSS (variabili locali dichiarate con `/* ds-lint allow: --x --y */`).

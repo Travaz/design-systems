@@ -1,6 +1,6 @@
-<!-- @dsCard group="Navigazione" height=180 -->
+<!-- @dsCard group="Navigation" height=180 -->
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head><meta charset="utf-8"><title>Tabs</title>
 <style>
 body{margin:0;padding:16px;}
@@ -17,11 +17,11 @@ body{margin:0;padding:16px;}
 <script>
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
-h(A.Tabs,{label:'Sezioni del progetto',items:[
-  {id:'overview',label:'Panoramica',content:h('p',{className:'muted'},'Avviato il 2 set 2026 · 48 ore registrate · budget usato al 62%.')},
-  {id:'invoices',label:'Fatture',content:h('p',{className:'muted'},'3 fatture, 1 in scadenza.')},
-  {id:'activity',label:'Attività',content:h('p',{className:'muted'},'Ultima modifica 3 minuti fa.')},
-  {id:'settings',label:'Impostazioni',content:h('p',{className:'muted'},'Visibilità, membri, integrazioni.')}]})
+h(A.Tabs,{label:'Project sections',items:[
+  {id:'overview',label:'Overview',content:h('p',{className:'muted'},'Started 2 Sep 2026 · 48 hours logged · 62% of budget used.')},
+  {id:'invoices',label:'Invoices',content:h('p',{className:'muted'},'3 invoices, 1 due soon.')},
+  {id:'activity',label:'Activity',content:h('p',{className:'muted'},'Last changed 3 minutes ago.')},
+  {id:'settings',label:'Settings',content:h('p',{className:'muted'},'Visibility, members, integrations.')}]})
   ));
 </script>
 </body>

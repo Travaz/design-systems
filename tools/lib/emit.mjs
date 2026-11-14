@@ -5,7 +5,7 @@ const px = (n) => `${n}px`;
 const rem = (n) => `${+(n / 16).toFixed(4)}rem`;
 
 export function stamp(sys) {
-  return `${sys.meta.name} ${sys.meta.version} · generato da design-systems/systems/${sys.id} · non modificare a mano`;
+  return `${sys.meta.name} ${sys.meta.version} · generated from design-systems/systems/${sys.id} · do not edit by hand`;
 }
 
 function semVar(sys, v) { return isPrimitiveRef(sys, v) ? `var(--${v})` : v; }
@@ -17,20 +17,20 @@ export function tokensCss(sys) {
   const scheme = (id) => (id === 'dark' ? 'dark' : 'light');
   const out = [];
   out.push(`/* ${stamp(sys)}`);
-  if (T.type.fonts?.length) out.push('   Font: inclusi nella cartella fonts/ accanto a questo file (nessuna richiesta a servizi esterni).');
-  out.push(`   Tema: "${first}" di default; ${ths.slice(1).map((t) => `"${t}"`).join(', ') || 'nessun altro tema'}${ths.includes('dark') ? ' segue il sistema operativo' : ''}, oppure <html data-theme="…"> lo forza. */`);
+  if (T.type.fonts?.length) out.push('   Fonts: bundled in the fonts/ folder next to this file (no requests to external services).');
+  out.push(`   Theme: "${first}" by default; ${ths.slice(1).map((t) => `"${t}"`).join(', ') || 'no other theme'}${ths.includes('dark') ? ' follows the operating system' : ''}, or <html data-theme="…"> forces one. */`);
   for (const f of T.type.fonts || []) {
     out.push(`@font-face { font-family: "${f.family}"; src: url("${f.file}") format("woff2"); font-weight: ${f.weight}; font-style: ${f.style || 'normal'}; font-display: swap;${f.unicodeRange ? ` unicode-range: ${f.unicodeRange};` : ''} }`);
   }
-  out.push(':root {', '  /* livello 1 — primitivi (mai usati direttamente nei componenti) */');
+  out.push(':root {', '  /* tier 1 — primitives (never used directly in components) */');
   for (const [n, p] of Object.entries(primitives(sys))) out.push(`  --${n}: ${p.value};`);
-  out.push('', `  /* livello 2 — semantici, tema ${first} */`);
+  out.push('', `  /* tier 2 — semantic, ${first} theme */`);
   for (const [n, s] of Object.entries(semantics(sys))) out.push(`  --${n}: ${semVar(sys, s[first])};`);
   for (const t of T.elevation?.tokens || []) out.push(`  --${t.name}: ${elevationValue(t, first, first)};`);
-  out.push('', '  /* tipografia */');
+  out.push('', '  /* typography */');
   for (const [k, v] of Object.entries(T.type.families)) out.push(`  --font-${k}: ${v};`);
   for (const s of T.type.styles) { const z = typeSize(sys, s); out.push(`  --type-${s.name}: ${s.weight} ${z.size}/${z.lineHeight} var(--font-${s.family}); --tracking-${s.name}: ${s.tracking};`); }
-  out.push('', '  /* spazi, raggi, dimensioni, livelli, movimento */');
+  out.push('', '  /* spacing, radius, sizes, layers, motion */');
   for (const [k, fam] of flatFamilies(sys)) if (k !== 'breakpoint') for (const t of fam.tokens) out.push(`  --${t.name}: ${t.value};`);
   out.push(`  color-scheme: ${scheme(first)};`, '}');
   for (const th of ths.slice(1)) {
@@ -42,10 +42,27 @@ export function tokensCss(sys) {
     if (th === 'dark') out.push(`@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="${first}"]) {\n${body.map((l) => '    ' + l).join('\n')}\n  }\n}`);
     out.push(`:root[data-theme="${th}"] {\n${body.map((l) => '  ' + l).join('\n')}\n}`);
   }
-  if (T.breakpoint) out.push('/* breakpoint (le variabili CSS non funzionano nelle media query: usa questi valori)\n' + T.breakpoint.tokens.map((t) => `   ${t.name}: ${t.value} — ${t.usage}`).join('\n') + ' */');
+  if (T.breakpoint) out.push('/* breakpoints (CSS variables do not work in media queries: use these values)\n' + T.breakpoint.tokens.map((t) => `   ${t.name}: ${t.value} — ${t.usage}`).join('\n') + ' */');
   const durations = (T.motion?.tokens || []).filter((t) => /^\d+(\.\d+)?m?s$/.test(t.value));
   if (durations.length) out.push(`@media (prefers-reduced-motion: reduce) { :root { ${durations.map((t) => `--${t.name}: 0ms;`).join(' ')} } }`);
   return out.join('\n') + '\n';
+}
+
+/* ---------- motion tokens for JavaScript (motion.dev, motion/react) ---------- */
+export function motionTokensJs(sys) {
+  const camel = (s) => s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+  const duration = {}, ease = {}, value = {};
+  for (const t of sys.tokens.motion?.tokens || []) {
+    const bez = t.value.match(/cubic-bezier\(([^)]+)\)/), time = t.value.match(/^(\d+(?:\.\d+)?)(m?s)$/);
+    if (bez) ease[camel(t.name.replace(/^ease-/, ''))] = bez[1].split(',').map(Number);
+    else if (time) duration[camel(t.name.replace(/^duration-/, ''))] = +(time[2] === 'ms' ? time[1] / 1000 : +time[1]).toFixed(4);
+    else value[camel(t.name.replace(/^motion-/, ''))] = parseFloat(t.value);
+  }
+  return [`/* ${stamp(sys)}`,
+    '   Motion tokens for JavaScript (Motion: motion and motion/react). Durations in seconds, easings as cubic-bezier arrays, lengths in px. */',
+    `export const duration = ${JSON.stringify(duration)};`,
+    `export const ease = ${JSON.stringify(ease)};`,
+    `export const value = ${JSON.stringify(value)};`, ''].join('\n');
 }
 
 /* ---------- W3C DTCG tokens.json ---------- */
@@ -53,7 +70,7 @@ export function dtcg(sys) {
   const T = sys.tokens, ths = themes(sys);
   const split = (n) => { const i = n.indexOf('-'); return i < 0 ? [n, 'base'] : [n.slice(0, i), n.slice(i + 1)]; };
   const ref = (v) => (isPrimitiveRef(sys, v) ? `{primitive.color.${split(v).join('.')}}` : v);
-  const out = { $description: `${sys.meta.name} ${sys.meta.version} (W3C DTCG). Livello 1 primitive -> livello 2 semantic (un modo per tema). Il livello 3 (componenti) vive nel CSS dei componenti.`, primitive: { color: {} }, semantic: {} };
+  const out = { $description: `${sys.meta.name} ${sys.meta.version} (W3C DTCG). Tier 1 primitive -> tier 2 semantic (one mode per theme). Tier 3 (components) lives in the component CSS.`, primitive: { color: {} }, semantic: {} };
   for (const [n, p] of Object.entries(primitives(sys))) { const [f, k] = split(n); (out.primitive.color[f] ||= {})[k] = { $type: 'color', $value: p.value, $description: p.usage }; }
   for (const th of ths) {
     out.semantic[th] = { color: {} };
@@ -85,8 +102,8 @@ export function tailwind(sys) {
   const spacing = (T.spacing?.tokens || []).map((t) => parseFloat(t.value)).filter((n) => n > 0);
   const base = spacing.length ? Math.min(...spacing) : 4;
   const L = [`/* ${stamp(sys)}`,
-    `   Tailwind CSS v4. Importa DOPO tokens.css:  @import "tailwindcss"; @import "./tokens.css"; @import "./tailwind.css";`,
-    '   Le utility leggono le variabili semantiche: il tema scuro funziona senza varianti dark:. */', '@theme inline {', '  --color-*: initial;'];
+    `   Tailwind CSS v4. Import AFTER tokens.css:  @import "tailwindcss"; @import "./tokens.css"; @import "./tailwind.css";`,
+    '   Utilities read the semantic variables: the dark theme works without dark: variants. */', '@theme inline {', '  --color-*: initial;'];
   for (const n of Object.keys(semantics(sys))) L.push(`  --color-${n}: var(--${n});`);
   L.push(`  --spacing: ${base}px; /* p-4 = ${4 * base}px */`);
   for (const [k, v] of Object.entries(T.type.families)) L.push(`  --font-${k}: ${v};`);
@@ -103,22 +120,22 @@ export function tailwind(sys) {
 export function tokensMd(sys) {
   const T = sys.tokens, ths = themes(sys), prim = primitives(sys);
   const show = (v) => (prim[v] ? `${v} (${prim[v].value})` : v);
-  const L = [`# Token ${sys.meta.name}`, '', `Versione ${sys.meta.version}. Tre livelli: **primitivi** (solo per definire i semantici) → **semantici** (quelli da usare) → **componente** (nel CSS dei componenti). In CSS ogni token è \`var(--nome)\`.`, '',
-    '## Colori semantici (usa questi)', '', `| Token | ${ths.join(' | ')} | Uso |`, `|---|${ths.map(() => '---|').join('')}---|`];
+  const L = [`# ${sys.meta.name} tokens`, '', `Version ${sys.meta.version}. Three tiers: **primitives** (only to define the semantic tokens) → **semantic** (the ones to use) → **component** (in the component CSS). In CSS every token is \`var(--name)\`.`, '',
+    '## Semantic colours (use these)', '', `| Token | ${ths.join(' | ')} | Usage |`, `|---|${ths.map(() => '---|').join('')}---|`];
   for (const [n, s] of Object.entries(semantics(sys))) L.push(`| \`${n}\` | ${ths.map((t) => show(s[t] ?? s[ths[0]])).join(' | ')} | ${s.usage} |`);
-  L.push('', '## Primitivi (non usarli nei componenti)', '', '| Token | Valore | Nota |', '|---|---|---|');
+  L.push('', '## Primitives (do not use them in components)', '', '| Token | Value | Note |', '|---|---|---|');
   for (const [n, p] of Object.entries(prim)) L.push(`| \`${n}\` | ${p.value} | ${p.usage} |`);
-  L.push('', '## Tipografia', '', ...(T.type.fonts?.length ? [`I caratteri sono inclusi (\`assets/fonts/\`, licenza OFL) e dichiarati in \`tokens.css\` con \`@font-face\`: copia la cartella \`fonts/\` accanto a \`tokens.css\`. Nessun link a servizi esterni.`, ''] : []), '| Famiglia | Stack |', '|---|---|');
+  L.push('', '## Typography', '', ...(T.type.fonts?.length ? [`The fonts are bundled (\`assets/fonts/\`, OFL licence) and declared in \`tokens.css\` with \`@font-face\`: copy the \`fonts/\` folder next to \`tokens.css\`. No links to external services.`, ''] : []), '| Family | Stack |', '|---|---|');
   for (const [k, v] of Object.entries(T.type.families)) L.push(`| \`--font-${k}\` | ${v} |`);
-  L.push('', '| Stile | Famiglia | Size/Line | Peso | Tracking | Uso |', '|---|---|---|---|---|---|');
+  L.push('', '| Style | Family | Size/Line | Weight | Tracking | Usage |', '|---|---|---|---|---|---|');
   for (const s of T.type.styles) L.push(`| \`${s.name}\` | ${s.family} | ${s.fluid ? `${s.fluid.size}/${s.fluid.lineHeight} → ` : ''}${s.size}/${s.lineHeight} | ${s.weight} | ${s.tracking} | ${s.usage} |`);
-  const fr = T.type.fluidRange; L.push('', 'In CSS: `font: var(--type-body); letter-spacing: var(--tracking-body);` oppure, con Tailwind, `text-body font-sans`.', ...(fr ? [`Gli stili con la freccia sono fluidi: crescono linearmente da ${fr.min}px a ${fr.max}px di larghezza dello schermo (\`clamp()\`), con entrambi gli estremi sulla griglia da 4.`] : []), '');
-  const titles = { spacing: 'Spazi', radius: 'Raggi', size: 'Dimensioni', aspect: 'Proporzioni', breakpoint: 'Breakpoint', zIndex: 'Z-index', motion: 'Movimento' };
+  const fr = T.type.fluidRange; L.push('', 'In CSS: `font: var(--type-body); letter-spacing: var(--tracking-body);` or, with Tailwind, `text-body font-sans`.', ...(fr ? [`Styles with an arrow are fluid: they grow linearly from ${fr.min}px to ${fr.max}px of screen width (\`clamp()\`), with both ends on the 4px grid.`] : []), '');
+  const titles = { spacing: 'Spacing', radius: 'Radius', size: 'Sizes', aspect: 'Aspect ratios', breakpoint: 'Breakpoints', zIndex: 'Z-index', motion: 'Motion' };
   for (const [k, fam] of flatFamilies(sys)) {
-    L.push(`## ${titles[k]}`, '', ...(fam.note ? [fam.note, ''] : []), '| Token | Valore | Uso |', '|---|---|---|', ...fam.tokens.map((t) => `| \`${t.name}\` | ${t.value} | ${t.usage} |`), '');
+    L.push(`## ${titles[k]}`, '', ...(fam.note ? [fam.note, ''] : []), '| Token | Value | Usage |', '|---|---|---|', ...fam.tokens.map((t) => `| \`${t.name}\` | ${t.value} | ${t.usage} |`), '');
   }
   if (T.elevation) {
-    L.push('## Elevazione', '', `| Token | ${ths.join(' | ')} | Uso |`, `|---|${ths.map(() => '---|').join('')}---|`);
+    L.push('## Elevation', '', `| Token | ${ths.join(' | ')} | Usage |`, `|---|${ths.map(() => '---|').join('')}---|`);
     for (const t of T.elevation.tokens) L.push(`| \`${t.name}\` | ${ths.map((th) => '`' + elevationValue(t, th, ths[0]) + '`').join(' | ')} | ${t.usage} |`);
   }
   return L.join('\n') + '\n';
@@ -126,8 +143,8 @@ export function tokensMd(sys) {
 
 /* ---------- references/components.md ---------- */
 export function componentsMd(sys, components) {
-  const L = [`# Componenti ${sys.meta.name}`, '',
-    `Ogni componente esiste in due strati: classi CSS \`${sys.meta.classPrefix}*\` (in \`assets/${baseName(sys.meta.files.componentCss)}\`, per qualsiasi stack) e componente React (\`assets/${sys.id}-react.js\`, \`window.${sys.meta.namespace}\`; tipi in \`assets/${sys.id}-react.d.ts\`). Con un altro framework ricrea il markup con le stesse classi e gli stessi attributi ARIA.`, ''];
+  const L = [`# ${sys.meta.name} components`, '',
+    `Every component exists in two layers: CSS classes \`${sys.meta.classPrefix}*\` (in \`assets/${baseName(sys.meta.files.componentCss)}\`, for any stack) and a React component (\`assets/${sys.id}-react.js\`, \`window.${sys.meta.namespace}\`; types in \`assets/${sys.id}-react.d.ts\`). With another framework, recreate the markup with the same classes and ARIA attributes.`, ''];
   for (const c of components) L.push(`## ${c.name}`, '', c.readme.replace(new RegExp(`^# ${c.name}\\n+`), '').trim(), '');
   return L.join('\n');
 }

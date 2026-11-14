@@ -1,23 +1,23 @@
 # Button
 
-**Classi:** `ap-btn ap-btn--primary|secondary|tertiary|danger` + `ap-btn--sm|lg`
+**Classes:** `ap-btn ap-btn--primary|secondary|tertiary|danger` + `ap-btn--sm|lg`
 
-Scopo: avviare un'azione. Un bottone fa qualcosa; un link porta da qualche parte (per la navigazione usa `href`, che rende un `<a>`).
+Purpose: start an action. A button does something; a link takes you somewhere (for navigation use `href`, which renders an `<a>`).
 
-**Varianti** (`variant`)
-- `primary`: giallo `accent` con testo `on-accent`. Al massimo **uno per vista**, per l'azione per cui la vista esiste.
-- `secondary` (predefinito): fondo `surface-raised`, bordo `line-strong`. Azioni alternative.
-- `tertiary`: senza fondo né bordo. Azioni a bassa enfasi, barre degli strumenti, "Annulla".
-- `danger`: riempimento `danger`. Solo per l'azione che distrugge qualcosa, di solito dentro una conferma.
+**Variants** (`variant`)
+- `primary`: yellow `accent` with `on-accent` text. At most **one per view**, for the action the view exists for.
+- `secondary` (default): `surface-raised` background, `line-strong` border. Alternative actions.
+- `tertiary`: no background or border. Low-emphasis actions, toolbars, "Cancel".
+- `danger`: `danger` fill. Only for the action that destroys something, usually inside a confirmation.
 
-**Dimensioni** (`size`): `sm` (32px, tabelle e toolbar delle app), `md` (40px, predefinito), `lg` (48px, sito e mobile).
+**Sizes** (`size`): `sm` (32px, tables and app toolbars), `md` (40px, default), `lg` (48px, website and mobile).
 
-**Chi lo usa fornisce:** `children` (l'etichetta), `onClick` oppure `href`, opzionali `iconStart`/`iconEnd` (nome di `Icon`), `loading`, `disabled`.
+**The consumer provides:** `children` (the label), `onClick` or `href`, optional `iconStart`/`iconEnd` (an `Icon` name), `loading`, `disabled`.
 
-**Testo:** verbo + oggetto, maiuscola solo iniziale: "Crea progetto", "Scarica fattura". Mai "OK", "Sì", "Clicca qui".
+**Text:** verb + object, sentence case: "Create project", "Download invoice". Never "OK", "Yes", "Click here".
 
 **Do / Don't**
-- Do: un primario a destra nei dialoghi, a sinistra nei moduli a pagina intera.
-- Do: `loading` mentre l'azione è in corso; il bottone resta largo uguale.
-- Don't: due primari affiancati, o un primario per "Annulla".
-- Don't: bottoni con solo icona senza `aria-label`.
+- Do: one primary on the right in dialogs, on the left in full-page forms.
+- Do: `loading` while the action is in progress; the button keeps the same width.
+- Don't: two primaries side by side, or a primary for "Cancel".
+- Don't: icon-only buttons without `aria-label`.

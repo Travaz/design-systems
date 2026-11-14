@@ -1,6 +1,6 @@
-<!-- @dsCard group="Azioni" height=120 -->
+<!-- @dsCard group="Actions" height=120 -->
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head><meta charset="utf-8"><title>Button</title>
 <style>
 body{margin:0;padding:16px;}
@@ -18,15 +18,15 @@ body{margin:0;padding:16px;}
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
 h('div',{className:'row'},
-  h(A.Button,{variant:'primary',iconEnd:'arrow-right'},'Inizia un progetto'),
-  h(A.Button,null,'Vedi i casi studio'),
-  h(A.Button,{variant:'tertiary'},'Annulla'),
-  h(A.Button,{variant:'danger'},'Elimina progetto')),
+  h(A.Button,{variant:'primary',iconEnd:'arrow-right'},'Start a project'),
+  h(A.Button,null,'See the case studies'),
+  h(A.Button,{variant:'tertiary'},'Cancel'),
+  h(A.Button,{variant:'danger'},'Delete project')),
 h('div',{className:'row'},
-  h(A.Button,{variant:'primary',size:'sm',iconStart:'plus'},'Nuova fattura'),
-  h(A.Button,{size:'sm',iconStart:'download'},'Esporta CSV'),
-  h(A.Button,{variant:'primary',size:'sm',loading:true},'Salvataggio'),
-  h(A.Button,{size:'sm',disabled:true},'Non disponibile'))
+  h(A.Button,{variant:'primary',size:'sm',iconStart:'plus'},'New invoice'),
+  h(A.Button,{size:'sm',iconStart:'download'},'Export CSV'),
+  h(A.Button,{variant:'primary',size:'sm',loading:true},'Saving'),
+  h(A.Button,{size:'sm',disabled:true},'Unavailable'))
   ));
 </script>
 </body>

@@ -60,6 +60,8 @@ export function build(id, { quiet = false } = {}) {
   if (m.files.bundle) files[`${id}-react.js`] = fs.readFileSync(sys.file(m.files.bundle), 'utf8');
   if (m.files.types) files[`${id}-react.d.ts`] = fs.readFileSync(sys.file(m.files.types), 'utf8');
   if (m.files.motion) files[`${id}-motion.js`] = fs.readFileSync(sys.file(m.files.motion), 'utf8');
+  if (sys.tokens.motion) files[`${id}-motion-tokens.js`] = E.motionTokensJs(sys);
+  if (m.files.motionPresets) files[`${id}-motion-presets.js`] = fs.readFileSync(sys.file(m.files.motionPresets), 'utf8');
   for (const [n, c] of Object.entries(files)) writeFile(path.join(pkg, n), c);
   if (m.skill?.assets?.logo) copyDir(sys.file(m.skill.assets.logo), path.join(pkg, 'logo'));
   if (m.files.fonts) copyDir(sys.file(m.files.fonts), path.join(pkg, 'fonts'));
@@ -69,7 +71,7 @@ export function build(id, { quiet = false } = {}) {
   if (m.skill) {
     const sk = path.join(out, 'skill', m.skill.name);
     writeFile(path.join(sk, 'SKILL.md'), E.renderTemplate(read(m.skill.template), {
-      version: m.version, artifactUrl: m.artifact?.url || '(non pubblicato)', sourceDir: tilde(sys.dir), changelog: changelogEntries(sys),
+      version: m.version, artifactUrl: m.artifact?.url || '(not published)', sourceDir: tilde(sys.dir), changelog: changelogEntries(sys),
     }));
     writeFile(path.join(sk, 'references/brand-book.md'), read(m.files.brandBook));
     writeFile(path.join(sk, 'references/tokens.md'), E.tokensMd(sys));

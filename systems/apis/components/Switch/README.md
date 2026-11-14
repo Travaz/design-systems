@@ -1,11 +1,11 @@
 # Switch
 
-**Classi:** `button.ap-switch[role=switch][aria-checked]` > `ap-switch__track` > `ap-switch__thumb`
+**Classes:** `button.ap-switch[role=switch][aria-checked]` > `ap-switch__track` > `ap-switch__thumb`
 
-Scopo: attivare o disattivare un'impostazione con effetto immediato, senza bottone "Salva".
+Purpose: turn a setting on or off with immediate effect, without a "Save" button.
 
-**Chi lo usa fornisce:** `label`, `checked` + `onChange` (controllato) oppure `defaultChecked`, opzionale `disabled`. Si attiva con clic o Spazio; ha `role="switch"`.
+**The consumer provides:** `label`, `checked` + `onChange` (controlled) or `defaultChecked`, optional `disabled`. It toggles with a click or Space; it has `role="switch"`.
 
-**Testo:** il nome dell'impostazione, non un'azione: "Modalità manutenzione", non "Attiva la manutenzione". Non cambiare l'etichetta tra acceso e spento.
+**Text:** the name of the setting, not an action: "Maintenance mode", not "Turn on maintenance". Do not change the label between on and off.
 
-- Don't: usarlo dentro un modulo che si salva con un bottone; lì serve `Checkbox`.
+- Don't: use it inside a form that is saved with a button; there you need `Checkbox`.

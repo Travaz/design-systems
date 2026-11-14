@@ -1,216 +1,281 @@
-Apis è il design system di travaz.dev: la homepage, le pagine personali e gli strumenti pubblicati sullo stesso dominio, come la Wishlist, usano gli stessi token, le stesse regole e gli stessi componenti. Le altre app hanno ciascuna il proprio design system. Prende i colori dall'ape e dal suo mondo: il giallo del polline, il nero del carapace, il bianco della cera, e poi i fiori e le resine che l'ape visita. Prende l'ordine dall'alveare: una griglia regolare, poche forme ripetute bene, ogni cella con uno scopo.
+Apis is the design system of travaz.dev: the homepage, the personal pages and the tools published on the same domain, such as the Wishlist, use the same tokens, the same rules and the same components. Other apps each have their own design system. Apis takes its colours from the bee and its world: the yellow of pollen, the black of the carapace, the white of wax, and then the flowers and resins the bee visits. It takes its order from the hive: a regular grid, a few shapes repeated well, every cell with a purpose.
 
-## Principi
+## Principles
 
-Questi principi vengono da designsystems.com (Figma) e sono la base di ogni decisione qui sotto. Quando una regola non copre un caso, si torna a questi.
+These principles come from designsystems.com (Figma) and are the basis of every decision below. When a rule does not cover a case, go back to them.
 
-1. **Tutto sulla griglia da 8.** Spazi, dimensioni dei controlli e icone sono multipli di 8px. Il mezzo passo da 4px serve solo per dettagli piccoli (icona-etichetta, padding dei badge). Le interlinee sono sempre multipli di 4 (baseline grid). Niente valori dispari.
-2. **Tre livelli di token, con alias.** Primitivo (`pollen-400`) → semantico, nominato per intenzione (`accent`) → componente (`button-primary-background`). I componenti non usano mai un primitivo.
-3. **Pochi primitivi.** Sei famiglie di colore, tre famiglie di carattere, un numero ridotto di pesi. Per creare gerarchia si aumenta prima la dimensione, poi il peso.
-4. **Modalità, non copie.** Chiaro/scuro e le lingue sono modalità degli stessi token, mai componenti duplicati.
-5. **Lo scopo prima del nome.** Ogni componente nasce da una frase di scopo ("Scopo: dire all'utente che si trova in un ambiente di test"). Uno scopo nuovo significa un componente nuovo, non una variante in più.
-6. **Uno stile per famiglia.** Le icone hanno un solo tratto, un solo tipo di angolo e di terminale; i bottoni sono primario, secondario, terziario in tutte le piattaforme.
-7. **Si nomina per cosa è, non per quanto vale.** I token per intenzione (`danger`, non `red`), le icone per ciò che mostrano (`hexagon-plus`, non `add-project`).
-8. **Il testo fa parte della specifica.** Regole di scrittura, glossario e modelli di messaggio stanno nella documentazione di ogni componente.
-9. **Accessibile di default.** Coppie colore testate in entrambi i temi, tastiera completa, etichette su ogni controllo, ordine dei titoli corretto. Si corregge nel sistema, così la correzione arriva ovunque.
-10. **Pronto prima di essere pubblicato.** Un componente entra nel sistema solo quando anatomia, token, stati, varianti e comportamento responsive sono definiti, e codice, design e documentazione coincidono.
-11. **A strati, adottabile a pezzi.** Token → classi CSS → componenti React. Ogni strato si usa da solo; si può scendere di uno strato quando serve, ma la strada giusta deve essere la più facile.
-12. **Su misura, non copiato.** Apis prende spunto dai sistemi open source ma riflette questo marchio. Le mode passano; le decisioni restano scritte qui.
+1. **Everything on the 8 grid.** Spacing, control sizes and icons are multiples of 8px. The 4px half step is only for small details (icon to label, badge padding). Line heights are always multiples of 4 (baseline grid). No odd values.
+2. **Three levels of tokens, with aliases.** Primitive (`pollen-400`) → semantic, named by intent (`accent`) → component (`button-primary-background`). Components never use a primitive.
+3. **Few primitives.** Six colour families, three type families, a small number of weights. To create hierarchy, increase size first, then weight.
+4. **Modes, not copies.** Light/dark and languages are modes of the same tokens, never duplicated components.
+5. **Purpose before name.** Every component starts from a purpose statement ("Purpose: tell the user they are in a test environment"). A new purpose means a new component, not one more variant.
+6. **One style per family.** Icons have a single stroke, a single type of corner and terminal; buttons are primary, secondary and tertiary on every platform.
+7. **Name things for what they are, not for their value.** Tokens by intent (`danger`, not `red`), icons by what they show (`hexagon-plus`, not `add-project`).
+8. **Text is part of the specification.** Writing rules, glossary and message templates live in the documentation of each component.
+9. **Accessible by default.** Colour pairs tested in both themes, full keyboard support, labels on every control, correct heading order. Fix it in the system, so the fix reaches everywhere.
+10. **Ready before it is published.** A component enters the system only when its anatomy, tokens, states, variants and responsive behaviour are defined, and code, design and documentation match.
+11. **Layered, adoptable in pieces.** Tokens → CSS classes → React components. Each layer works on its own; you can drop down a layer when needed, but the right path must be the easiest one.
+12. **Tailored, not copied.** Apis takes ideas from open source systems but reflects this brand. Trends pass; decisions stay written here.
 
-## Colore
+## Craft
 
-Il sistema è giallo, nero e bianco. Gli altri colori naturali (prato, borragine, nettare, propoli, erica) servono solo per stati e grafici.
+Taste is a set of decisions you can check. These rules come from Taste Skill (tasteskill.dev) and Claude's frontend-design skill, adapted to Apis. Where a source disagrees with Apis, the Apis rule wins and the reason is written here.
 
-- La pagina è `surface` (bianco cera in chiaro, nero alveare in scuro). Le card stanno su `surface-raised`; pozzetti, codice e intestazioni di tabella su `surface-sunken`.
-- Il testo è `ink`; il testo secondario è `ink-muted`. Entrambi arrivano almeno a {{contrast ink,ink-muted on surface,surface-raised,surface-sunken}} su tutte e tre le superfici, in entrambi i temi.
-- `accent` è il giallo dell'ape. Usalo come **riempimento**, mai come testo: bottone primario, tab selezionata, switch acceso, un'evidenziazione per vista. Sopra il giallo il testo è sempre `on-accent` (nero carapace, {{contrast on-accent on accent}}), mai bianco.
-- Su fondo chiaro il giallo ha contrasto {{contrast accent on surface light}}, quindi ogni riempimento `accent` porta un bordo da 1px in `accent-edge` per restare visibile.
-- Quando serve un giallo leggibile come testo (occhielli, etichette), usa `accent-text` su `surface` o su `accent-soft`.
-- I link sono `link` (blu borragine), sottolineati a riposo. Il giallo non è mai un link.
-- Gli stati usano coppie fisse: `success` su `success-soft`, `warning` su `warning-soft`, `danger` su `danger-soft`, `info` su `info-soft`. Ogni stato ha sempre anche un'icona e una parola, mai solo il colore. `success` (verde prato) e `danger` (rosso propoli) differiscono anche in luminosità.
-- Il nero e il giallo affiancati a strisce sono il segnale di attenzione del sistema (come in natura): li usa solo `EnvironmentBanner` e il separatore `ap-stripe`. Non usarli come decorazione.
-- `surface-inverse` è una fascia scura in **entrambi** i temi (nero ape in chiaro, un gradino sopra la pagina in scuro), con testo `ink-inverse`. Footer, ticker e tooltip non diventano mai bianchi nel tema scuro.
-- Grafici: serie categoriche in ordine fisso `viz-1` … `viz-6`. La prima serie è sempre il giallo. Oltre sei serie, raggruppa in "Altro".
-- I token primitivi (`pollen-*`, `comb-*`, `meadow-*`, `borage-*`, `nectar-*`, `propolis-*`, `heather-*`) esistono solo per definire i semantici. Se ti serve un primitivo in un componente, manca un token semantico: aggiungilo.
+- **Start from the subject.** Layout, images and copy come from what the page is about: its materials, its numbers, its words. If a choice would fit any similar page, revise it.
+- **Spend boldness once.** One memorable element per view (on the site, the hero); everything around it stays quiet. Before shipping, remove one decoration.
+- **Structure carries information.** Numbered markers only for a real sequence. Dividers, borders and labels must say something. At most two boxes deep: never text in a box inside a box.
+- **One recipe per thing.** One card recipe, one link style, one primary and secondary button pair per view, one size for each kind of element across a page.
+- **Mostly neutral.** A screen is mostly `surface`, `ink` and `line`. Yellow follows "Brand dosage". Emphasise with size, weight and contrast before colour.
+- **Readable text.** Running text at least `body` (16px) with a line height of 1.5 or more, lines no wider than `size-prose`, nothing under 12px. Body text aims for 7:1 where the palette allows it; 4.5:1 is the floor.
+- **Monospace on purpose.** JetBrains Mono only for code and for numbers that must line up (tables, KPIs, dates in a timeline). Never for sentences, labels or decoration. Taste Skill counts mono labels as an AI tell; in Apis mono is a deliberate data voice, so keep it to data.
+- **Quiet labels.** At most one `overline` per screen, and it is the only all-caps text. No eyebrow above every heading, no single coloured word in a headline, no gradient text, no emoji that carries meaning.
+- **Plain, specific copy.** The h1 names the thing. The first screen carries one hard fact: a number, a place, a date. Every heading contains a noun. No hype words ("seamless", "elevate", "unlock") and no questions as section titles; the closing invitation to get in touch is the only exception.
+- **Buttons say what happens.** Verb plus object, and the same name through the flow ("Publish", then "Published"). Never "Learn more" or "Discover", and no arrow on every button.
+- **Nothing invented.** No made-up reviews, logos, statistics or placeholder text in anything that ships. If a number is unknown, remove the sentence.
+- **Avoid the AI defaults.** Cream with a serif and terracotta; near-black with an acid accent; rows of identical rounded cards with the same soft shadow; purple gradients and glass cards. Apis has its own palette: use it.
+- **Hover with restraint.** Hover effects only under (hover: hover) and (pointer: fine). Only cards that are links react: they lift 2px; an image may zoom to 1.03 inside its frame. Cards that are not links do not move. This settles a disagreement between the sources: Taste Skill asks for a lift on linked cards, frontend-design calls hover on every card a tell.
+- **Quality floor.** Works from 320px, focus ring always visible and never animated, touch targets of 44px, visible labels, headings one level at a time, equal left and right edges.
+- **Look before you ship.** Check every page at 1440, 768 and 390px in both themes: uneven margins, text touching an edge, empty gaps, single words left alone on the last line of a title.
 
-## Tipografia
+## Colour
 
-Tre famiglie open source (licenza OFL), **incluse nel sistema** in `fonts/` e dichiarate in `tokens.css`: nessuna richiesta a Google o ad altri servizi, quindi nessun indirizzo IP dei visitatori a terzi e caratteri disponibili da subito. Ognuna ha un ruolo:
+The system is yellow, black and white. The other natural colours (meadow, borage, nectar, propolis, heather) are only for states and charts.
 
-- **Bricolage Grotesque** (`display`): solo `display-xl`, `display`, `headline`, `title`. Organica, con piccole irregolarità, come qualcosa fatto a mano.
-- **Instrument Sans** (`sans`): tutto il resto, dall'interfaccia al testo lungo.
-- **JetBrains Mono** (`mono`): `code` e `data`. I numeri in tabelle e KPI usano `data` con cifre tabulari.
+- The page is `surface` (wax white in light, hive black in dark). Cards sit on `surface-raised`; wells, code and table headers on `surface-sunken`.
+- Text is `ink`; secondary text is `ink-muted`. Both reach at least {{contrast ink,ink-muted on surface,surface-raised,surface-sunken}} on all three surfaces, in both themes.
+- `accent` is the bee's yellow. Use it as a **fill**, never as text: primary button, selected tab, switch on, one highlight per view. On yellow, text is always `on-accent` (carapace black, {{contrast on-accent on accent}}), never white.
+- On a light background the yellow has a contrast of {{contrast accent on surface light}}, so every `accent` fill carries a 1px border in `accent-edge` to stay visible.
+- When you need a yellow that is readable as text (eyebrows, labels), use `accent-text` on `surface` or on `accent-soft`.
+- Links are `link` (borage blue), underlined at rest. Yellow is never a link.
+- States use fixed pairs: `success` on `success-soft`, `warning` on `warning-soft`, `danger` on `danger-soft`, `info` on `info-soft`. Every state always has an icon and a word as well, never colour alone. `success` (meadow green) and `danger` (propolis red) also differ in lightness.
+- Black and yellow side by side in stripes are the system's warning signal (as in nature): only `EnvironmentBanner` and the `ap-stripe` divider use them. Do not use them as decoration.
+- `surface-inverse` is a dark band in **both** themes (bee black in light, one step above the page in dark), with `ink-inverse` text. Footers, tickers and tooltips never turn white in the dark theme.
+- Charts: categorical series in the fixed order `viz-1` … `viz-6`. The first series is always yellow. Beyond six series, group the rest into "Other".
+- Primitive tokens (`pollen-*`, `comb-*`, `meadow-*`, `borage-*`, `nectar-*`, `propolis-*`, `heather-*`) exist only to define the semantic ones. If you need a primitive in a component, a semantic token is missing: add it.
 
-Regole:
+## Typography
 
-- Il testo predefinito è `body` (16/24). Nelle app dense si scende a `body-sm` (14/20), mai sotto 12px.
-- `display-xl` è la frase unica di una landing (un nome, un prodotto): una volta per sito, mai nelle app. `display` al massimo una volta per pagina. Le app partono da `heading` come titolo di pagina.
-- Tutte le interlinee sono multipli di 4. Le righe di testo lungo non superano `size-prose` (70 caratteri).
-- I titoli hanno `text-wrap: balance`. Gli `overline` sono in maiuscolo con spaziatura 0.08em e non superano tre parole; al massimo uno per schermata, e solo quando dà un contesto che il titolo non ha: sopra ogni card diventano rumore.
-- Il monospazio è per codice e numeri in colonna, mai per frasi o etichette.
-- Nelle app native i caratteri cambiano ruolo: vedi "App nativa".
-- I quattro stili display sono **fluidi**: crescono in modo continuo da 360px a 1280px di larghezza (`display-xl` 48/52 → 88/88, `display` 40/44 → 56/60, `headline` 32/40 → 40/48, `title` 28/36 → 32/40). Entrambi gli estremi stanno sulla griglia da 4. Usa le classi `ap-display-xl`, `ap-display`, `ap-headline`, `ap-title` o `font: var(--type-…)`, mai dimensioni scritte a mano o media query per i titoli.
+Three open source families (OFL licence), **bundled with the system** in `fonts/` and declared in `tokens.css`: no requests to Google or other services, so no visitor IP addresses go to third parties and the fonts are available immediately. Each one has a role:
 
-## Spazio, griglia e layout
+- **Bricolage Grotesque** (`display`): only `display-xl`, `display`, `headline`, `title`. Organic, with small irregularities, like something made by hand.
+- **Instrument Sans** (`sans`): everything else, from the interface to long-form text.
+- **JetBrains Mono** (`mono`): `code` and `data`. Numbers in tables and KPIs use `data` with tabular figures.
 
-- Usa solo i token `space-*`. Il numero nel nome è un multiplo di 4px: `space-4` = 16px, `space-6` = 24px.
-- Componenti a dimensione fissa (bottoni, input): l'altezza viene da `size-control-*`, il padding si adatta. Componenti guidati dal contenuto (tabelle, card): il padding è fisso, l'altezza segue il contenuto.
-- I bordi sono inclusi nelle misure (`box-sizing: border-box`).
-- Sito: griglia a 12 colonne, contenuto massimo `size-content` (1200px). Margini laterali `space-4` su mobile, `space-6` su tablet, `space-8` su desktop. Tra le sezioni `space-16` (mobile `space-12`).
-- Strumenti: layout fluido, sidebar più area di lavoro; tra i gruppi `space-8`, tra le sezioni `space-12`. Le tabelle dense possono scorrere orizzontalmente nel loro contenitore, mai la pagina.
-- Breakpoint: `bp-sm` 640, `bp-md` 768, `bp-lg` 1024, `bp-xl` 1280. Progetta mobile-first.
+Rules:
 
-## Forme ed elevazione
+- The default text is `body` (16/24). In dense apps, drop to `body-sm` (14/20), never below 12px.
+- `display-xl` is the single phrase of a landing page (a name, a product): once per site, never in apps. `display` at most once per page. Apps start from `heading` as the page title.
+- All line heights are multiples of 4. Lines of long-form text do not exceed `size-prose` (70 characters).
+- Headings have `text-wrap: balance`. `overline` text is uppercase with 0.08em letter spacing and no more than three words; at most one per screen, and only when it gives context the heading does not: above every card it becomes noise.
+- Monospace is for code and numbers in columns, never for sentences or labels.
+- In native apps the typefaces change roles: see "Native app".
+- The four display styles are **fluid**: they grow continuously from 360px to 1280px of width (`display-xl` 48/52 → 88/88, `display` 40/44 → 56/60, `headline` 32/40 → 40/48, `title` 28/36 → 32/40). Both ends sit on the 4 grid. Use the classes `ap-display-xl`, `ap-display`, `ap-headline`, `ap-title` or `font: var(--type-…)`, never hand-written sizes or media queries for headings.
 
-- Gli angoli sono contenuti, come le celle di un favo: `radius-sm` per bottoni, input, badge e tab; `radius-md` per card, alert e menu; `radius-lg` solo per dialoghi e pannelli grandi del sito; `radius-full` per switch, pillole e avatar. Tabelle e fasce a tutta larghezza restano a `radius-none`.
-- L'esagono è il motivo del marchio e ha usi contati: vedi "Dosaggio del marchio".
-- Tre livelli di ombra calda: `elevation-1` card a riposo, `elevation-2` menu e card al passaggio del mouse, `elevation-3` solo dialoghi. Dentro le app dense preferisci un bordo `line` a un'ombra.
+## Space, grid and layout
 
-## Stati e focus
+- Use only the `space-*` tokens. The number in the name is a multiple of 4px: `space-4` = 16px, `space-6` = 24px.
+- Fixed-size components (buttons, inputs): the height comes from `size-control-*`, the padding adapts. Content-driven components (tables, cards): the padding is fixed, the height follows the content.
+- Borders are included in the measurements (`box-sizing: border-box`).
+- Site: 12-column grid, maximum content width `size-content` (1200px). Side margins `space-4` on mobile, `space-6` on tablet, `space-8` on desktop. Between sections `space-16` (mobile `space-12`).
+- Tools: fluid layout, sidebar plus work area; between groups `space-8`, between sections `space-12`. Dense tables may scroll horizontally inside their container, never the page.
+- Breakpoints: `bp-sm` 640, `bp-md` 768, `bp-lg` 1024, `bp-xl` 1280. Design mobile-first.
 
-- Il focus è sempre visibile: anello pieno da 2px in `focus`, distanziato 2px dal controllo. La distanza fa sì che l'anello tocchi sempre una superficie e mai il riempimento (nemmeno il giallo): arriva almeno a {{contrast focus on surface,surface-raised,surface-sunken}} su tutte le superfici, in entrambi i temi. Non togliere mai `outline-offset`.
-- Hover: `surface-hover` per elementi neutri, `accent-hover` per il primario. Premuto: `accent-pressed` e 1px verso il basso.
-- Disabilitato: riempimento `disabled`, testo `ink-muted`, cursore `not-allowed`, e un motivo spiegato vicino al controllo quando non è ovvio.
+## Shapes and elevation
 
-## Movimento
+- Corners are restrained, like the cells of a honeycomb: `radius-sm` for buttons, inputs, badges and tabs; `radius-md` for cards, alerts and menus; `radius-lg` only for dialogs and large site panels; `radius-full` for switches, pills and avatars. Tables and full-width bands stay at `radius-none`.
+- The hexagon is the brand motif and has limited uses: see "Brand dosage".
+- Three levels of warm shadow: `elevation-1` cards at rest, `elevation-2` menus and cards on hover, `elevation-3` dialogs only. Inside dense apps, prefer a `line` border to a shadow.
 
-Il movimento di Apis è quello di un'ape che atterra: parte deciso e si posa con calma. Serve a orientare (cosa è nuovo, cosa è cambiato) e a dare ritmo, mai a decorare.
+## States and focus
 
-| Pattern | Dove | Durata e curva |
+- Focus is always visible: a solid 2px ring in `focus`, offset 2px from the control. The offset means the ring always touches a surface and never the fill (not even the yellow): it reaches at least {{contrast focus on surface,surface-raised,surface-sunken}} on all surfaces, in both themes. Never remove `outline-offset`.
+- Hover: `surface-hover` for neutral elements, `accent-hover` for the primary. Pressed: `accent-pressed` and 1px down.
+- Disabled: `disabled` fill, `ink-muted` text, `not-allowed` cursor, and a reason explained next to the control when it is not obvious.
+
+## Motion
+
+Apis moves like a bee landing: it sets off decisively and settles calmly. Motion serves to orient (what is new, what has changed) and to give rhythm, never to decorate.
+
+| Pattern | Where | Duration and curve |
 |---|---|---|
-| Hover, pressione, focus | Ogni controllo | `duration-fast` (120ms), `ease-standard` |
-| Toggle, tab, piccole aperture | Switch, tab, accordion | `duration-base` (200ms), `ease-standard` |
-| Menu, dialoghi, drawer | Livelli sovrapposti | `duration-slow` (320ms), entrata `ease-standard`, uscita `ease-exit` |
-| Reveal allo scroll (`data-ap-reveal`) | Blocchi di contenuto | `duration-reveal` (700ms), `ease-standard`, fratelli a passi di `duration-stagger` (90ms), massimo 5 passi |
-| Rise all'ingresso (`ap-rise`) | Solo l'hero | `duration-reveal`, `ease-emphasis` |
-| Cell-in, cell-open | Solo favo e ritratto dell'hero | `duration-reveal` / 1000ms, `ease-emphasis` |
-| Cambio tema | Il bottone del tema | 600ms, cerchio dal bottone, `ease-emphasis` |
-| Pressione | Bottoni, card di scelta, righe toccabili | scala `motion-press-scale` (0.97) in `duration-fast`, `ease-standard`; al rilascio torna a 1 |
-| Ingresso di un elemento | Popover, card, segno di selezione | da `motion-enter-scale` (0.96) e opacità 0, mai da scala 0; `duration-base`, `ease-standard` |
-| Sequenza di una schermata | Titolo, testo, controlli di un passo | salgono di `motion-rise` (16px) con opacità, in ordine di lettura, a passi di `duration-stagger`, massimo 5 |
-| Cambio sul posto | Un numero, un'etichetta, un'immagine che cambia | dissolvenza incrociata, `motion-blur` (2px) su ciò che esce, `duration-base` |
+| Hover, press, focus | Every control | `duration-fast` (120ms), `ease-standard` |
+| Toggles, tabs, small expansions | Switches, tabs, accordions | `duration-base` (200ms), `ease-standard` |
+| Menus, dialogs, drawers | Overlay layers | `duration-slow` (320ms), enter `ease-standard`, exit `ease-exit` |
+| Reveal on scroll (`data-ap-reveal`) | Content blocks | `duration-reveal` (700ms), `ease-standard`, siblings in steps of `duration-stagger` (90ms), at most 5 steps |
+| Rise on entry (`ap-rise`) | The hero only | `duration-reveal`, `ease-emphasis` |
+| Cell-in, cell-open | Hero honeycomb and portrait only | `duration-reveal` / 1000ms, `ease-emphasis` |
+| Theme change | The theme button | 600ms, circle from the button, `ease-emphasis` |
+| Press | Buttons, choice cards, tappable rows | scale `motion-press-scale` (0.97) in `duration-fast`, `ease-standard`; returns to 1 on release |
+| Element entry | Popovers, cards, selection marks | from `motion-enter-scale` (0.96) and opacity 0, never from scale 0; `duration-base`, `ease-standard` |
+| Screen sequence | Title, text, controls of a step | rise by `motion-rise` (16px) with opacity, in reading order, in steps of `duration-stagger`, at most 5 |
+| In-place change | A number, a label, an image that changes | crossfade, `motion-blur` (2px) on what leaves, `duration-base` |
 
-- **Un solo momento orchestrato per pagina**: l'ingresso dell'hero. Tutto il resto è reveal discreto o feedback.
-- Il contenuto è leggibile senza JavaScript: `apis-motion.js` aggiunge `.ap-motion` a `<html>` e solo allora gli elementi partono nascosti.
-- Con `prefers-reduced-motion` lo script non attiva nulla e le durate dei token vanno a zero.
-- Niente parallax sullo scroll, niente testo animato parola per parola, niente loop vicino al testo che non si fermino al passaggio del mouse.
-- **La frequenza decide.** Ciò che si vede molte volte al giorno (liste, tab, azioni ripetute, scorciatoie da tastiera) si muove poco o niente. I momenti rari (un benvenuto, la fine di un percorso, il primo ingresso) possono prendersi `duration-reveal`.
-- **Veloce.** L'interfaccia resta sotto i 300ms; solo reveal e momento orchestrato arrivano a `duration-reveal`.
-- **Uscire costa meno che entrare.** Ciò che lascia lo schermo per sempre esce in circa il 70% della durata di ingresso, con `ease-exit`. Mai una curva che parte lenta (ease-in) per qualcosa che l'utente aspetta di vedere.
-- **Niente rimbalzi.** Nessuna curva elastica né sovraelongazione, anche con le molle (rimbalzo 0): l'ape si posa, non rimbalza.
-- **Interrompibile.** Un tocco o un gesto durante un'animazione la riprende da dove si trova; non la fa ripartire da capo.
-- **Dall'origine.** Menu e popover si aprono dal punto che li ha aperti, non dal centro.
-- **Riduzione del movimento:** resta lo stato finale. Niente spostamenti, scale o blur, solo opacità.
+- **One orchestrated moment per page**: the hero entry. Everything else is a subtle reveal or feedback.
+- Content is readable without JavaScript: `apis-motion.js` adds `.ap-motion` to `<html>`, and only then do elements start hidden.
+- With `prefers-reduced-motion` the script activates nothing and the token durations go to zero.
+- No parallax on scroll, no text animated word by word, no loops near text that do not stop on hover.
+- **Frequency decides.** What is seen many times a day (lists, tabs, repeated actions, keyboard shortcuts) moves little or not at all. Rare moments (a welcome, the end of a journey, the first entry) can take `duration-reveal`.
+- **Fast.** The interface stays under 300ms; only reveals and the orchestrated moment reach `duration-reveal`.
+- **Leaving costs less than entering.** What leaves the screen for good exits in about 70% of the entry duration, with `ease-exit`. Never a curve that starts slow (ease-in) for something the user is waiting to see.
+- **No bounces.** No elastic curves or overshoot, even with springs (bounce 0): the bee settles, it does not bounce.
+- **Interruptible.** A tap or gesture during an animation picks it up from where it is; it does not restart it from the beginning.
+- **From the origin.** Menus and popovers open from the point that opened them, not from the centre.
+- **Reduced motion:** the final state remains. No movement, scaling or blur, only opacity.
 
-### Nelle app native (SwiftUI)
+### With Motion (motion.dev)
 
-Stessi token, stesse regole. Le app iOS generano i valori da `tokens.json` (in Gym Harness: `tools/gen_apis_tokens.py` → `ApisMotion`).
+On travaz.dev, CSS and `apis-motion.js` cover every pattern without third-party code. For React apps and richer interactions use Motion: the package motion for plain JavaScript, motion/react for React (version 14). Take every value from `apis-motion-presets.js`, which reads the tokens through `apis-motion-tokens.js`: code never repeats a duration or a curve.
 
-| Token o regola | SwiftUI |
+| Need | Preset or helper |
 |---|---|
-| `ease-standard`, `ease-emphasis`, `ease-exit` con una durata | `.timingCurve(0.2, 0, 0, 1, duration:)`, `.timingCurve(0.16, 1, 0.3, 1, duration:)`, `.timingCurve(0.4, 0, 1, 1, duration:)` |
-| Gesti (trascinare, chiudere un foglio) | `.spring(duration: 0.32, bounce: 0)`: eredita la velocità del dito e resta interrompibile |
-| `motion-press-scale` | un `ButtonStyle` con `scaleEffect(configuration.isPressed ? 0.97 : 1)` |
-| `motion-rise` + `duration-stagger` | `offset(y:)` e `opacity` con ritardo `indice × 0.09`, massimo 5 passi |
-| Cambio sul posto di un numero | `.contentTransition(.numericText())` |
-| Scelta confermata | `.sensoryFeedback(.selection, trigger:)`; `.impact` solo per azioni che salvano qualcosa |
-| Riduzione del movimento | `@Environment(\.accessibilityReduceMotion)`: solo opacità |
+| Press on a button, choice card or row | press (React), pressFeedback (vanilla) |
+| A popover, card or selection mark appears | enter, inside AnimatePresence |
+| Menu, dialog, drawer | overlay, with the transform origin on the control that opened it |
+| A block reaches the screen | reveal (React), revealOnScroll (vanilla) |
+| Title, text and controls of a step | sequence: parent plus child with custom set to the index |
+| A number or label changes in place | swap, inside AnimatePresence with mode popLayout and a key per value |
+| Selected tab bar, reordering | indicator (layout animation on a spring), layoutId for a shared indicator |
+| Gestures and interruptible state | spring: visual duration `duration-slow`, bounce 0 |
 
-Su iOS 26 barre, tab bar e controlli di navigazione sono in Liquid Glass di sistema; contenuto, card e fogli restano sui colori Apis.
+- **Reduced motion.** In React wrap the app in MotionConfig with reducedMotion set to "user": transforms and layout animations stop, opacity stays, which is the Apis rule. Vanilla Motion does not read the setting by itself: the helpers check it, and any other call must check it too.
+- **Seconds, not milliseconds.** Motion counts in seconds. The presets already convert; never type 0.2 by hand.
+- **Springs never bounce.** Bounce 0 in every spring, as in SwiftUI.
+- **Only cheap properties.** Animate transform and opacity (filter for the swap blur). Never width, height, padding, box-shadow or a CSS variable.
+- **Exits.** Keep AnimatePresence mounted and put the condition inside it; children have stable keys, never array indexes. Exits use `ease-exit` at 70% of the entry duration.
+- **Loading.** With a bundler, import from the package. Without one, pin the version on jsDelivr (motion@14 with +esm). Never "latest".
 
-## Dosaggio del marchio
+React:
 
-Giallo, nero ed esagono sono riconoscibili proprio perché sono pochi. Usati ovunque diventano un cantiere.
+```jsx
+import { motion, AnimatePresence, MotionConfig } from "motion/react";
+import { press, enter, reveal } from "./apis-motion-presets.js";
 
-- **Esagono**: solo nel marchio, nel ritratto principale (`ap-cell`, una volta per sito), nel favo decorativo dell'hero (una volta per pagina) e nell'icona di `EmptyState`. Non usarlo per elenchi puntati, indicatori della timeline, chip, separatori o cornici di card.
-- **Giallo**: o **un grande campo** per pagina (la fascia contatti, la copertina), o **singoli dettagli** (il bottone primario, la barra della tab selezionata, una sottolineatura). Non entrambi nella stessa vista ristretta, e mai sparso su molti piccoli elementi decorativi.
-- **Nero e giallo affiancati in grande**: solo nel marchio e nella striscia di attenzione. Non accostare un grande blocco nero a un grande blocco giallo.
-- Per elenchi e separatori usa forme neutre: un punto `radius-full` in `ink-muted`, una linea `line`.
+<MotionConfig reducedMotion="user">
+  <motion.button className="ap-btn ap-btn--primary" {...press}>Save changes</motion.button>
+  <AnimatePresence>{open && <motion.div key="menu" {...enter} />}</AnimatePresence>
+  <motion.section {...reveal}>…</motion.section>
+</MotionConfig>
+```
 
-## Immagini
+Plain JavaScript:
 
-- **Fotografie vere**, a colori naturali e luce calda: persone, luoghi di lavoro, prodotti. Niente foto stock generiche e niente illustrazioni.
-- **Proporzioni** dai token: `aspect-portrait` (4:5) per le persone, `aspect-cover` (16:10) per progetti e articoli, `aspect-square` per loghi e avatar, `aspect-cell` solo per il ritratto principale. Sempre `object-fit: cover`.
-- **Ritratto**: occhi sul terzo superiore (`object-position: 50% 30%`), sfondo semplice, nessun filtro.
-- **Screenshot**: dentro un riquadro `radius-md` con bordo `line`, mai inclinati o con ombre finte da dispositivo.
-- **Peso**: al massimo 2400px sul lato lungo, in WebP o AVIF, `loading="lazy"` fuori dal primo schermo, `width` e `height` sempre dichiarati.
-- **Testo alternativo**: descrive cosa serve sapere ("Ritratto di Daniel Travaglia"), `alt=""` per le immagini decorative.
+```js
+import { animate, inView, press } from "motion";
+import { revealOnScroll, pressFeedback } from "./apis-motion-presets.js";
 
-## Marchio
+revealOnScroll({ animate, inView }, "[data-reveal]");
+pressFeedback({ animate, press }, ".ap-btn");
+```
 
-- Il marchio è una cella del favo (esagono a punta in alto) in `accent` con due bande in `carapace`, su una griglia di 64: esagono di raggio 30 centrato, bande alte 8 a y 22 e 38.
-- Spazio libero attorno pari a metà della sua larghezza; dimensione minima 16px.
-- Accanto al marchio il nome si scrive in Bricolage Grotesque 700.
-- **Stato: provvisorio.** È un segno geometrico di partenza, non un marchio disegnato a mano. Va ridisegnato prima di usarlo fuori dal sito personale.
+### In native apps (SwiftUI)
 
-## Iconografia
+Same tokens, same rules. iOS apps generate the values from `tokens.json` (in Gym Harness: `tools/gen_apis_tokens.py` → `ApisMotion`).
 
-- Sul web usa le icone di Lucide (open source): griglia 24px, tratto 2px, terminali e angoli arrotondati. È lo stesso stile delle icone interne di Apis. Nelle app native si usano gli SF Symbols (vedi "App nativa").
-- Dimensioni: `size-icon-sm` (16) nei controlli piccoli e accanto a `body-sm`, `size-icon-md` (24) di default, `size-icon-lg` (32) per funzioni e stati vuoti. Non scendere sotto 16px.
-- Un solo colore per icona, ereditato con `currentColor`. Due colori al massimo solo sul sito; tre o più è un'illustrazione.
-- Nomi per ciò che si vede, in inglese e con trattini: `circle-check`, `hexagon-plus`. Varianti con la barra: `hexagon/filled`.
-- Un'icona senza testo ha sempre un'etichetta accessibile (`aria-label`) e un tooltip.
+| Token or rule | SwiftUI |
+|---|---|
+| `ease-standard`, `ease-emphasis`, `ease-exit` with a duration | `.timingCurve(0.2, 0, 0, 1, duration:)`, `.timingCurve(0.16, 1, 0.3, 1, duration:)`, `.timingCurve(0.4, 0, 1, 1, duration:)` |
+| Gestures (dragging, dismissing a sheet) | `.spring(duration: 0.32, bounce: 0)`: inherits the finger's velocity and stays interruptible |
+| `motion-press-scale` | a `ButtonStyle` with `scaleEffect(configuration.isPressed ? 0.97 : 1)` |
+| `motion-rise` + `duration-stagger` | `offset(y:)` and `opacity` with a delay of `index × 0.09`, at most 5 steps |
+| In-place change of a number | `.contentTransition(.numericText())` |
+| Confirmed choice | `.sensoryFeedback(.selection, trigger:)`; `.impact` only for actions that save something |
+| Reduced motion | `@Environment(\.accessibilityReduceMotion)`: opacity only |
 
-## Contenuti e tono
+On iOS 26, bars, tab bars and navigation controls use system Liquid Glass; content, cards and sheets stay on Apis colours.
 
-Apis parla come un artigiano competente: diretto, calmo, preciso. Frasi brevi, verbi attivi, niente punti esclamativi, niente emoji nell'interfaccia.
+## Brand dosage
 
-- **Lingua.** L'italiano è la lingua principale; l'inglese segue le stesse regole. Ci si rivolge all'utente con il "tu" sul sito e nelle app. Il sistema non parla in prima persona ("Non è stato possibile salvare", non "Non siamo riusciti").
-- **Maiuscole.** Sempre maiuscola solo a inizio frase, anche in inglese, anche nei bottoni e nelle intestazioni di tabella: "Salva modifiche", "Export report". Unica eccezione: gli `overline`, tutti maiuscoli.
-- **Bottoni.** Verbo all'infinito più oggetto: "Crea progetto", "Scarica fattura". Il titolo di una conferma usa lo stesso verbo del bottone che conferma: "Eliminare il progetto?" → "Elimina progetto" / "Annulla".
-- **Errori.** Dicono cosa è successo e come rimediare, senza scuse: "La data di fine è prima della data di inizio. Scegli una data dopo il 3 ott." Mai solo "Errore".
-- **Stati vuoti.** Dicono cosa comparirà qui e qual è il primo passo: "Nessun progetto ancora. Crea il primo progetto per iniziare a tracciare le ore."
-- **Glossario.** *Elimina* = rimuove per sempre; *Rimuovi* = toglie da un gruppo, l'oggetto esiste ancora; *Archivia* = nasconde, si può ripristinare. *Scarica* = file sul dispositivo; *Esporta* = conversione in un altro formato; *Condividi* = accesso per altre persone.
-- **Numeri e date.** Formato svizzero-italiano: `CHF 12'480.00`, `1 ott 2026`, `14:30`. Numeri sempre in `data` (cifre tabulari) nelle tabelle.
-- **Traduzioni.** Lascia il 30% di spazio in più per il tedesco. Non comporre frasi unendo pezzi di stringhe. Niente testo dentro immagini o icone.
+Yellow, black and the hexagon are recognisable precisely because they are few. Used everywhere, they turn into a construction site.
 
-## Accessibilità
+- **Hexagon**: only in the logo, in the main portrait (`ap-cell`, once per site), in the decorative hero honeycomb (once per page) and in the `EmptyState` icon. Do not use it for bullet lists, timeline markers, chips, dividers or card frames.
+- **Yellow**: either **one large field** per page (the contact band, the cover), or **single details** (the primary button, the selected tab bar, an underline). Not both in the same narrow view, and never scattered across many small decorative elements.
+- **Black and yellow side by side at large scale**: only in the logo and in the warning stripe. Do not place a large black block next to a large yellow block.
+- For lists and dividers, use neutral shapes: a `radius-full` dot in `ink-muted`, a `line` rule.
 
-- Obiettivo WCAG 2.2 AA: testo 4.5:1, testo grande e controlli 3:1, in entrambi i temi. Le coppie dichiarate nei token sono già verificate; se ne crei una nuova, misurala.
-- Tutto funziona da tastiera, nell'ordine di lettura. Tab: frecce sinistra/destra, Home, Fine. Switch: Spazio. Dialoghi: Esc chiude e il focus torna al controllo che li ha aperti.
-- Ogni campo ha un `label` visibile; aiuti ed errori sono collegati con `aria-describedby`. Il segnaposto non sostituisce mai l'etichetta.
-- Le immagini informative hanno un testo alternativo; quelle decorative `alt=""`.
-- Un solo `h1` per pagina, titoli in ordine senza salti.
-- Area minima di tocco 44×44px sul mobile (`size-control-lg` per i bottoni principali).
-- Niente overlay di accessibilità e niente correzioni automatiche: markup semantico e test con persone reali.
+## Images
 
-## Componenti
+- **Real photographs**, in natural colours and warm light: people, workplaces, products. No generic stock photos and no illustrations.
+- **Aspect ratios** from the tokens: `aspect-portrait` (4:5) for people, `aspect-cover` (16:10) for projects and articles, `aspect-square` for logos and avatars, `aspect-cell` only for the main portrait. Always `object-fit: cover`.
+- **Portrait**: eyes on the upper third (`object-position: 50% 30%`), plain background, no filters.
+- **Screenshots**: inside a `radius-md` frame with a `line` border, never tilted or with fake device shadows.
+- **Weight**: at most 2400px on the long side, in WebP or AVIF, `loading="lazy"` below the first screen, `width` and `height` always declared.
+- **Alternative text**: describes what you need to know ("Ritratto di Daniel Travaglia" (Portrait of Daniel Travaglia)), `alt=""` for decorative images.
 
-Undici componenti React in `window.Apis`, più le classi `ap-*` per chi non usa React. Ogni componente ha la sua scheda con scopo, quando usarlo, cosa fornisce chi lo usa e regole di scrittura.
+## Logo
 
-- Azioni: `Button`
-- Moduli: `TextField`, `Checkbox`, `Switch`
+- The logo is a honeycomb cell (pointy-top hexagon) in `accent` with two bands in `carapace`, on a 64 grid: a centred hexagon of radius 30, bands 8 high at y 22 and 38.
+- Clear space around it equal to half its width; minimum size 16px.
+- Next to the logo, the name is set in Bricolage Grotesque 700.
+- **Status: provisional.** It is a starting geometric mark, not a hand-drawn logo. It must be redrawn before it is used outside the personal site.
+
+## Iconography
+
+- On the web, use Lucide icons (open source): 24px grid, 2px stroke, rounded terminals and corners. It is the same style as Apis's internal icons. Native apps use SF Symbols (see "Native app").
+- Sizes: `size-icon-sm` (16) in small controls and next to `body-sm`, `size-icon-md` (24) by default, `size-icon-lg` (32) for features and empty states. Do not go below 16px.
+- One colour per icon, inherited with `currentColor`. Two colours at most, and only on the site; three or more is an illustration.
+- Names describe what is shown, in English and with hyphens: `circle-check`, `hexagon-plus`. Variants use a slash: `hexagon/filled`.
+- An icon without text always has an accessible label (`aria-label`) and a tooltip.
+
+## Content and tone
+
+Apis speaks like a skilled craftsperson: direct, calm, precise. Short sentences, active verbs, no exclamation marks, no emoji in the interface.
+
+- **Language.** English is the primary language of the system documentation. Interface copy follows the product's language (Italian and English on travaz.dev), and both follow the same rules. Address the user informally, on the site and in the apps ("tu" in Italian, "you" in English). The system does not speak in the first person ("Non è stato possibile salvare" (Could not save), not "Non siamo riusciti" (We could not)).
+- **Capitalisation.** Always sentence case, in English too, including buttons and table headers: "Salva modifiche" (Save changes), "Export report". The only exception: `overline` text, all uppercase.
+- **Buttons.** Verb in the infinitive plus object: "Crea progetto" (Create project), "Scarica fattura" (Download invoice). The title of a confirmation uses the same verb as the button that confirms it: "Eliminare il progetto?" (Delete project?) → "Elimina progetto" (Delete project) / "Annulla" (Cancel).
+- **Errors.** Say what happened and how to fix it, without apologies: "La data di fine è prima della data di inizio. Scegli una data dopo il 3 ott." (The end date is before the start date. Choose a date after 3 Oct.) Never just "Errore" (Error).
+- **Empty states.** Say what will appear here and what the first step is: "Nessun progetto ancora. Crea il primo progetto per iniziare a tracciare le ore." (No projects yet. Create your first project to start tracking hours.)
+- **Glossary.** *Elimina* (Delete) = removes permanently; *Rimuovi* (Remove) = takes out of a group, the item still exists; *Archivia* (Archive) = hides, can be restored. *Scarica* (Download) = file on the device; *Esporta* (Export) = conversion to another format; *Condividi* (Share) = access for other people.
+- **Numbers and dates.** Swiss-Italian format: `CHF 12'480.00`, `1 ott 2026`, `14:30`. Numbers in tables always in `data` (tabular figures).
+- **Translations.** Leave 30% extra space for German. Do not build sentences by joining string fragments. No text inside images or icons.
+
+## Accessibility
+
+- Target WCAG 2.2 AA: text 4.5:1, large text and controls 3:1, in both themes. The pairs declared in the tokens are already verified; if you create a new one, measure it.
+- Everything works from the keyboard, in reading order. Tabs: left/right arrows, Home, End. Switches: Space. Dialogs: Esc closes them and focus returns to the control that opened them.
+- Every field has a visible `label`; hints and errors are linked with `aria-describedby`. Placeholder text never replaces the label.
+- Informative images have alternative text; decorative ones have `alt=""`.
+- One `h1` per page, headings in order without skipping levels.
+- Minimum touch target 44×44px on mobile (`size-control-lg` for main buttons).
+- No accessibility overlays and no automatic fixes: semantic markup and testing with real people.
+
+## Components
+
+Eleven React components in `window.Apis`, plus the `ap-*` classes for those who do not use React. Each component has its own page with its purpose, when to use it, what the user of the component provides, and writing rules.
+
+- Actions: `Button`
+- Forms: `TextField`, `Checkbox`, `Switch`
 - Feedback: `Alert`, `Badge`, `EmptyState`, `EnvironmentBanner`
-- Contenitori e navigazione: `Card`, `Tabs`
-- Dati: `DataTable`
-- Base: `Icon`, `Motion` (pattern di movimento e script `apis-motion.js`)
+- Containers and navigation: `Card`, `Tabs`
+- Data: `DataTable`
+- Foundations: `Icon`, `Motion` (motion patterns and the `apis-motion.js` script)
 
-### Sito e strumenti
+### Site and tools
 
-Sono lo stesso sistema con tre trattamenti: sito, strumenti e app nativa. Il **sito** può usare `display` e `headline`, `body-lg`, spazi da `space-16` e `space-24`, `radius-lg`, il giallo in grandi campi. Gli **strumenti** sono densi e silenziosi: titoli da `heading`, testo `body-sm` nelle tabelle, controlli `sm`, un solo bottone primario per vista, il giallo solo per l'azione principale e la selezione. Ogni strumento non di produzione mostra `EnvironmentBanner` in cima.
+They are the same system with three treatments: site, tools and native app. The **site** can use `display` and `headline`, `body-lg`, spacing of `space-16` and `space-24`, `radius-lg`, and yellow in large fields. **Tools** are dense and quiet: `heading` titles, `body-sm` text in tables, `sm` controls, a single primary button per view, yellow only for the main action and selection. Every non-production tool shows `EnvironmentBanner` at the top.
 
-### App nativa
+### Native app
 
-Il trattamento delle app iOS (oggi Gym Harness). Su iPhone la piattaforma decide struttura, navigazione e controlli; Apis porta il marchio con la tinta, i titoli e il movimento. Le regole vengono dal riferimento iOS e dall'audit nativo di Impeccable e dalle schermate di app e dal registro dei "tells" di Taste Skill: un'app che sembra un sito portato su iPhone non ispira fiducia.
+The treatment for iOS apps (currently Gym Harness). On iPhone the platform decides structure, navigation and controls; Apis brings the brand through the tint, the titles and the motion. The rules come from the iOS reference and the native audit of Impeccable, and from the app screens and the "tells" register of Taste Skill: an app that looks like a website ported to iPhone does not inspire trust.
 
-- **Caratteri.** Il testo dell'interfaccia è SF Pro con gli stili di sistema e Dynamic Type (corpo 17 pt, minimo 11 pt). Bricolage Grotesque solo nei momenti display: titoli grandi della navigazione, il titolo del passo in corso, il numero eroe (timer, carico), sempre scalato con Dynamic Type. I numeri usano le cifre tabulari di SF Pro; niente JetBrains Mono nell'app.
-- **Icone.** SF Symbols, allineati al testo e scalati con lui.
-- **Colore.** Fondo `app-ground` quasi neutro, card e righe `app-raised` un tono sopra, controlli secondari `app-fill`. Il giallo `accent` è l'unica tinta: azione principale, selezione, progresso. Testi e stati sono quelli di Apis.
-- **Superfici.** Nessun bordo sulle card: separa il tono. `radius-xl` per le card, come le liste raggruppate di iOS; capsule per bottoni e pillole; raggi concentrici dentro una card. Il bordo da 1px resta solo dove un controllo ne ha bisogno per farsi riconoscere.
-- **Bottoni.** Capsule. Primario: riempimento `accent`, testo `on-accent`, senza bordo. Secondario: `app-fill` e testo `ink`. Terziario: solo testo. Almeno 44 pt di altezza; le azioni da usare con le mani sudate 56 pt. Premuto: `motion-press-scale`.
-- **Etichette.** Nessuna etichetta maiuscola sopra le card. Un'informazione sta in un posto solo: il titolo non si ripete nel testo, un numero non si ripete nella legenda.
-- **Controlli di sistema.** Tab bar per le sezioni, stack per la gerarchia, fogli per i compiti brevi; switch, stepper, picker, menu, azioni a scorrimento di sistema; liste raggruppate per impostazioni ed elenchi; Liquid Glass su barre e controlli di navigazione, contenuto sui colori Apis.
-- **Una domanda per schermata.** Ogni schermata risponde prima a una domanda ("cosa faccio oggi?"): la risposta è il blocco più grande, con la sua azione. Il dato da notare (una pausa lunga, un sonno scarso, una fase nuova) è la riga sotto il titolo della risposta, non una card a parte. Il resto è un rimando di una riga o vive in un'altra schermata.
-- **Verifica.** Screenshot dal simulatore in chiaro, in scuro e con Dynamic Type grande: nessun testo troncato o sovrapposto.
+- **Typefaces.** Interface text is SF Pro with the system styles and Dynamic Type (body 17 pt, minimum 11 pt). Bricolage Grotesque only in display moments: large navigation titles, the title of the current step, the hero number (timer, load), always scaled with Dynamic Type. Numbers use SF Pro tabular figures; no JetBrains Mono in the app.
+- **Icons.** SF Symbols, aligned with the text and scaled with it.
+- **Colour.** `app-ground` background, almost neutral; cards and rows in `app-raised`, one tone above; secondary controls in `app-fill`. The yellow `accent` is the only tint: main action, selection, progress. Text and states are those of Apis.
+- **Surfaces.** No borders on cards: the tone separates them. `radius-xl` for cards, like iOS grouped lists; capsules for buttons and pills; concentric radii inside a card. The 1px border remains only where a control needs it to be recognised.
+- **Buttons.** Capsules. Primary: `accent` fill, `on-accent` text, no border. Secondary: `app-fill` and `ink` text. Tertiary: text only. At least 44 pt high; actions meant for sweaty hands 56 pt. Pressed: `motion-press-scale`.
+- **Labels.** No uppercase labels above cards. A piece of information lives in one place only: the title is not repeated in the text, a number is not repeated in the legend.
+- **System controls.** Tab bar for sections, stack for hierarchy, sheets for short tasks; system switches, steppers, pickers, menus and swipe actions; grouped lists for settings and lists; Liquid Glass on bars and navigation controls, content on Apis colours.
+- **One question per screen.** Each screen first answers one question ("what do I do today?"): the answer is the largest block, with its action. The data point to notice (a long break, poor sleep, a new phase) is the line under the answer's title, not a separate card. Everything else is a one-line link or lives on another screen.
+- **Verification.** Simulator screenshots in light, in dark and with large Dynamic Type: no truncated or overlapping text.
 
-In SwiftUI le app generano i token da `tokens.json` (Gym Harness: `tools/gen_apis_tokens.py`), con `surface`, `surface-raised`, `surface-sunken` e `surface-hover` presi da `app-ground`, `app-raised` e `app-fill`.
+In SwiftUI the apps generate the tokens from `tokens.json` (Gym Harness: `tools/gen_apis_tokens.py`), with `surface`, `surface-raised`, `surface-sunken` and `surface-hover` taken from `app-ground`, `app-raised` and `app-fill`.
 
-### Aggiungere o cambiare un componente
+### Adding or changing a component
 
-Un contributo passa tre fasi, e non si salta una fase:
+A contribution goes through three phases, and no phase is skipped:
 
-1. **Consolidare.** Dimostra che nessun componente esistente copre il caso, raccogli almeno due casi d'uso reali, valuta l'impatto sugli altri componenti. Scrivi la frase di scopo.
-2. **Definire.** Specifica pronta per lo sviluppo: anatomia, token usati (solo semantici o di componente), stati (riposo, hover, focus, premuto, disabilitato, errore, caricamento), varianti, comportamento da mobile a desktop, regole di testo, requisiti di accessibilità.
-3. **Rendere conforme.** Codice, design e documentazione coincidono; contrasti verificati in chiaro e scuro; navigazione da tastiera provata; scheda del componente scritta.
+1. **Consolidate.** Show that no existing component covers the case, collect at least two real use cases, assess the impact on the other components. Write the purpose statement.
+2. **Define.** A specification ready for development: anatomy, tokens used (semantic or component tokens only), states (rest, hover, focus, pressed, disabled, error, loading), variants, behaviour from mobile to desktop, text rules, accessibility requirements.
+3. **Make compliant.** Code, design and documentation match; contrast verified in light and dark; keyboard navigation tested; component page written.
 
-Le versioni seguono semver: un token rinominato o rimosso è una versione maggiore, un token o componente nuovo è minore, una correzione di valore è una patch.
+Versions follow semver: a renamed or removed token is a major version, a new token or component is a minor version, a value fix is a patch.

@@ -73,7 +73,7 @@
       h('span', null, p.label));
   }
 
-  var TONE_WORD = { info: 'Informazione', success: 'Fatto', warning: 'Attenzione', danger: 'Errore' };
+  var TONE_WORD = { info: 'Information', success: 'Done', warning: 'Warning', danger: 'Error' };
   function Alert(p) {
     var tone = p.tone || 'info';
     return h('div', { className: cx('ap-alert', 'ap-alert--' + tone, p.className), role: tone === 'danger' || tone === 'warning' ? 'alert' : 'status' },
@@ -135,10 +135,10 @@
       p.action ? h('div', { className: 'ap-empty__action' }, p.action) : null);
   }
 
-  var ENV = { development: 'Sviluppo', staging: 'Test', preview: 'Anteprima' };
+  var ENV = { development: 'Development', staging: 'Staging', preview: 'Preview' };
   function EnvironmentBanner(p) {
     var env = p.env || 'staging';
-    return h('div', { className: cx('ap-envbar', p.className), role: 'note', 'aria-label': 'Ambiente: ' + (p.label || ENV[env] || env) },
+    return h('div', { className: cx('ap-envbar', p.className), role: 'note', 'aria-label': 'Environment: ' + (p.label || ENV[env] || env) },
       h('span', { className: 'ap-envbar__label' }, h(Icon, { name: 'triangle-alert', size: 14 }), p.label || ENV[env] || env));
   }
 

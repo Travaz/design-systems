@@ -1,11 +1,11 @@
 # EmptyState
 
-**Classi:** `ap-empty` > `ap-empty__icon`, `ap-empty__title`, `ap-empty__text`, `ap-empty__action`
+**Classes:** `ap-empty` > `ap-empty__icon`, `ap-empty__title`, `ap-empty__text`, `ap-empty__action`
 
-Scopo: spiegare perché un'area è vuota e qual è il primo passo per riempirla.
+Purpose: explain why an area is empty and what the first step is to fill it.
 
-**Chi lo usa fornisce:** `title`, `description`, opzionali `action` (di solito un `Button` primario), `titleAs` (livello del titolo, predefinito `h3`) e `icon` (predefinita `hexagon-plus`, la cella vuota del favo).
+**The consumer provides:** `title`, `description`, optional `action` (usually a primary `Button`), `titleAs` (heading level, default `h3`) and `icon` (default `hexagon-plus`, the empty cell of the honeycomb).
 
-**Testo:** il titolo dice cosa manca, la descrizione cosa comparirà e come iniziare. "Nessun progetto ancora" + "Crea il primo progetto per iniziare a tracciare ore e fatture." Dopo una ricerca senza risultati, suggerisci come allargarla.
+**Text:** the title says what is missing, the description what will appear and how to start. "No projects yet" + "Create your first project to start tracking hours and invoices." After a search with no results, suggest how to broaden it.
 
-- Don't: solo un'illustrazione senza un'azione o un'indicazione.
+- Don't: just an illustration without an action or a pointer.

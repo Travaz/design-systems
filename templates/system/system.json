@@ -2,8 +2,8 @@
   "id": "{{id}}",
   "name": "{{Name}}",
   "version": "0.1.0",
-  "description": "Descrivi in una frase per cosa nasce {{Name}} e da cosa prende ispirazione.",
-  "language": "it",
+  "description": "Describe in one sentence what {{Name}} was made for and what inspires it.",
+  "language": "en",
   "namespace": "{{Namespace}}",
   "classPrefix": "{{prefix}}",
   "files": {

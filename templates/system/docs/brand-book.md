@@ -1,27 +1,27 @@
-{{Name}} è… (una frase: per cosa nasce, a chi parla, da cosa prende ispirazione).
+{{Name}} is… (one sentence: what it was made for, who it speaks to, what inspires it).
 
-## Principi
+## Principles
 
-Elenca i 3-5 principi specifici di {{Name}}. I principi generali della raccolta sono in `principles.md`.
+List the 3–5 principles specific to {{Name}}. The collection's general principles are in `principles.md`.
 
-## Colore
+## Colour
 
-- La pagina è `surface`; le card stanno su `surface-raised`.
-- Il testo è `ink`, il testo secondario `ink-muted`.
-- `accent` è il colore dell'azione principale; sopra di lui il testo è `on-accent`.
+- The page is `surface`; cards sit on `surface-raised`.
+- Text is `ink`, secondary text `ink-muted`.
+- `accent` is the colour of the primary action; text on it is `on-accent`.
 
-## Tipografia
+## Typography
 
-- Il testo predefinito è `body` (16/24).
+- The default text is `body` (16/24).
 
-## Spazio e forme
+## Space and shape
 
-- Solo token `space-*` e `radius-*`.
+- Only `space-*` and `radius-*` tokens.
 
-## Contenuti e tono
+## Content and tone
 
-- Descrivi come parla l'interfaccia.
+- Describe how the interface speaks.
 
-## Accessibilità
+## Accessibility
 
-- WCAG 2.2 AA in tutti i temi: `npm run check -- {{id}}` lo verifica sulle coppie dichiarate in `tokens.json`.
+- WCAG 2.2 AA in every theme: `npm run check -- {{id}}` verifies it on the pairs declared in `tokens.json`.

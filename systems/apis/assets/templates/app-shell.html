@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fatture · Gestionale</title>
+<title>Invoices · Back office</title>
 <link rel="icon" href="apis-mark.svg" type="image/svg+xml">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="apis.css">
@@ -33,49 +33,49 @@
 </style>
 </head>
 <body class="ap-base">
-  <div class="ap-envbar" role="note" aria-label="Ambiente: Test"><span class="ap-envbar__label">Test</span></div>
+  <div class="ap-envbar" role="note" aria-label="Environment: Staging"><span class="ap-envbar__label">Staging</span></div>
   <div class="shell">
-    <nav class="sidebar" aria-label="Sezioni">
-      <div class="app-name"><img src="apis-mark.svg" alt="" width="24" height="24">Gestionale</div>
-      <a class="nav-item" href="#">Panoramica</a>
-      <a class="nav-item" href="#">Progetti</a>
-      <a class="nav-item" href="#" aria-current="page">Fatture</a>
-      <a class="nav-item" href="#">Clienti</a>
-      <a class="nav-item" href="#">Impostazioni</a>
+    <nav class="sidebar" aria-label="Sections">
+      <div class="app-name"><img src="apis-mark.svg" alt="" width="24" height="24">Back office</div>
+      <a class="nav-item" href="#">Overview</a>
+      <a class="nav-item" href="#">Projects</a>
+      <a class="nav-item" href="#" aria-current="page">Invoices</a>
+      <a class="nav-item" href="#">Clients</a>
+      <a class="nav-item" href="#">Settings</a>
     </nav>
     <main class="main">
       <div class="page-head">
         <div>
-          <h1>Fatture</h1>
-          <p>Ottobre 2026 · aggiornato alle 14:30</p>
+          <h1>Invoices</h1>
+          <p>October 2026 · updated at 14:30</p>
         </div>
         <div class="toolbar">
-          <button class="ap-btn ap-btn--secondary ap-btn--sm" type="button">Esporta CSV</button>
-          <button class="ap-btn ap-btn--primary ap-btn--sm" type="button">Nuova fattura</button>
+          <button class="ap-btn ap-btn--secondary ap-btn--sm" type="button">Export CSV</button>
+          <button class="ap-btn ap-btn--primary ap-btn--sm" type="button">New invoice</button>
         </div>
       </div>
 
       <div class="kpis">
-        <div class="kpi"><span>Da incassare</span><strong>CHF 14'340.50</strong></div>
-        <div class="kpi"><span>Incassato</span><strong>CHF 4'200.00</strong></div>
-        <div class="kpi"><span>In ritardo</span><strong>1</strong></div>
+        <div class="kpi"><span>Outstanding</span><strong>CHF 14'340.50</strong></div>
+        <div class="kpi"><span>Collected</span><strong>CHF 4'200.00</strong></div>
+        <div class="kpi"><span>Overdue</span><strong>1</strong></div>
       </div>
 
       <div class="ap-alert ap-alert--warning" role="alert">
-        <svg class="ap-alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Attenzione"><path d="M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-2.9L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-        <p class="ap-alert__title">La fattura 2026-118 è scaduta da 3 giorni.</p>
-        <p class="ap-alert__body">Invia un sollecito a Comune di Lugano o registra il pagamento.</p>
-        <div class="ap-alert__action"><button class="ap-btn ap-btn--secondary ap-btn--sm" type="button">Invia sollecito</button></div>
+        <svg class="ap-alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Warning"><path d="M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-2.9L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <p class="ap-alert__title">Invoice 2026-118 has been overdue for 3 days.</p>
+        <p class="ap-alert__body">Send a reminder to the City of Lugano or record the payment.</p>
+        <div class="ap-alert__action"><button class="ap-btn ap-btn--secondary ap-btn--sm" type="button">Send reminder</button></div>
       </div>
 
-      <div class="ap-table-wrap" role="region" aria-label="Fatture di ottobre 2026" tabindex="0">
+      <div class="ap-table-wrap" role="region" aria-label="October 2026 invoices" tabindex="0">
         <table class="ap-table">
-          <caption>Fatture di ottobre 2026</caption>
-          <thead><tr><th scope="col">Numero</th><th scope="col">Cliente</th><th scope="col">Scadenza</th><th scope="col">Stato</th><th scope="col" class="is-num">Importo</th></tr></thead>
+          <caption>October 2026 invoices</caption>
+          <thead><tr><th scope="col">Number</th><th scope="col">Client</th><th scope="col">Due date</th><th scope="col">Status</th><th scope="col" class="is-num">Amount</th></tr></thead>
           <tbody>
-            <tr><td>2026-116</td><td>Rossi SA</td><td>15 ott 2026</td><td><span class="ap-badge ap-badge--success">Pagata</span></td><td class="is-num">CHF 4'200.00</td></tr>
-            <tr><td>2026-117</td><td>Apicoltura Bernasconi</td><td>20 ott 2026</td><td><span class="ap-badge ap-badge--warning">In scadenza</span></td><td class="is-num">CHF 1'860.50</td></tr>
-            <tr><td>2026-118</td><td>Comune di Lugano</td><td>28 set 2026</td><td><span class="ap-badge ap-badge--danger">In ritardo</span></td><td class="is-num">CHF 12'480.00</td></tr>
+            <tr><td>2026-116</td><td>Rossi SA</td><td>15 Oct 2026</td><td><span class="ap-badge ap-badge--success">Paid</span></td><td class="is-num">CHF 4'200.00</td></tr>
+            <tr><td>2026-117</td><td>Bernasconi Beekeeping</td><td>20 Oct 2026</td><td><span class="ap-badge ap-badge--warning">Due soon</span></td><td class="is-num">CHF 1'860.50</td></tr>
+            <tr><td>2026-118</td><td>City of Lugano</td><td>28 Sep 2026</td><td><span class="ap-badge ap-badge--danger">Overdue</span></td><td class="is-num">CHF 12'480.00</td></tr>
           </tbody>
         </table>
       </div>

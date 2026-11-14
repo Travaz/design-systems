@@ -1,20 +1,22 @@
 # Motion
 
-**Classi:** `[data-ap-reveal]` (+ `--ap-i` per l'ordine), `ap-rise`, `ap-cell-in`, `ap-cell-open`, `ap-cell`; script `apis-motion.js` (`Apis.motion.reveal()`, `Apis.motion.toggleTheme(button)`)
+**Classes:** `[data-ap-reveal]` (+ `--ap-i` for the order), `ap-rise`, `ap-cell-in`, `ap-cell-open`, `ap-cell`; script `apis-motion.js` (`Apis.motion.reveal()`, `Apis.motion.toggleTheme(button)`)
 
-Scopo: dare orientamento e ritmo a una pagina con pochi movimenti riconoscibili, sempre gli stessi, senza mai impedire la lettura.
+Purpose: give a page orientation and rhythm with a few recognisable movements, always the same ones, without ever getting in the way of reading.
 
-**Pattern**
-- **Reveal** (`data-ap-reveal`): i blocchi entrano dal basso di 24px quando arrivano nello schermo, in `duration-reveal` con `ease-standard`. Fratelli in sequenza a passi di `duration-stagger`, al massimo 5 passi.
-- **Rise** (`ap-rise` + `style="--ap-i: n"`): l'ingresso al caricamento, solo nell'hero. Curva `ease-emphasis`.
-- **Cell-in** (`ap-cell-in`): le celle del favo che si assemblano attorno al ritratto. Solo nell'hero.
-- **Cell-open** (`ap-cell-open` su un `ap-cell`): il ritratto che si apre come una cella. Una volta per sito.
-- **Theme reveal**: il cambio tema si allarga a cerchio dal bottone (`Apis.motion.toggleTheme(this)`).
+**Patterns**
+- **Reveal** (`data-ap-reveal`): blocks enter from 24px below when they reach the screen, in `duration-reveal` with `ease-standard`. Siblings follow in sequence at `duration-stagger` steps, at most 5 steps.
+- **Rise** (`ap-rise` + `style="--ap-i: n"`): the entrance on load, only in the hero. Curve `ease-emphasis`.
+- **Cell-in** (`ap-cell-in`): the honeycomb cells that assemble around the portrait. Only in the hero.
+- **Cell-open** (`ap-cell-open` on an `ap-cell`): the portrait opening like a cell. Once per site.
+- **Theme reveal**: the theme change expands in a circle from the button (`Apis.motion.toggleTheme(this)`).
 
-**Regole**
-- Un solo momento orchestrato per pagina (l'ingresso dell'hero). Tutto il resto è reveal discreto.
-- Il contenuto è visibile anche senza JavaScript: lo script aggiunge `.ap-motion` a `<html>` e solo allora gli elementi partono nascosti.
-- Con `prefers-reduced-motion` lo script non attiva nulla e le durate dei token vanno a zero.
-- Hover e pressione restano in `duration-fast`; aperture di menu e dialoghi in `duration-slow`.
+**Rules**
+- Only one orchestrated moment per page (the hero entrance). Everything else is a discreet reveal.
+- Content is visible even without JavaScript: the script adds `.ap-motion` to `<html>` and only then do elements start hidden.
+- With `prefers-reduced-motion` the script activates nothing and the token durations go to zero.
+- Hover and press stay in `duration-fast`; menu and dialog openings in `duration-slow`.
 
-- Don't: animare testo lungo parola per parola, parallax sullo scroll, movimenti in loop vicino al testo (il ticker si ferma al passaggio del mouse).
+- With Motion (motion.dev) in React or plain JavaScript, use the presets in `apis-motion-presets.js`: see the brand book, "With Motion (motion.dev)".
+
+- Don't: animate long text word by word, parallax on scroll, looping movement near text (the ticker stops on mouse hover).

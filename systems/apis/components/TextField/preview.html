@@ -1,6 +1,6 @@
-<!-- @dsCard group="Moduli" height=220 -->
+<!-- @dsCard group="Forms" height=220 -->
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head><meta charset="utf-8"><title>TextField</title>
 <style>
 body{margin:0;padding:16px;}
@@ -18,8 +18,8 @@ body{margin:0;padding:16px;}
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
 h('div',{className:'grid'},
-  h(A.TextField,{label:'Nome del progetto',hint:'Lo vedono anche i clienti',placeholder:'Sito travaz.dev',required:true}),
-  h(A.TextField,{label:'Email di fatturazione',type:'email',defaultValue:'daniel.travaz.dev',error:"Inserisci un'email con la @, per esempio nome@azienda.ch"}))
+  h(A.TextField,{label:'Project name',hint:'Clients can see it too',placeholder:'travaz.dev website',required:true}),
+  h(A.TextField,{label:'Billing email',type:'email',defaultValue:'daniel.travaz.dev',error:'Enter an email with an @, for example name@company.ch'}))
   ));
 </script>
 </body>

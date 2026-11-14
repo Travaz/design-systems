@@ -80,7 +80,7 @@ export function check(id) {
   for (const c of comps) {
     if (!fs.existsSync(path.join(c.dir, 'preview.html'))) W(`components/${c.name}`, 'manca preview.html');
     if (!/^# /.test(c.readme)) W(`components/${c.name}/README.md`, 'deve iniziare con "# Nome"');
-    if (!/Scopo/.test(c.readme)) W(`components/${c.name}/README.md`, 'manca la frase di scopo');
+    if (!/Purpose:/.test(c.readme)) W(`components/${c.name}/README.md`, 'manca la frase di scopo');
   }
   const bundle = sys.meta.files.bundle ? fs.readFileSync(sys.file(sys.meta.files.bundle), 'utf8') : '';
   const header = bundle.match(/@ds-bundle:\s*(\{.*?\})\s*\*\//);

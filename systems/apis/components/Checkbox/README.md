@@ -1,11 +1,11 @@
 # Checkbox
 
-**Classi:** `label.ap-check` > `input[type=checkbox]` + `ap-check__text` + `ap-check__hint`
+**Classes:** `label.ap-check` > `input[type=checkbox]` + `ap-check__text` + `ap-check__hint`
 
-Scopo: attivare o disattivare un'opzione indipendente, o sceglierne più di una da una lista. L'effetto avviene al salvataggio del modulo; per un effetto immediato usa `Switch`.
+Purpose: turn an independent option on or off, or choose more than one from a list. The effect happens when the form is saved; for an immediate effect use `Switch`.
 
-**Chi lo usa fornisce:** `label`, opzionale `hint`, e gli attributi di `<input type="checkbox">` (`checked`, `defaultChecked`, `onChange`, `disabled`, `name`).
+**The consumer provides:** `label`, optional `hint`, and the attributes of `<input type="checkbox">` (`checked`, `defaultChecked`, `onChange`, `disabled`, `name`).
 
-**Testo:** l'etichetta descrive lo stato attivo in positivo: "Invia un riepilogo settimanale", non "Non inviare email".
+**Text:** the label describes the on state in positive terms: "Send a weekly summary", not "Don't send emails".
 
-- Do: in un gruppo, usa un `<fieldset>` con `<legend>`.
+- Do: in a group, use a `<fieldset>` with a `<legend>`.

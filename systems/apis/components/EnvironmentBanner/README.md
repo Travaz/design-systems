@@ -1,11 +1,11 @@
 # EnvironmentBanner
 
-**Classi:** `ap-envbar` > `ap-envbar__label`; attention divider `ap-stripe`
+**Classes:** `ap-envbar` > `ap-envbar__label`; attention divider `ap-stripe`
 
-Scopo: dire a chi usa uno strumento di travaz.dev che si trova in un ambiente non di produzione, così non tratta dati di prova come veri (e viceversa).
+Purpose: tell someone using a travaz.dev tool that they are in a non-production environment, so they do not treat test data as real (and vice versa).
 
-È l'unico componente che usa la striscia gialla e nera: in natura è il segnale "attenzione", e qui ha lo stesso significato. La striscia resta gialla su nero in entrambi i temi.
+It is the only component that uses the yellow and black stripe: in nature it is the "caution" signal, and here it means the same thing. The stripe stays yellow on black in both themes.
 
-**Chi lo usa fornisce:** `env` (`development`, `staging`, `preview`) oppure un `label` libero. Va in cima alla pagina, sopra l'header, a tutta larghezza.
+**The consumer provides:** `env` (`development`, `staging`, `preview`) or a free-form `label`. It goes at the top of the page, above the header, full width.
 
-- Don't: mostrarlo in produzione; don't: usare la striscia come decorazione altrove (per un separatore di attenzione c'è la classe `ap-stripe`).
+- Don't: show it in production; don't: use the stripe as decoration elsewhere (for an attention divider there is the `ap-stripe` class).

@@ -55,9 +55,9 @@ const breakages = [
   ['a hand-written colour', 'css/{id}.css', (s) => s + '\n.fx-x { color: #ff0000; }\n', /colore scritto a mano/],
   ['text that fails contrast', 'tokens.json', (s) => s.replace('"ink": { "light": "neutral-900"', '"ink": { "light": "neutral-200"'), /contrasto: ink su surface \(light\)/],
   ['a line-height off the 4pt grid', 'tokens.json', (s) => s.replace('"lineHeight": 24', '"lineHeight": 23'), /non è multipla di 4/],
-  ['a computed claim with an unknown token', 'docs/brand-book.md', (s) => s + '\nIl testo arriva a {{contrast ink on nowhere}}.\n', /token sconosciuto in \{\{contrast ink on nowhere\}\}/],
-  ['a doc naming a token that does not exist', 'docs/brand-book.md', (s) => s + '\nUsa `accent-glow` per i bordi.\n', /`accent-glow` sembra un token ma non esiste/],
-  ['a doc naming a class that does not exist', 'docs/brand-book.md', (s) => s + '\nUsa la classe `{id}-nope`.\n', /non è una classe/],
+  ['a computed claim with an unknown token', 'docs/brand-book.md', (s) => s + '\nText reaches {{contrast ink on nowhere}}.\n', /token sconosciuto in \{\{contrast ink on nowhere\}\}/],
+  ['a doc naming a token that does not exist', 'docs/brand-book.md', (s) => s + '\nUse `accent-glow` for borders.\n', /`accent-glow` sembra un token ma non esiste/],
+  ['a doc naming a class that does not exist', 'docs/brand-book.md', (s) => s + '\nUse the `{id}-nope` class.\n', /non è una classe/],
 ];
 for (const [what, file, mutate, expected] of breakages) {
   test(`check fails on ${what}`, () => {
@@ -92,12 +92,12 @@ test('new refuses an invalid id and an existing system', () => {
 
 test('build computes contrast claims; a hand-written ratio is flagged', () => {
   fresh('fixture');
-  edit('fixture', 'docs/brand-book.md', (s) => s + '\nIl testo arriva a {{contrast ink on surface}} e il bordo a 3.2:1.\n');
+  edit('fixture', 'docs/brand-book.md', (s) => s + '\nText reaches {{contrast ink on surface}} and the border 3.2:1.\n');
   const r = run('check.mjs', 'fixture');
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /scritti a mano \(3\.2:1\)/);
   const book = fs.readFileSync(path.join(tmp, 'dist', 'fixture', 'skill', 'fixture-design-system', 'references', 'brand-book.md'), 'utf8');
-  assert.match(book, /Il testo arriva a \d+\.\d:1/);
+  assert.match(book, /Text reaches \d+\.\d:1/);
   assert.doesNotMatch(book, /\{\{contrast/);
 });
 
@@ -139,7 +139,7 @@ test('build still produces gallery and artifact where zip is not installed (the 
 
 test('check fails on a skill that would not import (description over 1024 characters, reserved name)', () => {
   fresh('broken');
-  edit('broken', 'skill/SKILL.md', (s) => s.replace('AGGIORNA', 'x'.repeat(1100) + ' AGGIORNA'));
+  edit('broken', 'skill/SKILL.md', (s) => s.replace('UPDATE', 'x'.repeat(1100) + ' UPDATE'));
   let r = run('check.mjs', 'broken');
   assert.equal(r.code, 1, r.out);
   assert.match(r.out, /skill: description di \d+ caratteri \(massimo 1024\)/);
@@ -173,4 +173,23 @@ test('export refuses a failing system and writes nothing', () => {
   assert.equal(r.code, 1, r.out);
   assert.match(r.out, /export annullato/);
   assert.ok(!fs.existsSync(out));
+});
+
+test('motion presets import cleanly and take their numbers from the tokens', async () => {
+  fs.rmSync(path.join(tmp, 'systems', 'copy'), { recursive: true, force: true });
+  fs.cpSync(path.join(ROOT, 'systems', 'apis'), path.join(tmp, 'systems', 'copy'), { recursive: true });
+  const r = run('build.mjs', 'copy');
+  assert.equal(r.code, 0, r.out);
+  const pkg = path.join(tmp, 'dist', 'copy', 'package');
+  const tokens = await import(path.join(pkg, 'copy-motion-tokens.js'));
+  assert.equal(tokens.duration.fast, 0.12);
+  assert.deepEqual(tokens.ease.standard, [0.2, 0, 0, 1]);
+  // the presets file imports the tokens module by the name it has in the package
+  fs.copyFileSync(path.join(pkg, 'copy-motion-tokens.js'), path.join(pkg, 'apis-motion-tokens.js'));
+  const p = await import(path.join(pkg, 'copy-motion-presets.js'));
+  assert.equal(p.press.whileTap.scale, tokens.value.pressScale);
+  assert.equal(p.spring.bounce, 0);
+  assert.equal(p.staggerDelay(9), p.staggerDelay(4), 'at most 5 steps');
+  assert.ok(p.exitTransition(0.2).duration < 0.2, 'exits are shorter than entries');
+  assert.ok(fs.existsSync(path.join(tmp, 'dist', 'copy', 'skill', 'apis-design-system', 'assets', 'copy-motion-presets.js')));
 });

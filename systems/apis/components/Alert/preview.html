@@ -1,6 +1,6 @@
 <!-- @dsCard group="Feedback" height=320 -->
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head><meta charset="utf-8"><title>Alert</title>
 <style>
 body{margin:0;padding:16px;}
@@ -18,10 +18,10 @@ body{margin:0;padding:16px;}
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
 h('div',{className:'stack'},
-  h(A.Alert,{tone:'info',title:'Il report mensile è pronto.'},'Lo trovi in Report → Ottobre 2026.'),
-  h(A.Alert,{tone:'success',title:'Fattura 2026-118 inviata a Rossi SA.'}),
-  h(A.Alert,{tone:'warning',title:'Il certificato TLS scade tra 6 giorni.',action:h(A.Button,{size:'sm'},'Rinnova')},'Dopo la scadenza il sito non sarà raggiungibile.'),
-  h(A.Alert,{tone:'danger',title:'La sincronizzazione si è fermata alle 14:30.',action:h(A.Button,{size:'sm'},'Riprova')},'Controlla le credenziali di SAP e riprova.'))
+  h(A.Alert,{tone:'info',title:'The monthly report is ready.'},'You can find it in Reports → October 2026.'),
+  h(A.Alert,{tone:'success',title:'Invoice 2026-118 sent to Rossi SA.'}),
+  h(A.Alert,{tone:'warning',title:'The TLS certificate expires in 6 days.',action:h(A.Button,{size:'sm'},'Renew')},'After it expires the site will not be reachable.'),
+  h(A.Alert,{tone:'danger',title:'Sync stopped at 14:30.',action:h(A.Button,{size:'sm'},'Try again')},'Check the SAP credentials and try again.'))
   ));
 </script>
 </body>

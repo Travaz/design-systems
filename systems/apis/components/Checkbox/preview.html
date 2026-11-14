@@ -1,6 +1,6 @@
-<!-- @dsCard group="Moduli" height=112 -->
+<!-- @dsCard group="Forms" height=112 -->
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head><meta charset="utf-8"><title>Checkbox</title>
 <style>
 body{margin:0;padding:16px;}
@@ -18,9 +18,9 @@ body{margin:0;padding:16px;}
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
 h('div',{className:'stack'},
-  h(A.Checkbox,{label:'Invia un riepilogo settimanale',hint:'Ogni lunedì alle 8:00',defaultChecked:true}),
-  h(A.Checkbox,{label:'Includi le ore non fatturabili'}),
-  h(A.Checkbox,{label:'Blocca il periodo contabile',disabled:true}))
+  h(A.Checkbox,{label:'Send a weekly summary',hint:'Every Monday at 8:00',defaultChecked:true}),
+  h(A.Checkbox,{label:'Include non-billable hours'}),
+  h(A.Checkbox,{label:'Lock the accounting period',disabled:true}))
   ));
 </script>
 </body>

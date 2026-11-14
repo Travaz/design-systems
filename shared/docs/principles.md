@@ -1,120 +1,120 @@
-# Principi di Apis (da designsystems.com)
+# Apis principles (from designsystems.com)
 
-Le regole operative che Apis eredita dalle guide di designsystems.com (la pubblicazione di Figma sui design system). Ogni sezione dice cosa significa in pratica dentro Apis. Quando una richiesta non è coperta da `brand-book.md` o `components.md`, decidi partendo da qui.
+The working rules Apis takes from the designsystems.com guides (Figma's publication on design systems). Each section says what it means in practice inside Apis. When a request is not covered by `brand-book.md` or `components.md`, decide from here.
 
-## 1. Spazio, griglie e layout
+## 1. Space, grids and layout
 
-- Scala lineare da **8pt** per dimensioni e spazi; **4pt** solo come mezzo passo per icone e ritocchi di testo. In Apis: `space-1` (4) e `space-3` (12) sono gli unici valori fuori dagli 8, e servono solo per dettagli.
-- **Baseline grid da 4pt**: ogni interlinea è divisibile per 4. Tutti gli stili di testo di Apis lo rispettano; se ne aggiungi uno, anche lui.
-- Mai basi dispari (5pt): centrare su valori dispari spezza i pixel e sfoca, soprattutto su schermi 1.5x.
-- Scegli la strategia per componente:
-  - **element-first**: la dimensione è fissa (bottoni, input → `size-control-*`), il padding si adatta;
-  - **content-first**: il padding è fisso (tabelle, card), la dimensione segue il contenuto.
-- Decidi se i bordi stanno dentro o fuori la misura. In Apis: dentro (`box-sizing: border-box`).
-- Griglia a **12 colonne** di default (si divide per 2, 3, 4, 6). Su mobile 4 colonne, su tablet 8.
-- Dichiara il modello di scala: il sito è **responsive** (fluido); le app interne dense possono essere **strict** dentro i contenitori di dati (la tabella scorre, la pagina no).
-- Si adotta dai bottoni ai campi, poi al resto. Gli sviluppatori applicano la griglia nel codice: nessun valore di spazio scritto a mano.
+- A linear **8pt** scale for sizes and spacing; **4pt** only as a half-step for icons and text adjustments. In Apis: `space-1` (4) and `space-3` (12) are the only values off the 8s, and they are for details only.
+- A **4pt baseline grid**: every line height is divisible by 4. All Apis text styles follow it; if you add one, it must too.
+- Never odd bases (5pt): centring on odd values splits pixels and blurs, especially on 1.5x screens.
+- Choose the strategy per component:
+  - **element-first**: the size is fixed (buttons, inputs → `size-control-*`), the padding adapts;
+  - **content-first**: the padding is fixed (tables, cards), the size follows the content.
+- Decide whether borders sit inside or outside the measurement. In Apis: inside (`box-sizing: border-box`).
+- A **12-column** grid by default (it divides by 2, 3, 4, 6). 4 columns on mobile, 8 on tablet.
+- State the scaling model: the site is **responsive** (fluid); dense internal apps can be **strict** inside data containers (the table scrolls, the page does not).
+- Adopt it from buttons to fields, then everything else. Developers apply the grid in code: no hand-written spacing values.
 
-## 2. Iconografia
+## 2. Iconography
 
-- Dimensioni multiple di 8: **16 / 24 / 32px**. Si disegna prima la più grande e si semplifica scendendo.
-- Icone di prodotto: **1 colore**. Marketing: **2 al massimo**. Da 3 colori in su è un'illustrazione.
-- Linee dritte agganciate alla griglia dei pixel; padding ottico pari allo spessore del tratto.
-- Un solo stile per set: tutte a tratto (Apis: tratto 2px), stesso tipo di angolo e di terminale (Apis: arrotondati), spazi tra i tratti pari allo spessore.
-- Mai icone a tratto sotto i 10px (Apis: minimo 16px).
-- **Nomi per ciò che si vede, non per il concetto**: `stopwatch`, non `speed`. Trattini per più parole (`chef-hat`), barra per le varianti (`hexagon/filled`). Organizzazione: dimensione > categoria > nome.
-- Niente testo vivo dentro le icone; forme unite, nessun tracciato vagante prima dell'esportazione. Esporta SVG.
-- Le nuove icone passano da una revisione centrale prima di entrare nella libreria. In Apis la libreria è Lucide più le icone interne di `Icon`.
+- Sizes in multiples of 8: **16 / 24 / 32px**. Draw the largest first and simplify going down.
+- Product icons: **1 colour**. Marketing: **2 at most**. From 3 colours up it is an illustration.
+- Straight lines snapped to the pixel grid; optical padding equal to the stroke width.
+- One style per set: all stroked (Apis: 2px stroke), the same corner and cap type (Apis: rounded), gaps between strokes equal to the stroke width.
+- Never stroked icons below 10px (Apis: 16px minimum).
+- **Name what is shown, not the concept**: `stopwatch`, not `speed`. Hyphens for several words (`chef-hat`), a slash for variants (`hexagon/filled`). Organisation: size > category > name.
+- No live text inside icons; merged shapes, no stray paths before export. Export SVG.
+- New icons go through a central review before they enter the library. In Apis the library is Lucide plus the internal icons of `Icon`.
 
-## 3. Tipografia
+## 3. Typography
 
-- Si parte dal corpo di base e da un'interlinea di circa **1.5x** (Apis: 16/24).
-- L'interlinea è la baseline grid: ogni dimensione ci si appoggia.
-- Il carattere di marca va sui display; per il testo lungo serve un carattere leggibile. Apis: Bricolage Grotesque solo per `display`/`headline`/`title`, Instrument Sans per tutto il resto.
-- Pochi pesi e stili. **Prima prova una dimensione più grande, poi un peso in più.**
-- Definisci come dimensioni e interlinee cambiano per viewport; i display cambiano di più (vedi le regole mobile in `brand-book.md`).
-- Ogni valore vive in un token, mai scritto a mano; ogni dimensione è legata a un peso e a uno stile.
-- Copri tutti i ruoli: testo d'aiuto, etichetta, corpo, sottotitolo, titolo.
+- Start from the base body size and a line height of about **1.5x** (Apis: 16/24).
+- The line height is the baseline grid: every size rests on it.
+- The brand typeface goes on display styles; long text needs a legible typeface. Apis: Bricolage Grotesque only for `display`/`headline`/`title`, Instrument Sans for everything else.
+- Few weights and styles. **Try a larger size first, then an extra weight.**
+- Define how sizes and line heights change per viewport; display styles change the most (see the mobile rules in `brand-book.md`).
+- Every value lives in a token, never hand-written; every size is tied to a weight and a style.
+- Cover all roles: helper text, label, body, subtitle, title.
 
-## 4. Strategia dei contenuti
+## 4. Content strategy
 
-- Le regole di scrittura stanno nella documentazione di ogni componente, accanto alle specifiche visive.
-- Una sola posizione sulle maiuscole. Apis: **maiuscola solo a inizio frase ovunque**, in italiano e in inglese (eccezione: `overline`).
-- Un **glossario** che risolve i verbi in conflitto (elimina/rimuovi/archivia, scarica/esporta/condividi), con esempi giusti e sbagliati.
-- Gli **stati vuoti** sbloccano l'utente: dicono cosa serve sapere perché la funzione diventi utile.
-- Gli **errori** hanno un tono deciso (Apis: fattuale, nessuna scusa) e una regola sul pronome (Apis: niente prima persona).
-- Nelle **conferme** il verbo del titolo è quello del bottone: "Eliminare il progetto?" → "Elimina progetto".
-- Un **modello** per ogni tipo di messaggio, così chiunque scrive in modo coerente (vedi sotto).
-- **Localizzazione**: spazio per stringhe più lunghe (tedesco +30%), niente testo nelle immagini, niente frasi composte da pezzi.
+- Writing rules live in each component's documentation, next to the visual specs.
+- One position on capitalisation. Apis: **sentence case everywhere**, in Italian and in English (exception: `overline`).
+- A **glossary** that settles competing verbs (delete/remove/archive, download/export/share), with right and wrong examples.
+- **Empty states** unblock the user: they say what the user needs to know for the feature to become useful.
+- **Errors** have a firm tone (Apis: factual, no apologies) and a rule on pronouns (Apis: no first person).
+- In **confirmations** the verb in the title is the verb on the button: "Delete the project?" → "Delete project".
+- A **template** for each type of message, so anyone writes consistently (see below).
+- **Localisation**: room for longer strings (German +30%), no text in images, no sentences assembled from fragments.
 
-Modelli di messaggio:
+Message templates:
 
-| Tipo | Struttura | Esempio |
+| Type | Structure | Example |
 |---|---|---|
-| Errore di campo | Cosa correggere + esempio | "Inserisci un'email con la @, per esempio nome@azienda.ch" |
-| Errore di sistema | Cosa è successo + cosa fare | "La sincronizzazione si è fermata alle 14:30. Controlla le credenziali di SAP e riprova." |
-| Stato vuoto | Cosa manca + primo passo | "Nessun progetto ancora. Crea il primo progetto per iniziare a tracciare le ore." |
-| Conferma | Domanda con il verbo + conseguenza | "Eliminare il progetto? Le 48 ore registrate verranno eliminate." → "Elimina progetto" / "Annulla" |
-| Successo | Oggetto + esito, al passato | "Fattura 2026-118 inviata a Rossi SA." |
+| Field error | What to fix + example | "Enter an email with an @, for example name@company.ch" |
+| System error | What happened + what to do | "Sync stopped at 14:30. Check the SAP credentials and try again." |
+| Empty state | What is missing + first step | "No projects yet. Create the first project to start tracking hours." |
+| Confirmation | Question with the verb + consequence | "Delete the project? The 48 logged hours will be deleted." → "Delete project" / "Cancel" |
+| Success | Object + outcome, in the past tense | "Invoice 2026-118 sent to Rossi SA." |
 
-## 5. Il futuro è semantico
+## 5. The future is semantic
 
-- I token sono piccole decisioni riutilizzabili e indipendenti dalla piattaforma: si cambiano una volta, si aggiornano ovunque.
-- Si nomina per **intenzione**, non per valore: `accent`, `danger`, `surface-raised`, mai `yellow` o `grey-100` in un componente.
-- I token rimandano ad altri token (alias): `button-primary-background` → `accent` → `pollen-400`.
-- Le **modalità** gestiscono i contesti: chiaro/scuro (già in `tokens.css`), lingua, dimensione dello schermo.
-- Qualsiasi decisione riutilizzabile diventa una variabile, anche se non è un token classico (durate, curve, testi ricorrenti).
-- Primitivi ridotti al minimo: Apis ha 7 famiglie di colore. Prima di aggiungerne una, dimostra che i semantici esistenti non bastano.
+- Tokens are small, reusable, platform-independent decisions: change them once, they update everywhere.
+- Name by **intent**, not by value: `accent`, `danger`, `surface-raised`, never `yellow` or `grey-100` in a component.
+- Tokens point to other tokens (aliases): `button-primary-background` → `accent` → `pollen-400`.
+- **Modes** handle contexts: light and dark (already in `tokens.css`), language, screen size.
+- Any reusable decision becomes a variable, even if it is not a classic token (durations, curves, recurring copy).
+- Keep primitives to a minimum: Apis has 7 colour families. Before adding one, show that the existing semantic tokens are not enough.
 
-## 6. Il futuro è accessibile
+## 6. The future is accessible
 
-- L'accessibilità si costruisce dal primo giorno, non si aggiunge dopo.
-- Ogni componente ha coppie colore testate (Apis: tutte le coppie dichiarate nei token superano WCAG AA in entrambi i temi).
-- Tutto funziona solo con la tastiera, comprese le interazioni complesse (trascinamento: offri sempre un'alternativa con i bottoni).
-- Le specifiche riportano i requisiti di accessibilità e il loro perché, in termini che gli sviluppatori possono applicare.
-- Testo alternativo per ogni immagine informativa, etichetta su ogni bottone (anche solo icona), ordine dei titoli corretto.
-- Si testa con persone, non solo con strumenti. Una modifica che peggiora l'accessibilità blocca il rilascio.
-- Niente overlay di accessibilità e niente correzioni automatiche con l'AI: markup semantico e navigazione chiara.
-- Si corregge a livello di sistema, così la correzione arriva in ogni istanza.
+- Accessibility is built in from day one, not added later.
+- Every component has tested colour pairs (Apis: every pair declared in the tokens passes WCAG AA in both themes).
+- Everything works with the keyboard alone, including complex interactions (drag and drop: always offer an alternative with buttons).
+- Specs state the accessibility requirements and why, in terms developers can apply.
+- Alternative text for every informative image, a label on every button (icon-only too), correct heading order.
+- Test with people, not only with tools. A change that makes accessibility worse blocks the release.
+- No accessibility overlays and no automatic fixes with AI: semantic markup and clear navigation.
+- Fix at system level, so the fix reaches every instance.
 
-## 7. Contributi sotto controllo
+## 7. Contributions under control
 
-Tre fasi per ogni componente nuovo o cambiato (dettagli in `governance.md`):
+Three phases for every new or changed component (details in `governance.md`):
 
-1. **Consolidare**: nessun componente esistente va bene, casi d'uso reali, impatto sugli altri componenti.
-2. **Definire**: specifica pronta per lo sviluppo (anatomia, token, stati, opzioni, tipi, comportamento per viewport): la "definition of ready".
-3. **Rendere conforme**: codice, design e documentazione coincidono; checklist completa; guida all'adozione.
+1. **Consolidate**: no existing component fits, real use cases, impact on the other components.
+2. **Define**: a spec ready for development (anatomy, tokens, states, options, types, behaviour per viewport): the "definition of ready".
+3. **Conform**: code, design and documentation match; checklist complete; adoption guide.
 
-Un componente è accettato solo se è definito con chiarezza ed è uguale in codice, design e documentazione. Un elemento della checklist si rimanda solo con una decisione esplicita, scritta nel changelog.
+A component is accepted only if it is clearly defined and identical in code, design and documentation. A checklist item is postponed only by an explicit decision, written in the changelog.
 
-## 8. Definire i componenti insieme
+## 8. Defining components together
 
-- Si scrive prima la **frase di scopo** ("Scopo: chiedere all'utente una conferma"). Nome e comportamento ne derivano.
-- Struttura della scheda: scopo, descrizione, uso, do/don't, motivazione, alternative considerate, limiti.
-- Vietate le parole vaghe ("a volte", "in generale", "di solito", "nel caso"): si scrivono condizioni precise di quando usarlo e quando no.
-- Componenti che si somigliano ma hanno scopi diversi restano **separati**: un dialogo che conferma, un messaggio che informa di qualcosa di irreversibile, un popover che mostra dettagli ancorati a un elemento.
-- Un nuovo caso d'uso si confronta con lo scopo: se non ci sta, nasce un componente nuovo con il suo scopo.
-- La definizione funziona se impedisce gli usi sbagliati e permette di cambiare il componente senza paura.
+- Write the **purpose statement** first ("Purpose: ask the user for a confirmation"). The name and the behaviour follow from it.
+- Structure of the sheet: purpose, description, usage, do and don't, rationale, alternatives considered, limits.
+- Vague words are banned ("sometimes", "in general", "usually", "in case"): write precise conditions for when to use it and when not to.
+- Components that look alike but have different purposes stay **separate**: a dialog that confirms, a message that warns about something irreversible, a popover that shows details anchored to an element.
+- A new use case is compared with the purpose: if it does not fit, a new component is created with its own purpose.
+- The definition works if it prevents wrong uses and lets you change the component without fear.
 
-## 9. Struttura a strati (il modello Thumbtack)
+## 9. Layered structure (the Thumbtack model)
 
-- **Token** (colore, tipo, raggi, spazi, dimensioni, ombre) → **classi CSS** (`ap-*`) → **componenti** (React `window.Apis`).
-- Catena dei token: componente → semantico → primitivo.
-- Ogni strato si adotta da solo: un'app Groovy o Razor può usare solo `tokens.css` + `apis.css`; un sito Next.js usa anche i componenti React.
-- Vie di fuga verso lo strato inferiore, documentate: se un componente non basta, scendi alle classi o ai token, mai ai valori grezzi.
-- "Pozzo del successo": la cosa giusta è la più facile; quella sbagliata è scomoda ma possibile.
+- **Tokens** (colour, type, radii, spacing, sizes, shadows) → **CSS classes** (`ap-*`) → **components** (React `window.Apis`).
+- Token chain: component → semantic → primitive.
+- Each layer can be adopted on its own: a Groovy or Razor app can use only `tokens.css` + `apis.css`; a Next.js site also uses the React components.
+- Documented escape hatches to the layer below: if a component is not enough, go down to the classes or the tokens, never to raw values.
+- "Pit of success": the right thing is the easiest; the wrong thing is awkward but possible.
 
-## 10. Oltre le piattaforme (il modello Spotify)
+## 10. Beyond platforms (the Spotify model)
 
-- Livelli concentrici: fondamenta condivise (token, colore, tipo) → livello comune → sottosistemi per piattaforma. Si cambia al centro e il cambiamento si propaga.
-- Per ogni componente una **scheda comune** con glossario, anatomia, varianti, note per piattaforma, requisiti di accessibilità.
-- Bottoni **primario / secondario / terziario** con un solo sistema di dimensioni su tutte le piattaforme; cambiano solo dettagli come lo stile del focus.
+- Concentric layers: shared foundations (tokens, colour, type) → a common layer → subsystems per platform. Change at the centre and the change spreads.
+- For each component a **common sheet** with glossary, anatomy, variants, platform notes, accessibility requirements.
+- **Primary / secondary / tertiary** buttons with a single sizing system across all platforms; only details such as the focus style change.
 
-## 11. Sei miti da lasciare andare
+## 11. Six myths to let go
 
-1. Anche un team piccolo (o una persona sola) ne trae vantaggio.
-2. Le tecniche si scelgono per gli obiettivi, non per moda.
-3. Non si copia Material: il sistema riflette il proprio marchio.
-4. Si parte dall'open source e lo si adatta (Apis usa Lucide e Google Fonts).
-5. Un sistema libera la creatività invece di soffocarla.
-6. Il lavoro sul design system è strategia e adozione, non solo componenti.
+1. A small team (or a single person) benefits too.
+2. Techniques are chosen for the goals, not for fashion.
+3. Do not copy Material: the system reflects its own brand.
+4. Start from open source and adapt it (Apis uses Lucide and Google Fonts).
+5. A system frees creativity instead of stifling it.
+6. Design system work is strategy and adoption, not only components.

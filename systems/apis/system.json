@@ -1,9 +1,9 @@
 {
   "id": "apis",
   "name": "Apis",
-  "version": "1.6.0",
-  "description": "Design system ispirato all'ape: giallo polline, nero carapace, bianco cera. Usato da travaz.dev e dall'app iPhone Gym Harness.",
-  "language": "it",
+  "version": "1.7.0",
+  "description": "Design system inspired by the bee: pollen yellow, carapace black, wax white. Used by travaz.dev and the Gym Harness iPhone app.",
+  "language": "en",
   "namespace": "Apis",
   "classPrefix": "ap-",
   "files": {
@@ -12,6 +12,7 @@
     "types": "components/index.d.ts",
     "brandBook": "docs/brand-book.md",
     "motion": "js/motion.js",
+    "motionPresets": "js/motion-presets.js",
     "fonts": "fonts"
   },
   "skill": {

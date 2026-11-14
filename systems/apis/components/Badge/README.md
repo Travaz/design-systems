@@ -1,13 +1,13 @@
 # Badge
 
-**Classi:** `ap-badge ap-badge--neutral|accent|success|warning|danger|info`
+**Classes:** `ap-badge ap-badge--neutral|accent|success|warning|danger|info`
 
-Scopo: etichettare lo stato o la categoria di un oggetto con una o due parole.
+Purpose: label the status or category of an object with one or two words.
 
-**Toni:** `neutral` (predefinito), `accent` (nuovo, in evidenza: uno per lista), `success`, `warning`, `danger`, `info`. Con `icon` i toni di stato mostrano la loro icona: usala quando il badge è l'unico segnale dello stato.
+**Tones:** `neutral` (default), `accent` (new, highlighted: one per list), `success`, `warning`, `danger`, `info`. With `icon`, the status tones show their icon: use it when the badge is the only signal of the status.
 
-**Chi lo usa fornisce:** `children` (una o due parole), `tone`, opzionale `icon`.
+**The consumer provides:** `children` (one or two words), `tone`, optional `icon`.
 
-**Testo:** sostantivo o participio, maiuscola iniziale: "Pagata", "In ritardo", "Bozza". Non frasi.
+**Text:** a noun or participle, capitalised first letter: "Paid", "Overdue", "Draft". Not sentences.
 
-- Don't: badge cliccabili. Per filtrare usa un bottone `tertiary`.
+- Don't: clickable badges. To filter, use a `tertiary` button.

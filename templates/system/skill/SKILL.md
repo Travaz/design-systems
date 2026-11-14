@@ -1,32 +1,32 @@
 ---
 name: {{id}}-design-system
-description: {{Name}}, un design system di Daniel Travaglia. Usala quando progetti, costruisci o revisioni una UI che deve seguire {{Name}}, o quando l'utente nomina "{{Name}}" o classi `{{prefix}}`. AGGIORNA questa descrizione con i contesti precisi in cui va usata.
+description: {{Name}}, a design system by Daniel Travaglia. Use it when you design, build or review a UI that must follow {{Name}}, or when the user names "{{Name}}" or `{{prefix}}` classes. UPDATE this description with the exact contexts where it applies.
 ---
 
 # {{Name}}
 
-Versione {{version}}. Design system pubblicato: {{artifactUrl}}
+Version {{version}}. Published design system: {{artifactUrl}}
 
-Sorgente unico: `{{sourceDir}}`. Questa skill è generata da lì: non modificarla a mano.
+Single source: `{{sourceDir}}`. This skill is generated from there: do not edit it by hand.
 
-## Cosa c'è in questa skill
+## What is in this skill
 
-| File | Quando leggerlo |
+| File | When to read it |
 |---|---|
-| `references/brand-book.md` | Sempre, prima di scrivere UI. |
-| `references/tokens.md` | Per nomi e valori precisi dei token. |
-| `references/principles.md` | Quando un caso non è coperto. |
-| `references/governance.md` | Quando aggiungi o cambi token e componenti. |
-| `assets/tokens.css`, `assets/{{id}}.css`, `assets/tailwind.css`, `assets/tokens.json` | Da usare nel progetto. |
+| `references/brand-book.md` | Always, before writing UI. |
+| `references/tokens.md` | For exact token names and values. |
+| `references/principles.md` | When a case is not covered. |
+| `references/governance.md` | When you add or change tokens and components. |
+| `assets/tokens.css`, `assets/{{id}}.css`, `assets/tailwind.css`, `assets/tokens.json` | To use in the project. |
 
-## Regole
+## Rules
 
-- Solo token semantici (`surface`, `ink`, `accent`, `space-*`…), mai valori scritti a mano né primitivi.
-- Contrasto AA in tutti i temi, focus sempre visibile.
+- Only semantic tokens (`surface`, `ink`, `accent`, `space-*`…), never hand-written values or primitives.
+- AA contrast in every theme, focus always visible.
 
-## Quando l'utente chiede di cambiare {{Name}}
+## When the user asks to change {{Name}}
 
-Modifica il sorgente in `{{sourceDir}}`, poi dalla radice della raccolta: `npm run check -- {{id}}`, aggiorna versione e `CHANGELOG.md`, `npm run release -- {{id}}`.
+Edit the source in `{{sourceDir}}`, then from the root of the collection: `npm run check -- {{id}}`, update the version and `CHANGELOG.md`, `npm run release -- {{id}}`.
 
 ## Changelog
 

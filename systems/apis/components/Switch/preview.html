@@ -1,6 +1,6 @@
-<!-- @dsCard group="Moduli" height=104 -->
+<!-- @dsCard group="Forms" height=104 -->
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head><meta charset="utf-8"><title>Switch</title>
 <style>
 body{margin:0;padding:16px;}
@@ -18,9 +18,9 @@ body{margin:0;padding:16px;}
   var A = window.Apis, h = React.createElement;
   ReactDOM.createRoot(document.getElementById('root')).render(h(React.Fragment, null,
 h('div',{className:'stack'},
-  h(A.Switch,{label:'Notifiche per i nuovi ticket',defaultChecked:true}),
-  h(A.Switch,{label:'Modalità manutenzione'}),
-  h(A.Switch,{label:'Sincronizzazione con SAP',disabled:true}))
+  h(A.Switch,{label:'Notifications for new tickets',defaultChecked:true}),
+  h(A.Switch,{label:'Maintenance mode'}),
+  h(A.Switch,{label:'SAP sync',disabled:true}))
   ));
 </script>
 </body>

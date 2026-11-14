@@ -51,16 +51,16 @@ export function specimenHtml(sys, { cssName }) {
       const sample = rule.min >= 4.5
         ? `<span class="sw" style="background:${b};color:${f};text-align:center;font-weight:700">Aa</span>`
         : `<span class="sw" style="background:${b};box-shadow:inset 0 0 0 3px ${f}" aria-hidden="true"></span>`;
-      return `<td class="num">${sample}<span class="${pass ? 'ok' : 'ko'}">${r.toFixed(2)}:1 ${pass ? '✓' : '✗ sotto'}</span></td>`;
+      return `<td class="num">${sample}<span class="${pass ? 'ok' : 'ko'}">${r.toFixed(2)}:1 ${pass ? '✓' : '✗ below'}</span></td>`;
     });
-    return `<tr><td><code>${esc(fg)}</code> su <code>${esc(bg)}</code></td><td class="num">${rule.min}:1</td>${cells.join('')}</tr>`;
+    return `<tr><td><code>${esc(fg)}</code> on <code>${esc(bg)}</code></td><td class="num">${rule.min}:1</td>${cells.join('')}</tr>`;
   }))).join('');
   const typeRows = T.type.styles.map((s) => `<div class="type-row"><div class="meta">${esc(s.name)}<br>${s.fluid ? `${s.fluid.size}→${s.size}` : s.size}/${s.fluid ? `${s.fluid.lineHeight}→` : ''}${s.lineHeight} · ${s.weight}</div><div style="font: var(--type-${s.name}); letter-spacing: var(--tracking-${s.name})">${esc(s.sample || s.name)}</div></div>`).join('');
   const flat = Object.fromEntries(flatFamilies(sys));
   const spaceRows = (flat.spacing?.tokens || []).map((t) => `<div class="scale-row"><div class="meta">${esc(t.name)} · ${esc(t.value)}</div><div><div class="space" style="width:var(--${t.name})"></div></div></div>`).join('');
   const shapes = [...(flat.radius?.tokens || []).map((t) => `<div class="shape" style="border-radius:min(var(--${t.name}), 40px)">${esc(t.name)}</div>`), ...(T.elevation?.tokens || []).map((t) => `<div class="shape" style="border-color:transparent;box-shadow:var(--${t.name})">${esc(t.name)}</div>`)].join('');
   return `<!doctype html>
-<html lang="${esc(sys.meta.language || 'it')}">
+<html lang="${esc(sys.meta.language || 'en')}">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(sys.meta.name)} ${esc(sys.meta.version)} · specimen</title>
@@ -71,17 +71,17 @@ export function specimenHtml(sys, { cssName }) {
 <body>
 <main>
 <header>
-  <p class="meta">design-systems / ${esc(sys.id)} · versione ${esc(sys.meta.version)}</p>
+  <p class="meta">design-systems / ${esc(sys.id)} · version ${esc(sys.meta.version)}</p>
   <h1>${esc(sys.meta.name)}</h1>
   <p>${esc(sys.meta.description)}</p>
-  <div class="bar">${ths.map((t) => `<button type="button" data-theme-set="${esc(t)}">Tema ${esc(t)}</button>`).join('')}<a href="gallery/index.html">Componenti</a><a href="../index.html">Tutti i sistemi</a></div>
+  <div class="bar">${ths.map((t) => `<button type="button" data-theme-set="${esc(t)}">Theme ${esc(t)}</button>`).join('')}<a href="gallery/index.html">Components</a><a href="../index.html">All systems</a></div>
 </header>
-<section aria-labelledby="sem"><h2 id="sem">Colori semantici</h2><div class="wrap"><table><thead><tr><th>Token</th>${ths.map((t) => `<th>${esc(t)}</th>`).join('')}<th>Uso</th></tr></thead><tbody>${semRows}</tbody></table></div></section>
-<section aria-labelledby="pairs"><h2 id="pairs">Contrasto delle coppie dichiarate</h2><div class="wrap"><table><thead><tr><th>Coppia</th><th>Minimo</th>${ths.map((t) => `<th>${esc(t)}</th>`).join('')}</tr></thead><tbody>${pairRows}</tbody></table></div></section>
-<section aria-labelledby="prim"><h2 id="prim">Primitivi</h2>${primHtml}</section>
-<section aria-labelledby="type"><h2 id="type">Tipografia</h2>${typeRows}</section>
-${spaceRows ? `<section aria-labelledby="space"><h2 id="space">Spazi</h2>${spaceRows}</section>` : ''}
-${shapes ? `<section aria-labelledby="shape"><h2 id="shape">Raggi ed elevazione</h2><div class="shapes">${shapes}</div></section>` : ''}
+<section aria-labelledby="sem"><h2 id="sem">Semantic colours</h2><div class="wrap"><table><thead><tr><th>Token</th>${ths.map((t) => `<th>${esc(t)}</th>`).join('')}<th>Usage</th></tr></thead><tbody>${semRows}</tbody></table></div></section>
+<section aria-labelledby="pairs"><h2 id="pairs">Contrast of the declared pairs</h2><div class="wrap"><table><thead><tr><th>Pair</th><th>Minimum</th>${ths.map((t) => `<th>${esc(t)}</th>`).join('')}</tr></thead><tbody>${pairRows}</tbody></table></div></section>
+<section aria-labelledby="prim"><h2 id="prim">Primitives</h2>${primHtml}</section>
+<section aria-labelledby="type"><h2 id="type">Typography</h2>${typeRows}</section>
+${spaceRows ? `<section aria-labelledby="space"><h2 id="space">Spacing</h2>${spaceRows}</section>` : ''}
+${shapes ? `<section aria-labelledby="shape"><h2 id="shape">Radius and elevation</h2><div class="shapes">${shapes}</div></section>` : ''}
 </main>
 <script>document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.addEventListener('click', function () { document.documentElement.dataset.theme = b.dataset.themeSet; }); });</script>
 </body>
@@ -96,7 +96,7 @@ export function indexHtml(systems) {
     return `<li><a href="${esc(sys.id)}/specimen.html"><span class="sw">${sw.map((c) => `<span style="background:${esc(c)}"></span>`).join('')}</span><strong>${esc(sys.meta.name)}</strong> <span class="v">${esc(sys.meta.version)}</span><br><span class="d">${esc(sys.meta.description)}</span></a></li>`;
   }).join('');
   return `<!doctype html>
-<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Design systems</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Design systems</title>
 <style>
 :root { color-scheme: light dark; --bg: #FAFAF9; --fg: #1C1C19; --mut: #55554F; --line: #E2E2DF; }
 @media (prefers-color-scheme: dark) { :root { --bg: #121210; --fg: #F4F4F1; --mut: #B5B5AE; --line: #2A2A26; } }
@@ -109,6 +109,6 @@ a:hover, a:focus-visible { border-color: var(--fg); outline: none; }
 .sw { display: flex; height: 32px; border-radius: 6px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--line); }
 .sw span { flex: 1; } .v, .d { color: var(--mut); font-size: 14px; }
 </style></head>
-<body><main><h1>Design systems</h1><p>${systems.length} ${systems.length === 1 ? 'sistema' : 'sistemi'}, ciascuno con il suo specimen e la galleria dei componenti.</p><ul>${cards}</ul></main></body></html>
+<body><main><h1>Design systems</h1><p>${systems.length} ${systems.length === 1 ? 'system' : 'systems'}, each with its specimen and component gallery.</p><ul>${cards}</ul></main></body></html>
 `;
 }

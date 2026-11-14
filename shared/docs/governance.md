@@ -1,72 +1,72 @@
-# Governance di Apis
+# Apis governance
 
-Come il sistema cresce senza perdere coerenza. Vale per nuovi componenti, nuovi token e modifiche a quelli esistenti.
+How the system grows without losing consistency. It applies to new components, new tokens and changes to existing ones.
 
-## Prima di aggiungere qualcosa
+## Before adding something
 
-Rispondi per iscritto:
+Answer in writing:
 
-1. Quale bisogno reale c'è? Cita almeno due schermate o casi concreti (sito o app interne).
-2. Perché nessun componente o token esistente lo copre? Prova prima a comporre quelli esistenti.
-3. Qual è la frase di scopo? ("Scopo: …")
-4. Cosa cambia per gli altri componenti?
+1. What is the real need? Name at least two concrete screens or cases (site or apps).
+2. Why does no existing component or token cover it? Try composing the existing ones first.
+3. What is the purpose statement? ("Purpose: …")
+4. What changes for the other components?
 
-Se la risposta a 2 è "basta una variante", controlla che la variante abbia lo **stesso scopo**. Scopo diverso = componente nuovo.
+If the answer to 2 is "a variant is enough", check that the variant has the **same purpose**. Different purpose = new component.
 
-## Definition of ready (fase 2)
+## Definition of ready (phase 2)
 
-Un componente è pronto per lo sviluppo quando la sua scheda contiene:
+A component is ready for development when its sheet contains:
 
-- [ ] Frase di scopo e descrizione in una riga
-- [ ] Quando usarlo / quando non usarlo, con condizioni precise (niente "di solito", "a volte")
-- [ ] Alternative considerate e perché scartate
-- [ ] Anatomia: le parti, con i nomi delle classi `ap-*`
-- [ ] Token usati: solo semantici o di componente, mai primitivi o valori grezzi
-- [ ] Dimensioni sulla griglia da 8 (4 solo per dettagli), interlinee multiple di 4
-- [ ] Strategia di spazio: element-first o content-first
-- [ ] Varianti e dimensioni (`sm`/`md`/`lg` se applicabile)
-- [ ] Stati: riposo, hover, focus, premuto, selezionato, disabilitato, errore, caricamento (quelli che servono)
-- [ ] Comportamento da 360px a 1440px
-- [ ] Testo: etichette, maiuscole, messaggi d'errore e vuoti, secondo i modelli
-- [ ] Accessibilità: ruolo ARIA, nome accessibile, tastiera (quali tasti fanno cosa), focus, annunci a screen reader
-- [ ] Cosa fornisce chi lo usa (props, contenuto, contenitore)
+- [ ] Purpose statement and a one-line description
+- [ ] When to use it and when not to, with precise conditions (no "usually", "sometimes")
+- [ ] Alternatives considered and why they were rejected
+- [ ] Anatomy: the parts, with the names of the `ap-*` classes
+- [ ] Tokens used: only semantic or component tokens, never primitives or raw values
+- [ ] Sizes on the 8pt grid (4 only for details), line heights in multiples of 4
+- [ ] Spacing strategy: element-first or content-first
+- [ ] Variants and sizes (`sm`/`md`/`lg` where relevant)
+- [ ] States: rest, hover, focus, pressed, selected, disabled, error, loading (the ones that apply)
+- [ ] Behaviour from 360px to 1440px
+- [ ] Copy: labels, capitalisation, error and empty-state messages, following the templates
+- [ ] Accessibility: ARIA role, accessible name, keyboard (which keys do what), focus, screen reader announcements
+- [ ] What the consumer provides (props, content, container)
 
-## Conformità (fase 3)
+## Conformance (phase 3)
 
-Prima di considerarlo parte del sistema:
+Before it counts as part of the system:
 
-- [ ] Codice CSS in `apis.css` e componente React in `apis-react.js`, tipi in `apis-react.d.ts`
-- [ ] Scheda in `references/components.md` e nel design system pubblicato
-- [ ] Contrasti verificati in chiaro **e** scuro: testo 4.5:1, testo ≥24px o bold ≥19px 3:1, bordi di controlli, focus e icone 3:1
-- [ ] Navigazione da tastiera provata davvero
-- [ ] Provato con `prefers-reduced-motion` e con zoom al 200%
-- [ ] Codice, design e documentazione dicono la stessa cosa
-- [ ] Voce nel changelog
+- [ ] CSS in `apis.css` and React component in `apis-react.js`, types in `apis-react.d.ts`
+- [ ] Sheet in `references/components.md` and in the published design system
+- [ ] Contrast checked in light **and** dark: text 4.5:1, text ≥24px or bold ≥19px 3:1, control borders, focus and icons 3:1
+- [ ] Keyboard navigation actually tried
+- [ ] Tried with `prefers-reduced-motion` and at 200% zoom
+- [ ] Code, design and documentation say the same thing
+- [ ] Changelog entry
 
-## Aggiungere un token
+## Adding a token
 
-- Un nuovo **semantico** si aggiunge quando un intento ricorre in almeno due componenti. Va dichiarato in entrambi i temi, con una nota d'uso che nomina le superfici su cui è leggibile, e con il contrasto misurato.
-- Un nuovo **primitivo** si aggiunge solo se nessun primitivo esistente può servire il nuovo semantico.
-- Un **token di componente** vive in `apis.css` e punta solo a un semantico.
-- Nomi: minuscolo, trattini, per intenzione. Mai il valore nel nome.
-- Nelle note d'uso e nei testi, i rapporti di contrasto si scrivono come segnaposto `{{contrast fg on bg}}`: il build li calcola, così la documentazione non può dire il falso.
+- A new **semantic** token is added when an intent recurs in at least two components. It is declared in both themes, with a usage note that names the surfaces it is legible on, and with its contrast measured.
+- A new **primitive** is added only if no existing primitive can serve the new semantic token.
+- A **component token** lives in `apis.css` and points only to a semantic token.
+- Names: lowercase, hyphens, by intent. Never the value in the name.
+- In usage notes and copy, contrast ratios are written as the placeholder `{{contrast fg on bg}}`: the build computes them, so the documentation cannot say something false.
 
-## Versioni
+## Versions
 
-Semver sul pacchetto della skill e del design system:
+Semver on the skill and design system package:
 
-- **Maggiore**: token rinominato o rimosso, prop rimossa, cambio di comportamento che rompe.
-- **Minore**: token, componente, variante o prop nuova.
-- **Patch**: correzione di un valore, di un contrasto, di un testo.
+- **Major**: a token renamed or removed, a prop removed, a breaking change in behaviour.
+- **Minor**: a new token, component, variant or prop.
+- **Patch**: a fix to a value, a contrast or a piece of copy.
 
-Ogni rilascio ha una voce in cima a `CHANGELOG.md` (data · versione · cosa è cambiato), che finisce anche in fondo a `SKILL.md`, e un tag git `<id>@<versione>` con una GitHub Release, creati dalla CI.
+Every release has an entry at the top of `CHANGELOG.md` (date · version · what changed), which also ends up at the bottom of `SKILL.md`, and a git tag `<id>@<version>` with a GitHub Release, both created by CI.
 
-## Il flusso di rilascio
+## The release flow
 
-Ogni design system vive in `design-systems/systems/<id>/` ed è l'**unico sorgente**: skill, pacchetto per i siti, file del design system pubblicato e copie nei progetti sono generati. Non si modifica mai un file generato.
+Each design system lives in `design-systems/systems/<id>/` and is the **single source**: the skill, the package for the sites, the published design system files and the copies in the projects are generated. Never edit a generated file.
 
-1. Modifica il sorgente (`tokens.json`, `css/`, `components/`, `docs/`).
-2. `npm run check -- <id>`: contrasto di ogni coppia dichiarata in ogni tema, griglia da 4/8, nomi e note d'uso dei token, CSS dei componenti senza primitivi né colori scritti a mano, token esistenti anche nel CSS dei siti che usano il sistema. Deve chiudersi con 0 errori.
-3. Aggiorna `version` in `system.json` e aggiungi la voce in cima a `CHANGELOG.md`.
-4. `npm run release -- <id>`: ricostruisce, reinstalla la skill in `~/.claude/skills/` e aggiorna le copie nei siti elencati in `consumers`.
-5. Pubblica `dist/<id>/artifact/` sul design system allo stesso link (lo fa Claude).
+1. Edit the source (`tokens.json`, `css/`, `components/`, `docs/`).
+2. `npm run check -- <id>`: contrast of every declared pair in every theme, 4/8 grid, token names and usage notes, component CSS without primitives or hand-written colours, and tokens that exist in the CSS of the sites that use the system. It must finish with 0 errors.
+3. Update `version` in `system.json` and add the entry at the top of `CHANGELOG.md`.
+4. `npm run release -- <id>`: rebuilds, reinstalls the skill in `~/.claude/skills/` and updates the copies in the sites listed in `consumers`.
+5. Publish `dist/<id>/artifact/` to the design system at the same link (Claude does this).
